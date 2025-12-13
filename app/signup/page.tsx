@@ -97,7 +97,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center">
-      <div className="w-full max-w-lg bg-white min-h-screen flex flex-col border-x border-gray-200">
+      <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col border-x border-gray-200 overflow-hidden">
         {/* Header */}
         <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
           <div className="px-4 h-14 flex items-center">
@@ -197,14 +197,14 @@ export default function SignupPage() {
             다음
           </Button>
         </div>
-      </div>
 
-      {/* Terms Modal */}
-      <TermsModal
-        open={showTermsModal}
-        onOpenChange={setShowTermsModal}
-        onAgree={handleTermsAgree}
-      />
+        {/* Terms Modal */}
+        <TermsModal
+          open={showTermsModal}
+          onOpenChange={setShowTermsModal}
+          onAgree={handleTermsAgree}
+        />
+      </div>
     </div>
   );
 }
