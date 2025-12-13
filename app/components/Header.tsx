@@ -1,36 +1,67 @@
 "use client";
 
-import { ChevronLeftIcon, MagnifyingGlassIcon } from "./Icons";
-
 interface HeaderProps {
   title: string;
   highlightedName?: string;
 }
 
+function ArrowLeftIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path d="M5 12H19M5 12L11 18M5 12L11 6" stroke="#191F28" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function SearchIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+        stroke="#191F28"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function Header({ title, highlightedName }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-      <div className="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-        <button
-          className="w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-gray-100 transition-colors"
-          aria-label="뒤로가기"
-        >
-          <ChevronLeftIcon className="w-6 h-6 text-gray-800" />
-        </button>
+    <header className="sticky top-0 z-50 bg-white" style={{ height: "48px" }}>
+      <div
+        className="max-w-lg mx-auto h-full flex items-center justify-between"
+        style={{ padding: "0px 20px", gap: "1px" }}
+      >
+        {/* Left Side */}
+        <div className="flex items-center gap-3" style={{ width: "24px" }}>
+          <button className="w-6 h-6 flex items-center justify-center" aria-label="뒤로가기">
+            <ArrowLeftIcon className="w-6 h-6" />
+          </button>
+        </div>
 
-        <h1 className="text-base font-semibold text-gray-900 flex items-center gap-1">
-          {highlightedName && <span className="text-gray-500">&apos;</span>}
-          {highlightedName && <span className="text-gray-900">{highlightedName}</span>}
-          {highlightedName && <span className="text-gray-500">&apos;</span>}
-          <span className="text-gray-600">{title}</span>
+        {/* Center - Title */}
+        <h1
+          className="font-semibold text-[#191F28] flex items-center justify-center"
+          style={{
+            fontSize: "16px",
+            lineHeight: "22px",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          {highlightedName && <span className="text-[#8B95A1]">&apos;</span>}
+          {highlightedName && <span className="text-[#191F28]">{highlightedName}</span>}
+          {highlightedName && <span className="text-[#8B95A1]">&apos;</span>}
+          <span className="text-[#191F28] ml-1">{title}</span>
         </h1>
 
-        <button
-          className="w-10 h-10 flex items-center justify-center -mr-2 rounded-full hover:bg-gray-100 transition-colors"
-          aria-label="검색"
-        >
-          <MagnifyingGlassIcon className="w-5 h-5 text-gray-800" />
-        </button>
+        {/* Right Side */}
+        <div className="flex items-center justify-end gap-3" style={{ width: "24px" }}>
+          <button className="w-6 h-6 flex items-center justify-center" aria-label="검색">
+            <SearchIcon className="w-6 h-6" />
+          </button>
+        </div>
       </div>
     </header>
   );

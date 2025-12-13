@@ -56,14 +56,16 @@ const filterOptions = [
 
 export default function RecommendPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header title="역 추천 배우" highlightedName="서은우" />
+    <div className="min-h-screen bg-white flex justify-center">
+      <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col overflow-hidden">
+        <Header title="역 추천 배우" highlightedName="서은우" />
 
-      <FilterBar filters={filterOptions} />
+        <FilterBar filters={filterOptions} />
 
-      <main className="pt-4">
-        <ActorCarousel actors={sampleActors} />
-      </main>
+        <main className="flex-1 flex flex-col justify-between pb-5">
+          <ActorCarousel actors={sampleActors} />
+        </main>
+      </div>
     </div>
   );
 }

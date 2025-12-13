@@ -10,6 +10,7 @@ export interface Actor {
   age: string;
   filmography: number;
   tags: string[];
+  works?: { name: string; thumbnail: string }[];
 }
 
 interface ActorCarouselProps {
@@ -73,11 +74,20 @@ export default function ActorCarousel({ actors }: ActorCarouselProps) {
   const leftCard = actors[getCardIndex(-1)];
   const rightCard = actors[getCardIndex(1)];
 
+  // 샘플 필모그래피 데이터
+  const sampleWorks = [
+    { name: "나의아저씨", thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=48&h=48&fit=crop" },
+    { name: "미스터선샤인", thumbnail: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=48&h=48&fit=crop" },
+    { name: "시그널", thumbnail: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=48&h=48&fit=crop" },
+    { name: "비밀의숲", thumbnail: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=48&h=48&fit=crop" },
+  ];
+
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col overflow-hidden">
       {/* Main Carousel Area */}
       <div
-        className="relative flex items-center justify-center gap-3 px-4 py-6"
+        className="relative flex items-center justify-center gap-3 px-5 py-4"
+        style={{ height: "400px" }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -85,121 +95,164 @@ export default function ActorCarousel({ actors }: ActorCarouselProps) {
         {/* Left Side Card */}
         <button
           onClick={goToPrev}
-          className="hidden sm:block shrink-0 w-20 md:w-24 opacity-50 hover:opacity-70 transition-opacity"
+          className="shrink-0 flex flex-col justify-end items-center"
+          style={{ width: "184px", height: "332px" }}
         >
-          <div className="aspect-3/4 relative rounded-lg overflow-hidden bg-gray-200">
-            <Image src={leftCard.imageUrl} alt={leftCard.name} fill className="object-cover" sizes="96px" />
+          {/* Card Image */}
+          <div
+            className="absolute rounded-md overflow-hidden bg-white"
+            style={{
+              width: "160px",
+              height: "226px",
+              bottom: "32px",
+              zIndex: 0,
+            }}
+          >
+            <Image src={leftCard.imageUrl} alt={leftCard.name} fill className="object-cover" sizes="160px" />
           </div>
+          {/* Card Bottom Blur */}
+          <div
+            className="relative w-full"
+            style={{
+              height: "137px",
+              background: "rgba(145, 158, 171, 0.16)",
+              border: "0.8px solid rgba(25, 31, 40, 0.1)",
+              backdropFilter: "blur(7px)",
+              borderRadius: "1.6px 1.6px 16px 16px",
+              zIndex: 1,
+            }}
+          />
         </button>
 
         {/* Center Active Card */}
-        <div className="w-full max-w-[280px] md:max-w-[320px] shrink-0">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="p-4">
-              <div className="aspect-3/4 relative rounded-xl overflow-hidden bg-gray-100">
-                <Image
-                  src={activeActor.imageUrl}
-                  alt={activeActor.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 280px, 320px"
-                  priority
-                />
-              </div>
-
-              <div className="mt-4 text-center">
-                <h2 className="text-xl font-bold text-gray-900">{activeActor.name}</h2>
-                <p className="mt-1 text-sm text-gray-500">
-                  {activeActor.age} · 필모 {activeActor.filmography}편
-                </p>
-
-                <div className="mt-3 flex flex-wrap justify-center gap-2">
-                  {activeActor.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+        <div
+          className="shrink-0 flex flex-col justify-end items-center relative"
+          style={{ width: "230px", height: "400px" }}
+        >
+          {/* Card Image */}
+          <div
+            className="absolute rounded-md overflow-hidden"
+            style={{
+              width: "200px",
+              height: "283px",
+              top: "0.5px",
+              left: "calc(50% - 100px)",
+              zIndex: 0,
+            }}
+          >
+            <Image
+              src={activeActor.imageUrl}
+              alt={activeActor.name}
+              fill
+              className="object-cover"
+              sizes="200px"
+              priority
+            />
           </div>
+          {/* Card Bottom Blur */}
+          <div
+            className="relative w-full"
+            style={{
+              height: "160px",
+              background: "rgba(145, 158, 171, 0.16)",
+              border: "1px solid rgba(25, 31, 40, 0.1)",
+              backdropFilter: "blur(7px)",
+              borderRadius: "2px 2px 20px 20px",
+              zIndex: 1,
+            }}
+          />
         </div>
 
         {/* Right Side Card */}
         <button
           onClick={goToNext}
-          className="hidden sm:block shrink-0 w-20 md:w-24 opacity-50 hover:opacity-70 transition-opacity"
+          className="shrink-0 flex flex-col justify-end items-center"
+          style={{ width: "185px", height: "332px" }}
         >
-          <div className="aspect-3/4 relative rounded-lg overflow-hidden bg-gray-200">
-            <Image src={rightCard.imageUrl} alt={rightCard.name} fill className="object-cover" sizes="96px" />
+          {/* Card Image */}
+          <div
+            className="absolute rounded-md overflow-hidden bg-white"
+            style={{
+              width: "160px",
+              height: "226px",
+              bottom: "32px",
+              zIndex: 0,
+            }}
+          >
+            <Image src={rightCard.imageUrl} alt={rightCard.name} fill className="object-cover" sizes="160px" />
           </div>
+          {/* Card Bottom Blur */}
+          <div
+            className="relative w-full"
+            style={{
+              height: "137px",
+              background: "rgba(145, 158, 171, 0.16)",
+              border: "0.8px solid rgba(25, 31, 40, 0.1)",
+              backdropFilter: "blur(7px)",
+              borderRadius: "1.6px 1.6px 16px 16px",
+              zIndex: 1,
+            }}
+          />
         </button>
       </div>
 
-      {/* Thumbnail Navigation */}
-      <div className="max-w-lg mx-auto px-4 py-4">
-        <div className="flex justify-center gap-2 overflow-x-auto hide-scrollbar">
-          {actors.map((actor, index) => (
-            <button
-              key={actor.id}
-              onClick={() => setActiveIndex(index)}
-              className={`
-                relative shrink-0 flex flex-col items-center gap-1 p-1 rounded-lg transition-all
-                ${index === activeIndex ? "bg-gray-100" : "opacity-60 hover:opacity-100"}
-              `}
-            >
-              <div
-                className={`
-                w-12 h-12 rounded-full overflow-hidden border-2 transition-all
-                ${index === activeIndex ? "border-gray-800" : "border-transparent"}
-              `}
+      {/* Actor Info Section */}
+      <div className="flex flex-col items-center px-5 py-4 gap-8">
+        {/* Actor Details */}
+        <div className="flex flex-col items-center gap-3">
+          {/* Name */}
+          <h2
+            className="font-bold text-[#191F28]"
+            style={{ fontSize: "24px", lineHeight: "28px", letterSpacing: "-0.022em" }}
+          >
+            {activeActor.name}
+          </h2>
+
+          {/* Age & Filmography */}
+          <p className="text-base text-[#4E5968]" style={{ letterSpacing: "-0.02em" }}>
+            {activeActor.age} · 필모 {activeActor.filmography}편
+          </p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {activeActor.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 text-sm font-medium text-[#4E5968] rounded"
+                style={{
+                  background: "rgba(78, 89, 104, 0.1)",
+                  letterSpacing: "-0.02em",
+                }}
               >
-                <img src={actor.imageUrl} alt={actor.name} className="w-full h-full object-cover" />
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Filmography Chips */}
+        <div className="flex gap-1.5 overflow-x-auto hide-scrollbar w-full justify-center">
+          {sampleWorks.map((work, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-1.5 px-3 py-1.5 shrink-0"
+              style={{
+                border: "1px solid #E5E8EB",
+                borderRadius: "999px",
+              }}
+            >
+              <div className="w-6 h-6 rounded-full overflow-hidden bg-gray-200">
+                <Image src={work.thumbnail} alt={work.name} width={24} height={24} className="object-cover" />
               </div>
-              <span className="text-[10px] text-gray-600 font-medium truncate max-w-[50px]">{actor.name}</span>
-            </button>
+              <span
+                className="text-xs font-medium text-[#4E5968]"
+                style={{ letterSpacing: "-0.02em" }}
+              >
+                {work.name}
+              </span>
+            </div>
           ))}
         </div>
-      </div>
-
-      {/* Swipe Hint (Mobile) */}
-      <div className="sm:hidden flex justify-center gap-1.5 pb-4">
-        {actors.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className={`
-              h-1.5 rounded-full transition-all duration-300
-              ${index === activeIndex ? "bg-gray-800 w-6" : "bg-gray-300 w-1.5 hover:bg-gray-400"}
-            `}
-            aria-label={`${index + 1}번째 배우로 이동`}
-          />
-        ))}
-      </div>
-
-      {/* Navigation Arrows (Desktop) */}
-      <div className="hidden sm:flex justify-center gap-4 pb-4">
-        <button
-          onClick={goToPrev}
-          className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
-          aria-label="이전 배우"
-        >
-          <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-          </svg>
-        </button>
-        <button
-          onClick={goToNext}
-          className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
-          aria-label="다음 배우"
-        >
-          <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-          </svg>
-        </button>
       </div>
     </div>
   );
