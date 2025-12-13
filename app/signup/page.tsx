@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ChevronLeftIcon, EyeIcon, EyeOffIcon } from "./icons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import TermsModal from "./TermsModal";
 
 interface FormErrors {
   email?: string;
@@ -24,6 +25,7 @@ export default function SignupPage() {
     passwordConfirm: false,
   });
   const [isValid, setIsValid] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   // 이메일 유효성 검사
   const validateEmail = (value: string): string | undefined => {
@@ -45,9 +47,9 @@ export default function SignupPage() {
   };
 
   // 비밀번호 확인 유효성 검사
-  const validatePasswordConfirm = (value: string): string | undefined => {
+  const validatePasswordConfirm = (value: string, pwd: string): string | undefined => {
     if (!value) return undefined;
-    if (value !== password) {
+    if (value !== pwd) {
       return "비밀번호가 일치하지 않습니다.";
     }
     return undefined;
@@ -64,7 +66,7 @@ export default function SignupPage() {
       newErrors.password = validatePassword(password);
     }
     if (touched.passwordConfirm) {
-      newErrors.passwordConfirm = validatePasswordConfirm(passwordConfirm);
+      newErrors.passwordConfirm = validatePasswordConfirm(passwordConfirm, password);
     }
 
     setErrors(newErrors);
@@ -72,7 +74,7 @@ export default function SignupPage() {
     // 모든 필드가 채워지고 에러가 없는지 확인
     const emailValid = email && !validateEmail(email);
     const passwordValid = password && !validatePassword(password);
-    const passwordConfirmValid = passwordConfirm && !validatePasswordConfirm(passwordConfirm);
+    const passwordConfirmValid = passwordConfirm && !validatePasswordConfirm(passwordConfirm, password);
 
     setIsValid(!!emailValid && !!passwordValid && !!passwordConfirmValid);
   }, [email, password, passwordConfirm, touched]);
@@ -83,8 +85,14 @@ export default function SignupPage() {
 
   const handleSubmit = () => {
     if (!isValid) return;
-    // 다음 단계로 진행
-    console.log("회원가입 진행:", { email, password });
+    // 약관동의 모달 열기
+    setShowTermsModal(true);
+  };
+
+  const handleTermsAgree = () => {
+    // 회원가입 완료 처리
+    console.log("회원가입 완료:", { email, password });
+    alert("회원가입이 완료되었습니다!");
   };
 
   return (
@@ -190,6 +198,13 @@ export default function SignupPage() {
           </Button>
         </div>
       </div>
+
+      {/* Terms Modal */}
+      <TermsModal
+        open={showTermsModal}
+        onOpenChange={setShowTermsModal}
+        onAgree={handleTermsAgree}
+      />
     </div>
   );
 }
