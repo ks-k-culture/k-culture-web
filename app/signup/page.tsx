@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChevronLeftIcon, EyeIcon, EyeOffIcon } from "./icons";
 import { Input } from "@/components/ui/input";
@@ -23,13 +23,11 @@ function SignupContent() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState({
     email: false,
     password: false,
     passwordConfirm: false,
   });
-  const [isValid, setIsValid] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
   const validateEmail = (value: string): string | undefined => {
@@ -57,35 +55,30 @@ function SignupContent() {
     return undefined;
   };
 
-  useEffect(() => {
-    const newErrors: FormErrors = {};
+  // 에러 계산 (렌더링 중 직접 계산)
+  const computedErrors: FormErrors = {};
+  if (touched.email) {
+    computedErrors.email = validateEmail(email);
+  }
+  if (touched.password) {
+    computedErrors.password = validatePassword(password);
+  }
+  if (touched.passwordConfirm) {
+    computedErrors.passwordConfirm = validatePasswordConfirm(passwordConfirm, password);
+  }
 
-    if (touched.email) {
-      newErrors.email = validateEmail(email);
-    }
-    if (touched.password) {
-      newErrors.password = validatePassword(password);
-    }
-    if (touched.passwordConfirm) {
-      newErrors.passwordConfirm = validatePasswordConfirm(passwordConfirm, password);
-    }
-
-    setErrors(newErrors);
-
-    // 모든 필드가 채워지고 에러가 없는지 확인
-    const emailValid = email && !validateEmail(email);
-    const passwordValid = password && !validatePassword(password);
-    const passwordConfirmValid = passwordConfirm && !validatePasswordConfirm(passwordConfirm, password);
-
-    setIsValid(!!emailValid && !!passwordValid && !!passwordConfirmValid);
-  }, [email, password, passwordConfirm, touched]);
+  // 유효성 검사 (렌더링 중 직접 계산)
+  const emailValid = email && !validateEmail(email);
+  const passwordValid = password && !validatePassword(password);
+  const passwordConfirmValid = passwordConfirm && !validatePasswordConfirm(passwordConfirm, password);
+  const computedIsValid = !!emailValid && !!passwordValid && !!passwordConfirmValid;
 
   const handleBlur = (field: keyof typeof touched) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const handleSubmit = () => {
-    if (!isValid) return;
+    if (!computedIsValid) return;
     setShowTermsModal(true);
   };
 
@@ -122,10 +115,10 @@ function SignupContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onBlur={() => handleBlur("email")}
-                aria-invalid={!!errors.email}
+                aria-invalid={!!computedErrors.email}
                 className="h-12 text-base border-gray-200 focus:border-gray-400"
               />
-              {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+              {computedErrors.email && <p className="text-sm text-red-500">{computedErrors.email}</p>}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">비밀번호</label>
@@ -136,7 +129,7 @@ function SignupContent() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={() => handleBlur("password")}
-                  aria-invalid={!!errors.password}
+                  aria-invalid={!!computedErrors.password}
                   className="h-12 text-base border-gray-200 focus:border-gray-400 pr-12"
                 />
                 <button
@@ -148,7 +141,7 @@ function SignupContent() {
                   {showPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
                 </button>
               </div>
-              {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+              {computedErrors.password && <p className="text-sm text-red-500">{computedErrors.password}</p>}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">비밀번호 확인</label>
@@ -159,7 +152,7 @@ function SignupContent() {
                   value={passwordConfirm}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   onBlur={() => handleBlur("passwordConfirm")}
-                  aria-invalid={!!errors.passwordConfirm}
+                  aria-invalid={!!computedErrors.passwordConfirm}
                   className="h-12 text-base border-gray-200 focus:border-gray-400 pr-12"
                 />
                 <button
@@ -171,16 +164,20 @@ function SignupContent() {
                   {showPasswordConfirm ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
                 </button>
               </div>
-              {errors.passwordConfirm && <p className="text-sm text-red-500">{errors.passwordConfirm}</p>}
+              {computedErrors.passwordConfirm && (
+                <p className="text-sm text-red-500">{computedErrors.passwordConfirm}</p>
+              )}
             </div>
           </div>
         </main>
         <div className="sticky bottom-0 bg-white border-t border-gray-100 p-4 w-full">
           <Button
             onClick={handleSubmit}
-            disabled={!isValid}
+            disabled={!computedIsValid}
             className={`w-full h-14 text-base font-semibold rounded-xl transition-all ${
-              isValid ? "bg-gray-900 hover:bg-gray-800 text-white" : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              computedIsValid
+                ? "bg-gray-900 hover:bg-gray-800 text-white"
+                : "bg-gray-100 text-gray-400 cursor-not-allowed"
             }`}
           >
             다음

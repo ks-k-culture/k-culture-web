@@ -72,7 +72,11 @@ function SparklesIcon({ className }: { className?: string }) {
 function BookmarkIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+      />
     </svg>
   );
 }
@@ -89,14 +93,6 @@ function UserIcon({ className }: { className?: string }) {
   );
 }
 
-function ChevronRightIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-    </svg>
-  );
-}
-
 // 필모그래피 타입
 interface FilmographyItem {
   id: string;
@@ -105,14 +101,6 @@ interface FilmographyItem {
   title: string;
   role: string;
   character?: string;
-  thumbnail: string;
-}
-
-// 대표영상 타입
-interface ShowreelItem {
-  id: string;
-  title: string;
-  duration: string;
   thumbnail: string;
 }
 
@@ -212,13 +200,7 @@ export default function MyPage() {
         <section className="relative h-[420px]">
           {/* 배경 이미지 */}
           <div className="absolute inset-0">
-            <Image
-              src={actor.profileImage}
-              alt={actor.name}
-              fill
-              className="object-cover"
-              priority
-            />
+            <Image src={actor.profileImage} alt={actor.name} fill className="object-cover" priority />
             {/* 그라데이션 오버레이 */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
           </div>
@@ -249,7 +231,10 @@ export default function MyPage() {
         <section className="px-5 py-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-gray-900">필모그래피</h2>
-            <Link href="/mypage/filmography" className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600">
+            <Link
+              href="/mypage/filmography"
+              className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600"
+            >
               <PencilIcon className="w-4 h-4" />
               <span>수정하기</span>
             </Link>
@@ -274,9 +259,7 @@ export default function MyPage() {
                     {/* 정보 */}
                     <div className="flex-1 min-w-0">
                       <span className="text-xs text-gray-400 mb-1 block">{item.type}</span>
-                      <h4 className="text-sm font-medium text-gray-900 leading-snug mb-1 line-clamp-2">
-                        {item.title}
-                      </h4>
+                      <h4 className="text-sm font-medium text-gray-900 leading-snug mb-1 line-clamp-2">{item.title}</h4>
                       <p className="text-xs text-gray-500">
                         {item.role} · {item.character}
                       </p>
@@ -299,10 +282,7 @@ export default function MyPage() {
           </div>
           <div className="flex flex-wrap gap-2">
             {actor.skills.map((skill, index) => (
-              <span
-                key={index}
-                className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-full"
-              >
+              <span key={index} className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-full">
                 {skill}
               </span>
             ))}
@@ -347,18 +327,15 @@ export default function MyPage() {
         {/* 프리미엄 프로모션 섹션 */}
         <section className="px-5 py-6 border-t border-gray-100 space-y-3">
           {/* 프리미엄 포트폴리오 꾸미기 */}
-          <Link
-            href="#"
-            className="block p-5 bg-[#F9FAFB] rounded-xl hover:bg-gray-100 transition-colors"
-          >
+          <Link href="#" className="block p-5 bg-[#F9FAFB] rounded-xl hover:bg-gray-100 transition-colors">
             {/* 아이콘 */}
             <div className="mb-4">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path 
-                  d="M9.25 5.4168L12.5833 8.7501M1.33325 16.6668H4.66659L13.4166 7.9168C13.8586 7.4747 14.1069 6.8752 14.1069 6.2501C14.1069 5.625 13.8586 5.0254 13.4166 4.5834C12.9745 4.1414 12.375 3.8931 11.7499 3.8931C11.1248 3.8931 10.5253 4.1414 10.0833 4.5834L1.33325 13.3334V16.6668Z" 
-                  stroke="#E50815" 
-                  strokeWidth="1.25" 
-                  strokeLinecap="round" 
+                <path
+                  d="M9.25 5.4168L12.5833 8.7501M1.33325 16.6668H4.66659L13.4166 7.9168C13.8586 7.4747 14.1069 6.8752 14.1069 6.2501C14.1069 5.625 13.8586 5.0254 13.4166 4.5834C12.9745 4.1414 12.375 3.8931 11.7499 3.8931C11.1248 3.8931 10.5253 4.1414 10.0833 4.5834L1.33325 13.3334V16.6668Z"
+                  stroke="#E50815"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
@@ -369,25 +346,24 @@ export default function MyPage() {
           </Link>
 
           {/* 프로필 상단 노출 */}
-          <Link
-            href="#"
-            className="block p-5 bg-[#F9FAFB] rounded-xl hover:bg-gray-100 transition-colors"
-          >
+          <Link href="#" className="block p-5 bg-[#F9FAFB] rounded-xl hover:bg-gray-100 transition-colors">
             {/* 아이콘 */}
             <div className="mb-4">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path 
-                  d="M3.83333 11.666L6.33333 9.166L8 10.833L10.5 8.333L12.1667 10M1.33325 15V5C1.33325 4.558 1.50885 4.134 1.82141 3.821C2.13397 3.509 2.55789 3.333 2.99992 3.333H12.9999C13.4419 3.333 13.8659 3.509 14.1784 3.821C14.491 4.134 14.6666 4.558 14.6666 5V15C14.6666 15.442 14.491 15.866 14.1784 16.178C13.8659 16.491 13.4419 16.666 12.9999 16.666H2.99992C2.55789 16.666 2.13397 16.491 1.82141 16.178C1.50885 15.866 1.33325 15.442 1.33325 15Z" 
-                  stroke="#E50815" 
-                  strokeWidth="1.25" 
-                  strokeLinecap="round" 
+                <path
+                  d="M3.83333 11.666L6.33333 9.166L8 10.833L10.5 8.333L12.1667 10M1.33325 15V5C1.33325 4.558 1.50885 4.134 1.82141 3.821C2.13397 3.509 2.55789 3.333 2.99992 3.333H12.9999C13.4419 3.333 13.8659 3.509 14.1784 3.821C14.491 4.134 14.6666 4.558 14.6666 5V15C14.6666 15.442 14.491 15.866 14.1784 16.178C13.8659 16.491 13.4419 16.666 12.9999 16.666H2.99992C2.55789 16.666 2.13397 16.491 1.82141 16.178C1.50885 15.866 1.33325 15.442 1.33325 15Z"
+                  stroke="#E50815"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
             </div>
             {/* 텍스트 */}
             <h3 className="text-sm font-bold text-[#191F28] mb-1">프로필 상단 노출</h3>
-            <p className="text-xs text-[#4E5968] leading-relaxed">광고를 통해 캐스팅 디렉터에게 나를 먼저 보여 보세요</p>
+            <p className="text-xs text-[#4E5968] leading-relaxed">
+              광고를 통해 캐스팅 디렉터에게 나를 먼저 보여 보세요
+            </p>
           </Link>
         </section>
 
@@ -416,4 +392,3 @@ export default function MyPage() {
     </div>
   );
 }
-

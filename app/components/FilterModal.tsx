@@ -33,6 +33,7 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
   useEffect(() => {
     if (isOpen) {
       isClosingRef.current = false;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsVisible(true);
       requestAnimationFrame(() => {
         setIsAnimating(true);
@@ -48,6 +49,7 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
   }, [isOpen]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalSelected(selectedValue || "");
   }, [selectedValue, isOpen]);
 

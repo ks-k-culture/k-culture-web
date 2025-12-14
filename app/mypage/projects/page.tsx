@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 // 아이콘 컴포넌트들
 function ChevronLeftIcon({ className }: { className?: string }) {
@@ -230,10 +229,7 @@ export default function ProjectsPage() {
               {recommendedActors.map((actor) => (
                 <div key={actor.id} className="flex flex-col items-center shrink-0">
                   {/* 프로필 이미지 */}
-                  <div
-                    className="w-20 h-20 rounded-full overflow-hidden mb-2"
-                    style={{ backgroundColor: "#F2F4F6" }}
-                  >
+                  <div className="w-20 h-20 rounded-full overflow-hidden mb-2" style={{ backgroundColor: "#F2F4F6" }}>
                     <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
                   </div>
                   {/* 이름 */}
@@ -265,4 +261,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-

@@ -54,6 +54,7 @@ export default function TermsModal({ open, onOpenChange, onAgree }: TermsModalPr
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTerms((prev) => prev.map((term) => ({ ...term, checked: false })));
     }
   }, [open]);
