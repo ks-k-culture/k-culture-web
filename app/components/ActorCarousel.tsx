@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export interface Actor {
   id: string;
@@ -122,8 +123,9 @@ export default function ActorCarousel({ actors }: ActorCarouselProps) {
             }}
           />
         </button>
-        <div
-          className="shrink-0 flex flex-col justify-end items-center relative"
+        <Link
+          href={`/actors/${activeActor.id}`}
+          className="shrink-0 flex flex-col justify-end items-center relative cursor-pointer"
           style={{ width: "230px", height: "400px" }}
         >
           <div
@@ -156,7 +158,7 @@ export default function ActorCarousel({ actors }: ActorCarouselProps) {
               zIndex: 1,
             }}
           />
-        </div>
+        </Link>
         <button
           onClick={goToNext}
           className="shrink-0 flex flex-col justify-end items-center"
