@@ -66,7 +66,7 @@ export default function NewProjectPage() {
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: "#191F28" }} />
+              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
             </button>
             <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
               새 프로젝트 만들기
@@ -118,10 +118,8 @@ export default function NewProjectPage() {
               }}
               className="w-full flex items-center justify-between text-base"
             >
-              <span style={{ color: projectType ? "#191F28" : "#8B95A1" }}>
-                {projectType || "유형을 선택해주세요"}
-              </span>
-              <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+              <span style={{ color: projectType ? "#191F28" : "#8B95A1" }}>{projectType || "유형을 선택해주세요"}</span>
+              <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
             </button>
 
             {showTypeDropdown && (
@@ -159,7 +157,7 @@ export default function NewProjectPage() {
               className="w-full flex items-center justify-between text-base"
             >
               <span style={{ color: genre ? "#191F28" : "#8B95A1" }}>{genre || "장르를 선택해주세요"}</span>
-              <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+              <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
             </button>
 
             {showGenreDropdown && (
@@ -237,4 +235,3 @@ export default function NewProjectPage() {
     </div>
   );
 }
-

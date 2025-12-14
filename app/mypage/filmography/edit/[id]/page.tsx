@@ -119,7 +119,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: "#191F28" }} />
+              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
             </button>
             <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
               필모그래피 작품 편집
@@ -144,10 +144,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               작품명
             </label>
-            <div
-              className="relative flex items-center border rounded-xl px-4 py-3"
-              style={{ borderColor: "#E5E8EB" }}
-            >
+            <div className="relative flex items-center border rounded-xl px-4 py-3" style={{ borderColor: "#E5E8EB" }}>
               <input
                 type="text"
                 value={title}
@@ -158,7 +155,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
               />
               {title && (
                 <button onClick={() => setTitle("")} className="ml-2">
-                  <XCircleIcon className="w-5 h-5" style={{ color: "#B0B8C1" }} />
+                  <XCircleIcon className="w-5 h-5 text-[#B0B8C1]" />
                 </button>
               )}
             </div>
@@ -179,7 +176,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
                 style={{ borderColor: "#E5E8EB" }}
               >
                 <span style={{ color: "#191F28" }}>{year}</span>
-                <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
               </button>
               {showYearDropdown && (
                 <div
@@ -219,7 +216,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
                 style={{ borderColor: "#E5E8EB" }}
               >
                 <span style={{ color: "#191F28" }}>{genre}</span>
-                <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
               </button>
               {showGenreDropdown && (
                 <div
@@ -249,10 +246,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               역할 배역
             </label>
-            <div
-              className="relative flex items-center border rounded-xl px-4 py-3"
-              style={{ borderColor: "#E5E8EB" }}
-            >
+            <div className="relative flex items-center border rounded-xl px-4 py-3" style={{ borderColor: "#E5E8EB" }}>
               <input
                 type="text"
                 value={role}
@@ -263,7 +257,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
               />
               {role && (
                 <button onClick={() => setRole("")} className="ml-2">
-                  <XCircleIcon className="w-5 h-5" style={{ color: "#B0B8C1" }} />
+                  <XCircleIcon className="w-5 h-5 text-[#B0B8C1]" />
                 </button>
               )}
             </div>
@@ -316,4 +310,3 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
     </div>
   );
 }
-

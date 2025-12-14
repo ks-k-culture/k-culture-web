@@ -151,7 +151,7 @@ export default function ShowreelEditPage() {
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: "#191F28" }} />
+              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
             </button>
             <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
               쇼릴 편집하기
@@ -176,7 +176,7 @@ export default function ShowreelEditPage() {
                 border: "1px dashed #E5E8EB",
               }}
             >
-              <UploadIcon className="w-6 h-6" style={{ color: "#6B7684" }} />
+              <UploadIcon className="w-6 h-6 text-[#6B7684]" />
               <div className="text-center">
                 <p className="text-sm" style={{ color: "#4E5968" }}>
                   대표영상 업로드 (최대 5개)
@@ -208,7 +208,7 @@ export default function ShowreelEditPage() {
                       onClick={() => handleDeleteFile(file.id)}
                       className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
                     >
-                      <XMarkIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                      <XMarkIcon className="w-5 h-5 text-[#6B7684]" />
                     </button>
                   </div>
                 ))}
@@ -227,7 +227,7 @@ export default function ShowreelEditPage() {
                 className="w-full flex items-center justify-between py-3"
               >
                 <span style={{ color: roleType ? "#191F28" : "#8B95A1" }}>{roleType || "역할 종류"}</span>
-                <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
               </button>
               {showRoleTypeDropdown && (
                 <div
@@ -284,7 +284,7 @@ export default function ShowreelEditPage() {
                   style={{ borderColor: "#E5E8EB" }}
                 >
                   <span style={{ color: year ? "#191F28" : "#8B95A1" }}>{year || "연도 선택"}</span>
-                  <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                  <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
                 </button>
                 {showYearDropdown && (
                   <div
@@ -322,7 +322,7 @@ export default function ShowreelEditPage() {
                   style={{ borderColor: "#E5E8EB" }}
                 >
                   <span style={{ color: genre ? "#191F28" : "#8B95A1" }}>{genre || "장르 선택"}</span>
-                  <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                  <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
                 </button>
                 {showGenreDropdown && (
                   <div
@@ -376,7 +376,7 @@ export default function ShowreelEditPage() {
                 <span style={{ color: representativeGenre ? "#191F28" : "#8B95A1" }}>
                   {representativeGenre || "대표 장르"}
                 </span>
-                <ChevronDownIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
               </button>
               {showRepGenreDropdown && (
                 <div
@@ -416,7 +416,7 @@ export default function ShowreelEditPage() {
                       {tag.label}
                     </span>
                     <button onClick={() => handleRemoveTag(tag.id)} className="ml-1">
-                      <XMarkIcon className="w-4 h-4" style={{ color: "#4E5968" }} />
+                      <XMarkIcon className="w-4 h-4 text-[#4E5968]" />
                     </button>
                   </div>
                 ))}
@@ -437,7 +437,7 @@ export default function ShowreelEditPage() {
                     <span className="text-sm" style={{ color: "#4E5968" }}>
                       {tag.label}
                     </span>
-                    <XMarkIcon className="w-4 h-4" style={{ color: "#4E5968" }} />
+                    <XMarkIcon className="w-4 h-4 text-[#4E5968]" />
                   </button>
                 ))}
             </div>

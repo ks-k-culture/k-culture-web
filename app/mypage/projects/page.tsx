@@ -125,7 +125,7 @@ export default function ProjectsPage() {
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: "#191F28" }} />
+              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
             </button>
             <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
               진행중인 프로젝트
