@@ -249,10 +249,10 @@ export default function MyPage() {
         <section className="px-5 py-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-gray-900">필모그래피</h2>
-            <button className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600">
+            <Link href="/mypage/filmography" className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600">
               <PencilIcon className="w-4 h-4" />
               <span>수정하기</span>
-            </button>
+            </Link>
           </div>
 
           {groupedFilmography.map(({ year, items }) => (
