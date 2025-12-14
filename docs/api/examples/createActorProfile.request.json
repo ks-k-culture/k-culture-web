@@ -1,0 +1,8 @@
+{
+  "_note": "multipart/form-data 형식으로 전송. 아래는 필드 예시",
+  "name": "김배우",
+  "introduction": "깊은 눈빛으로 서사를 만드는 배우입니다. 다양한 장르에 도전하고 있습니다.",
+  "ageGroup": "20대",
+  "profileImage": "(binary file: profile.jpg)"
+}
+

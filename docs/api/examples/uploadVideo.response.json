@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "data": {
+    "url": "https://storage.k-culture.com/videos/abc123def456.mp4",
+    "thumbnailUrl": "https://storage.k-culture.com/thumbnails/abc123def456.jpg",
+    "filename": "abc123def456.mp4",
+    "size": 15728640,
+    "duration": "3:15",
+    "mimeType": "video/mp4"
+  }
+}
+

@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "data": {
+    "actors": [
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
+        "name": "김배우",
+        "imageUrl": "https://storage.k-culture.com/actors/550e8400-kim.jpg",
+        "age": "20대 중반",
+        "filmography": 15,
+        "tags": ["섬세한연기", "청춘물감정", "카리스마"]
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440002",
+        "name": "이연기",
+        "imageUrl": "https://storage.k-culture.com/actors/550e8400-lee.jpg",
+        "age": "30대 초반",
+        "filmography": 23,
+        "tags": ["감성연기", "로맨스", "멜로"]
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440003",
+        "name": "박스타",
+        "imageUrl": "https://storage.k-culture.com/actors/550e8400-park.jpg",
+        "age": "20대 후반",
+        "filmography": 8,
+        "tags": ["신선함", "액션", "코미디"]
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 10,
+      "total": 156,
+      "totalPages": 16
+    }
+  }
+}
+

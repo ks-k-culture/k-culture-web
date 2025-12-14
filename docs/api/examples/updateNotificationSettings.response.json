@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "data": {
+    "castingNotification": true,
+    "messageNotification": true,
+    "marketingNotification": false
+  }
+}
+

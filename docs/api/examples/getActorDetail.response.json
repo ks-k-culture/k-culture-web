@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "김배우",
+    "birthYear": 1990,
+    "filmographyCount": 15,
+    "description": "깊은 눈빛으로 서사를 만드는 배우",
+    "profileImage": "https://storage.k-culture.com/actors/550e8400-kim-profile.jpg",
+    "skills": [
+      "영어(원어민 수준)",
+      "피아노",
+      "검술",
+      "승마",
+      "와이어 액션",
+      "현대 무용"
+    ],
+    "filmography": [
+      {
+        "id": "f-550e8400-001",
+        "year": 2023,
+        "type": "영화",
+        "title": "서울의 밤",
+        "role": "강민준",
+        "roleType": "주연",
+        "thumbnail": "https://storage.k-culture.com/films/seoul-night-thumb.jpg"
+      },
+      {
+        "id": "f-550e8400-002",
+        "year": 2023,
+        "type": "드라마",
+        "title": "청춘시대 시즌3",
+        "role": "박도윤",
+        "roleType": "주연",
+        "thumbnail": "https://storage.k-culture.com/films/youth-s3-thumb.jpg"
+      },
+      {
+        "id": "f-550e8400-003",
+        "year": 2022,
+        "type": "영화",
+        "title": "코드네임: 그림자",
+        "role": "에이전트 7",
+        "roleType": "조연",
+        "thumbnail": "https://storage.k-culture.com/films/codename-shadow-thumb.jpg"
+      }
+    ],
+    "showreels": [
+      {
+        "id": "s-550e8400-001",
+        "title": "2024 Actor Showreel",
+        "duration": "3:15",
+        "thumbnail": "https://storage.k-culture.com/showreels/550e8400-showreel1-thumb.jpg",
+        "videoUrl": "https://storage.k-culture.com/showreels/550e8400-showreel1.mp4",
+        "roleType": "주연",
+        "workTitle": "서울의 밤",
+        "year": 2024,
+        "genre": "영화",
+        "role": "강민준",
+        "representativeGenre": "드라마",
+        "tags": ["연기", "액션"]
+      },
+      {
+        "id": "s-550e8400-002",
+        "title": "Action Reel 2023",
+        "duration": "2:45",
+        "thumbnail": "https://storage.k-culture.com/showreels/550e8400-showreel2-thumb.jpg",
+        "videoUrl": "https://storage.k-culture.com/showreels/550e8400-showreel2.mp4",
+        "roleType": "조연",
+        "workTitle": "코드네임: 그림자",
+        "year": 2023,
+        "genre": "영화",
+        "role": "에이전트 7",
+        "representativeGenre": "액션",
+        "tags": ["액션", "스턴트"]
+      }
+    ]
+  }
+}
+

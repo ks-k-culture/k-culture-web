@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "email": "actor@example.com",
+    "name": "김배우",
+    "type": "actor",
+    "profileImage": "https://storage.k-culture.com/profiles/550e8400-kim.jpg",
+    "position": "배우",
+    "agency": "YG엔터테인먼트",
+    "phone": "010-1234-5678",
+    "bio": "깊은 눈빛으로 서사를 만드는 배우입니다. 영화, 드라마, 뮤지컬 등 다양한 장르에서 활동하고 있습니다.",
+    "fee": "협의",
+    "height": 178,
+    "weight": 68,
+    "settings": {
+      "castingNotification": true,
+      "messageNotification": true,
+      "marketingNotification": false
+    }
+  }
+}
+

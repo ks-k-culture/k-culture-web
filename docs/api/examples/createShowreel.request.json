@@ -1,0 +1,12 @@
+{
+  "_note": "multipart/form-data 형식으로 전송. 아래는 필드 예시",
+  "videos": ["(binary file: showreel1.mp4)", "(binary file: showreel2.mp4)"],
+  "roleType": "주연",
+  "workTitle": "서울의 밤",
+  "year": 2024,
+  "genre": "영화",
+  "role": "강민준",
+  "representativeGenre": "드라마",
+  "tags": ["연기", "액션", "감성"]
+}
+

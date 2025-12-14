@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "docs:validate": "npx @scalar/cli document validate docs/api/openapi.yaml",
+    "docs:bundle": "npx @scalar/cli document bundle docs/api/openapi.yaml -o apps/docs/openapi.json",
+    "docs:build": "npm run docs:validate && npm run docs:bundle",
+    "docs:serve": "npx serve docs/index.html -l 4173"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.3",
@@ -24,6 +28,7 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
+    "@scalar/cli": "^1.3.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

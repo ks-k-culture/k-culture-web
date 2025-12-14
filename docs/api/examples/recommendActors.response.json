@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "data": {
+    "recommendedActors": [
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
+        "name": "김배우",
+        "imageUrl": "https://storage.k-culture.com/actors/550e8400-kim.jpg",
+        "matchScore": 95,
+        "matchReasons": [
+          "청춘물 주연 경험 다수 (3편)",
+          "감성적 연기와 밝은 캐릭터 소화력 우수",
+          "내면 연기 호평 - '서울의 밤' 평단 호평"
+        ]
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440004",
+        "name": "정배우",
+        "imageUrl": "https://storage.k-culture.com/actors/550e8400-jung.jpg",
+        "matchScore": 88,
+        "matchReasons": [
+          "성장 서사 경험 다수",
+          "20대 중반 연령대",
+          "복합적 감정 표현 우수"
+        ]
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440005",
+        "name": "최연기",
+        "imageUrl": "https://storage.k-culture.com/actors/550e8400-choi.jpg",
+        "matchScore": 82,
+        "matchReasons": [
+          "신인상 수상 경력",
+          "긍정적 이미지",
+          "드라마 주연 경험"
+        ]
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,10 @@
+{
+  "email": "newactor@example.com",
+  "password": "securePassword123",
+  "passwordConfirm": "securePassword123",
+  "type": "actor",
+  "termsAgreed": true,
+  "privacyAgreed": true,
+  "marketingAgreed": false
+}
+

@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "data": {
+    "projects": [
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440010",
+        "thumbnail": "https://storage.k-culture.com/projects/king-the-land-s2.jpg",
+        "company": "스튜디오 드래곤",
+        "title": "킹더랜드 시즌2",
+        "status": "진행중",
+        "progress": 30,
+        "createdAt": "2024-01-15T10:00:00Z"
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440011",
+        "thumbnail": "https://storage.k-culture.com/projects/new-drama.jpg",
+        "company": "CJ ENM",
+        "title": "청춘시대 시즌4",
+        "status": "기획중",
+        "progress": 15,
+        "createdAt": "2024-02-01T14:30:00Z"
+      },
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440012",
+        "thumbnail": "https://storage.k-culture.com/projects/movie-project.jpg",
+        "company": "NEW",
+        "title": "서울 2024",
+        "status": "캐스팅완료",
+        "progress": 100,
+        "createdAt": "2023-11-20T09:00:00Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 10,
+      "total": 25,
+      "totalPages": 3
+    }
+  }
+}
+

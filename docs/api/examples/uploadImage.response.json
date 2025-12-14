@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "data": {
+    "url": "https://storage.k-culture.com/images/abc123def456.jpg",
+    "filename": "abc123def456.jpg",
+    "size": 102400,
+    "mimeType": "image/jpeg"
+  }
+}
+

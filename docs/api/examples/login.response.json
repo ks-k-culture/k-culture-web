@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMDAiLCJ0eXBlIjoiYWN0b3IiLCJpYXQiOjE3MDI1NDcyMDAsImV4cCI6MTcwMjU1MDgwMH0.abc123",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMDAiLCJpYXQiOjE3MDI1NDcyMDAsImV4cCI6MTcwMzE1MjAwMH0.xyz789",
+    "user": {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "email": "actor@example.com",
+      "name": "김배우",
+      "type": "actor",
+      "profileImage": "https://storage.k-culture.com/profiles/550e8400-e29b-41d4-a716-446655440000.jpg",
+      "createdAt": "2024-01-15T10:00:00Z"
+    }
+  }
+}
+
