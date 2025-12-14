@@ -4,25 +4,25 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // 아이콘 컴포넌트들
-function ChevronLeftIcon({ className }: { className?: string }) {
+function ChevronLeftIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <svg className={className} style={style} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
     </svg>
   );
 }
 
-function ChevronDownIcon({ className }: { className?: string }) {
+function ChevronDownIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <svg className={className} style={style} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
     </svg>
   );
 }
 
-function XCircleIcon({ className }: { className?: string }) {
+function XCircleIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} style={style} viewBox="0 0 24 24" fill="currentColor">
       <path
         fillRule="evenodd"
         d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
@@ -54,7 +54,7 @@ const specialTags = ["주연", "조연", "신인", "기타"];
 
 export default function CharacterAddPage() {
   const router = useRouter();
-  
+
   // 폼 상태
   const [characterName, setCharacterName] = useState("");
   const [ageRange, setAgeRange] = useState("");
@@ -63,7 +63,6 @@ export default function CharacterAddPage() {
   const [selectedSpecialTags, setSelectedSpecialTags] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [keywordInput, setKeywordInput] = useState("");
 
   // 드롭다운 상태
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
@@ -72,16 +71,7 @@ export default function CharacterAddPage() {
   const isFormValid = characterName.trim() !== "" && gender !== "" && ageRange !== "";
 
   const toggleSpecialTag = (tag: string) => {
-    setSelectedSpecialTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
-
-  const addKeyword = () => {
-    if (keywordInput.trim() && !keywords.includes(keywordInput.trim())) {
-      setKeywords((prev) => [...prev, keywordInput.trim()]);
-      setKeywordInput("");
-    }
+    setSelectedSpecialTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
   };
 
   const removeKeyword = (keyword: string) => {
@@ -141,10 +131,7 @@ export default function CharacterAddPage() {
                 style={{ borderColor: "#E5E8EB", color: "#191F28" }}
               />
               {characterName && (
-                <button
-                  onClick={() => setCharacterName("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                >
+                <button onClick={() => setCharacterName("")} className="absolute right-3 top-1/2 -translate-y-1/2">
                   <XCircleIcon className="w-5 h-5" style={{ color: "#B0B8C1" }} />
                 </button>
               )}
@@ -172,7 +159,10 @@ export default function CharacterAddPage() {
               />
             </button>
             {isAgeDropdownOpen && (
-              <div className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto" style={{ borderColor: "#E5E8EB" }}>
+              <div
+                className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
+                style={{ borderColor: "#E5E8EB" }}
+              >
                 {ageRangeOptions.map((option) => (
                   <button
                     key={option}
@@ -233,7 +223,10 @@ export default function CharacterAddPage() {
               />
             </button>
             {isRoleTypeDropdownOpen && (
-              <div className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto" style={{ borderColor: "#E5E8EB" }}>
+              <div
+                className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
+                style={{ borderColor: "#E5E8EB" }}
+              >
                 {roleTypeOptions.map((option) => (
                   <button
                     key={option}
@@ -293,7 +286,7 @@ export default function CharacterAddPage() {
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               키워드 추가
             </label>
-            
+
             {/* 추가된 키워드 */}
             {keywords.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3">
@@ -347,4 +340,3 @@ export default function CharacterAddPage() {
     </div>
   );
 }
-
