@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // 아이콘 컴포넌트들
 function ChevronLeftIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
@@ -101,12 +102,13 @@ export default function SettingsPage() {
                   <span className="text-white text-3xl font-bold">U</span>
                 </div>
                 {/* 수정 버튼 */}
-                <button
+                <Link
+                  href="/mypage/settings/profile"
                   className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-white border flex items-center justify-center"
                   style={{ borderColor: "#E5E8EB" }}
                 >
                   <PencilIcon className="w-5 h-5" style={{ color: "#8B95A1" }} />
-                </button>
+                </Link>
               </div>
             </div>
           </section>
