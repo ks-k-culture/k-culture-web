@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -20,16 +19,12 @@ function ChevronDownIcon({ className }: { className?: string }) {
   );
 }
 
-// 작품 유형 옵션
 const projectTypes = ["영화", "드라마", "웹드라마", "OTT 시리즈", "뮤직비디오", "광고", "기타"];
-
-// 장르 옵션
 const genres = ["액션", "로맨스", "코미디", "드라마", "스릴러", "공포", "SF", "판타지", "사극", "기타"];
 
 export default function NewProjectPage() {
   const router = useRouter();
 
-  // 폼 상태
   const [projectName, setProjectName] = useState("");
   const [company, setCompany] = useState("");
   const [projectType, setProjectType] = useState("");
@@ -37,16 +32,13 @@ export default function NewProjectPage() {
   const [shootingPeriod, setShootingPeriod] = useState("");
   const [roleInfo, setRoleInfo] = useState("");
 
-  // 드롭다운 상태
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
   const [showGenreDropdown, setShowGenreDropdown] = useState(false);
 
-  // 폼 유효성 검사
   const isFormValid = projectName.trim() !== "" && company.trim() !== "" && projectType !== "" && genre !== "";
 
   const handleSubmit = () => {
     if (isFormValid) {
-      // 프로젝트 정보를 저장하고 캐릭터 입력 페이지로 이동
       console.log("프로젝트 정보:", {
         projectName,
         company,
@@ -62,7 +54,6 @@ export default function NewProjectPage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -74,9 +65,7 @@ export default function NewProjectPage() {
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
         <main className="flex-1 px-5 pb-32">
-          {/* 프로젝트명 */}
           <div className="py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
             <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
               프로젝트명
@@ -91,7 +80,6 @@ export default function NewProjectPage() {
             />
           </div>
 
-          {/* 제작사 */}
           <div className="py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
             <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
               제작사
@@ -106,7 +94,6 @@ export default function NewProjectPage() {
             />
           </div>
 
-          {/* 작품 유형 */}
           <div className="py-4 border-b relative" style={{ borderColor: "#E5E8EB" }}>
             <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
               작품 유형
@@ -144,7 +131,6 @@ export default function NewProjectPage() {
             )}
           </div>
 
-          {/* 장르 */}
           <div className="py-4 border-b relative" style={{ borderColor: "#E5E8EB" }}>
             <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
               장르
@@ -182,7 +168,6 @@ export default function NewProjectPage() {
             )}
           </div>
 
-          {/* 촬영 기간 */}
           <div className="py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
             <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
               촬영 기간
@@ -197,7 +182,6 @@ export default function NewProjectPage() {
             />
           </div>
 
-          {/* 배역 정보 */}
           <div className="py-4">
             <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
               배역 정보
@@ -217,7 +201,6 @@ export default function NewProjectPage() {
           </div>
         </main>
 
-        {/* 하단 버튼 */}
         <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
           <button
             onClick={handleSubmit}

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg className={className} style={style} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -44,16 +43,13 @@ function XCircleIcon({ className, style }: { className?: string; style?: React.C
   );
 }
 
-// 포지션 옵션
 const positionOptions = ["배우", "모델", "가수", "MC", "기타"];
 
-// 출연료 옵션
 const feeOptions = ["협의", "100만원 이하", "100~300만원", "300~500만원", "500만원 이상"];
 
 export default function ProfileEditPage() {
   const router = useRouter();
-  
-  // 폼 상태
+
   const [name, setName] = useState("홍길동");
   const [position, setPosition] = useState("배우");
   const [agency, setAgency] = useState("소속사 없음");
@@ -63,8 +59,7 @@ export default function ProfileEditPage() {
   const [fee, setFee] = useState("협의");
   const [height, setHeight] = useState("175");
   const [weight, setWeight] = useState("65");
-  
-  // 드롭다운 상태
+
   const [isPositionOpen, setIsPositionOpen] = useState(false);
   const [isFeeOpen, setIsFeeOpen] = useState(false);
   const [isBioOpen, setIsBioOpen] = useState(false);
@@ -88,7 +83,6 @@ export default function ProfileEditPage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -100,15 +94,15 @@ export default function ProfileEditPage() {
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
         <main className="flex-1 pb-32">
-          {/* 프로필 이미지 섹션 */}
           <section className="px-5 py-6">
             <div className="relative w-[100px] h-[100px]">
-              <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: "#8B95A1" }}>
+              <div
+                className="w-full h-full rounded-full overflow-hidden flex items-center justify-center"
+                style={{ backgroundColor: "#8B95A1" }}
+              >
                 <span className="text-white text-3xl font-bold">홍</span>
               </div>
-              {/* 수정 버튼 */}
               <button
                 className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-white border flex items-center justify-center"
                 style={{ borderColor: "#E5E8EB" }}
@@ -118,7 +112,6 @@ export default function ProfileEditPage() {
             </div>
           </section>
 
-          {/* 이름 및 닉네임 */}
           <section className="px-5 py-4">
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               이름 및 닉네임
@@ -133,17 +126,13 @@ export default function ProfileEditPage() {
                 style={{ borderColor: "#E5E8EB", color: "#191F28" }}
               />
               {name && (
-                <button
-                  onClick={() => setName("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                >
+                <button onClick={() => setName("")} className="absolute right-3 top-1/2 -translate-y-1/2">
                   <XCircleIcon className="w-5 h-5" style={{ color: "#B0B8C1" }} />
                 </button>
               )}
             </div>
           </section>
 
-          {/* 포지션 */}
           <section className="px-5 py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
             <div className="relative">
               <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
@@ -165,7 +154,10 @@ export default function ProfileEditPage() {
                 />
               </button>
               {isPositionOpen && (
-                <div className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto" style={{ borderColor: "#E5E8EB" }}>
+                <div
+                  className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
+                  style={{ borderColor: "#E5E8EB" }}
+                >
                   {positionOptions.map((option) => (
                     <button
                       key={option}
@@ -184,7 +176,6 @@ export default function ProfileEditPage() {
             </div>
           </section>
 
-          {/* 소속사 */}
           <section className="px-5 py-4">
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               소속사
@@ -199,7 +190,6 @@ export default function ProfileEditPage() {
             />
           </section>
 
-          {/* 이메일 */}
           <section className="px-5 py-4">
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               이메일
@@ -214,7 +204,6 @@ export default function ProfileEditPage() {
             />
           </section>
 
-          {/* 연락처 */}
           <section className="px-5 py-4">
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               연락처
@@ -229,12 +218,8 @@ export default function ProfileEditPage() {
             />
           </section>
 
-          {/* 자기소개 */}
           <section className="px-5 py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
-            <button
-              onClick={() => setIsBioOpen(!isBioOpen)}
-              className="w-full flex items-center justify-between py-2"
-            >
+            <button onClick={() => setIsBioOpen(!isBioOpen)} className="w-full flex items-center justify-between py-2">
               <span className="text-sm font-medium" style={{ color: "#4E5968" }}>
                 자기소개
               </span>
@@ -255,7 +240,6 @@ export default function ProfileEditPage() {
             )}
           </section>
 
-          {/* 기본 인적사항 카드 */}
           <section className="px-5 py-4">
             <div className="rounded-xl border p-4" style={{ borderColor: "#E5E8EB" }}>
               <button
@@ -270,10 +254,9 @@ export default function ProfileEditPage() {
                   style={{ color: "#6B7684" }}
                 />
               </button>
-              
+
               {isBasicInfoOpen && (
                 <div className="mt-4 space-y-4">
-                  {/* 출연료 */}
                   <div className="relative">
                     <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
                       출연료
@@ -294,7 +277,10 @@ export default function ProfileEditPage() {
                       />
                     </button>
                     {isFeeOpen && (
-                      <div className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto" style={{ borderColor: "#E5E8EB" }}>
+                      <div
+                        className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
+                        style={{ borderColor: "#E5E8EB" }}
+                      >
                         {feeOptions.map((option) => (
                           <button
                             key={option}
@@ -312,7 +298,6 @@ export default function ProfileEditPage() {
                     )}
                   </div>
 
-                  {/* 키 */}
                   <div>
                     <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
                       키 (cm)
@@ -327,7 +312,6 @@ export default function ProfileEditPage() {
                     />
                   </div>
 
-                  {/* 몸무게 */}
                   <div>
                     <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
                       몸무게 (kg)
@@ -347,7 +331,6 @@ export default function ProfileEditPage() {
           </section>
         </main>
 
-        {/* 하단 버튼 */}
         <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
           <button
             onClick={handleSave}
@@ -361,4 +344,3 @@ export default function ProfileEditPage() {
     </div>
   );
 }
-

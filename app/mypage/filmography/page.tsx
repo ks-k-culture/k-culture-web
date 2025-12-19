@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -33,7 +32,6 @@ function XMarkIcon({ className, style }: { className?: string; style?: React.CSS
   );
 }
 
-// 필모그래피 타입
 interface FilmographyItem {
   id: string;
   year: number;
@@ -44,7 +42,6 @@ interface FilmographyItem {
   thumbnail: string;
 }
 
-// 샘플 필모그래피 데이터
 const initialFilmography: FilmographyItem[] = [
   {
     id: "f1",
@@ -84,7 +81,6 @@ const initialFilmography: FilmographyItem[] = [
   },
 ];
 
-// 연도별로 필모그래피 그룹화
 function groupFilmographyByYear(filmography: FilmographyItem[]) {
   const grouped: Record<number, FilmographyItem[]> = {};
   filmography.forEach((item) => {
@@ -117,7 +113,6 @@ export default function FilmographyManagePage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white border-b border-gray-100">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -127,16 +122,13 @@ export default function FilmographyManagePage() {
           </div>
         </header>
 
-        {/* 필모그래피 목록 */}
         <main className="px-5 py-6">
           {groupedFilmography.map(({ year, items }, groupIndex) => (
             <div key={year} className="mb-2">
-              {/* 연도 헤더 */}
               <h2 className="text-xl font-bold mb-5" style={{ color: "#191F28" }}>
                 {year}
               </h2>
 
-              {/* 타임라인 */}
               <div className="relative">
                 {items.map((item, index) => {
                   const isLastInGroup = index === items.length - 1;
@@ -145,7 +137,6 @@ export default function FilmographyManagePage() {
 
                   return (
                     <div key={item.id} className="relative flex pb-5">
-                      {/* 타임라인 점과 선 */}
                       <div className="flex flex-col items-center mr-4">
                         <div
                           className="w-2 h-2 rounded-full border bg-white z-10 mt-1"
@@ -159,9 +150,7 @@ export default function FilmographyManagePage() {
                         )}
                       </div>
 
-                      {/* 콘텐츠 영역 */}
                       <div className="flex flex-1 gap-4">
-                        {/* 포스터 이미지 */}
                         <div className="w-[120px] h-[160px] shrink-0 rounded-lg overflow-hidden bg-gray-100">
                           <Image
                             src={item.thumbnail}
@@ -172,7 +161,6 @@ export default function FilmographyManagePage() {
                           />
                         </div>
 
-                        {/* 정보 */}
                         <div className="flex-1 flex flex-col pt-1">
                           <span className="text-sm mb-1" style={{ color: "#8B95A1" }}>
                             {item.type}
@@ -188,7 +176,6 @@ export default function FilmographyManagePage() {
                           </p>
                         </div>
 
-                        {/* 액션 버튼 */}
                         <div className="flex flex-col gap-3 pt-1">
                           <button
                             onClick={() => handleEdit(item.id)}
@@ -211,7 +198,6 @@ export default function FilmographyManagePage() {
             </div>
           ))}
 
-          {/* 빈 상태 */}
           {filmography.length === 0 && (
             <div className="flex flex-col items-center justify-center py-20">
               <p className="text-gray-400 text-center">등록된 필모그래피가 없습니다.</p>

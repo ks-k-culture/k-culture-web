@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -40,7 +39,6 @@ function XMarkIcon({ className }: { className?: string }) {
   );
 }
 
-// 업로드된 파일 타입
 interface UploadedFile {
   id: string;
   name: string;
@@ -48,19 +46,14 @@ interface UploadedFile {
   format: string;
 }
 
-// 역할 종류 옵션
 const roleTypes = ["주연", "조연", "단역", "엑스트라", "특별출연"];
 
-// 장르 옵션
 const genres = ["영화", "드라마", "뮤지컬", "연극", "웹드라마", "광고", "기타"];
 
-// 대표 장르 옵션
 const representativeGenres = ["액션", "로맨스", "코미디", "스릴러", "공포", "SF", "판타지", "드라마"];
 
-// 연도 옵션
 const years = Array.from({ length: 20 }, (_, i) => 2024 - i);
 
-// 태그 옵션
 const availableTags = [
   { id: "acting", label: "연기" },
   { id: "action", label: "액션" },
@@ -71,10 +64,8 @@ const availableTags = [
 export default function ShowreelEditPage() {
   const router = useRouter();
 
-  // 업로드된 파일 목록
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
-  // 폼 상태
   const [roleType, setRoleType] = useState("");
   const [workTitle, setWorkTitle] = useState("");
   const [year, setYear] = useState("");
@@ -82,16 +73,13 @@ export default function ShowreelEditPage() {
   const [role, setRole] = useState("");
   const [representativeGenre, setRepresentativeGenre] = useState("");
 
-  // 드롭다운 상태
   const [showRoleTypeDropdown, setShowRoleTypeDropdown] = useState(false);
   const [showGenreDropdown, setShowGenreDropdown] = useState(false);
   const [showYearDropdown, setShowYearDropdown] = useState(false);
   const [showRepGenreDropdown, setShowRepGenreDropdown] = useState(false);
 
-  // 선택된 태그
   const [selectedTags, setSelectedTags] = useState<typeof availableTags>([]);
 
-  // 드롭다운 모두 닫기
   const closeAllDropdowns = () => {
     setShowRoleTypeDropdown(false);
     setShowGenreDropdown(false);
@@ -99,7 +87,6 @@ export default function ShowreelEditPage() {
     setShowRepGenreDropdown(false);
   };
 
-  // 파일 업로드 핸들러 (시뮬레이션)
   const handleUpload = () => {
     if (uploadedFiles.length >= 5) {
       alert("최대 5개까지 업로드 가능합니다.");
@@ -115,20 +102,16 @@ export default function ShowreelEditPage() {
     setUploadedFiles((prev) => [...prev, newFile]);
   };
 
-  // 파일 삭제 핸들러
   const handleDeleteFile = (id: string) => {
     setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
   };
 
-  // 태그 삭제 핸들러
   const handleRemoveTag = (tagId: string) => {
     setSelectedTags((prev) => prev.filter((t) => t.id !== tagId));
   };
 
-  // 추가하기 버튼 활성화 여부
   const isAddEnabled = uploadedFiles.length > 0;
 
-  // 저장 핸들러
   const handleAdd = () => {
     if (!isAddEnabled) return;
     console.log("Add showreel:", {
@@ -147,7 +130,6 @@ export default function ShowreelEditPage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -159,15 +141,12 @@ export default function ShowreelEditPage() {
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
         <main className="flex-1 pb-32">
-          {/* 영상 업로드 섹션 */}
           <section className="px-5 py-6 border-b" style={{ borderColor: "#F2F4F6" }}>
             <p className="text-sm mb-4" style={{ color: "#4E5968" }}>
               대표영상 업로드 (최대 5개), mp4, mov 형식 지원
             </p>
 
-            {/* 파일 업로드 박스 */}
             <button
               onClick={handleUpload}
               className="w-full rounded-xl py-12 flex flex-col items-center justify-center gap-3 transition-colors hover:bg-gray-50"
@@ -187,7 +166,6 @@ export default function ShowreelEditPage() {
               </div>
             </button>
 
-            {/* 업로드된 파일 목록 */}
             {uploadedFiles.length > 0 && (
               <div className="mt-4 space-y-3">
                 {uploadedFiles.map((file) => (
@@ -216,7 +194,6 @@ export default function ShowreelEditPage() {
             )}
           </section>
 
-          {/* 역할 종류 드롭다운 */}
           <section className="px-5 py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
             <div className="relative">
               <button
@@ -252,10 +229,8 @@ export default function ShowreelEditPage() {
             </div>
           </section>
 
-          {/* 작품 정보 입력 카드 */}
           <section className="px-5 py-6 border-b" style={{ borderColor: "#F2F4F6" }}>
             <div className="rounded-xl border p-4 space-y-4" style={{ borderColor: "#E5E8EB" }}>
-              {/* 작품명 입력 */}
               <div>
                 <label className="block text-sm mb-2" style={{ color: "#4E5968" }}>
                   작품명
@@ -270,7 +245,6 @@ export default function ShowreelEditPage() {
                 />
               </div>
 
-              {/* 연도 선택 */}
               <div className="relative">
                 <label className="block text-sm mb-2" style={{ color: "#4E5968" }}>
                   연도
@@ -308,7 +282,6 @@ export default function ShowreelEditPage() {
                 )}
               </div>
 
-              {/* 장르 선택 */}
               <div className="relative">
                 <label className="block text-sm mb-2" style={{ color: "#4E5968" }}>
                   장르
@@ -346,7 +319,6 @@ export default function ShowreelEditPage() {
                 )}
               </div>
 
-              {/* 역할 입력 */}
               <div>
                 <label className="block text-sm mb-2" style={{ color: "#4E5968" }}>
                   역할
@@ -363,7 +335,6 @@ export default function ShowreelEditPage() {
             </div>
           </section>
 
-          {/* 대표 장르 드롭다운 */}
           <section className="px-5 py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
             <div className="relative">
               <button
@@ -401,9 +372,7 @@ export default function ShowreelEditPage() {
             </div>
           </section>
 
-          {/* 태그 섹션 */}
           <section className="px-5 py-6">
-            {/* 선택된 태그 */}
             {selectedTags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {selectedTags.map((tag) => (
@@ -423,7 +392,6 @@ export default function ShowreelEditPage() {
               </div>
             )}
 
-            {/* 선택 가능한 태그 */}
             <div className="flex flex-wrap gap-2">
               {availableTags
                 .filter((tag) => !selectedTags.some((t) => t.id === tag.id))
@@ -444,7 +412,6 @@ export default function ShowreelEditPage() {
           </section>
         </main>
 
-        {/* 하단 추가하기 버튼 */}
         <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
           <button
             onClick={handleAdd}

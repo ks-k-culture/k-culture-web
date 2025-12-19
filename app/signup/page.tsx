@@ -16,7 +16,7 @@ interface FormErrors {
 function SignupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const userType = searchParams.get("type") || "actor"; // actor | agency
+  const userType = searchParams.get("type") || "actor";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,7 +55,6 @@ function SignupContent() {
     return undefined;
   };
 
-  // 에러 계산 (렌더링 중 직접 계산)
   const computedErrors: FormErrors = {};
   if (touched.email) {
     computedErrors.email = validateEmail(email);
@@ -67,7 +66,6 @@ function SignupContent() {
     computedErrors.passwordConfirm = validatePasswordConfirm(passwordConfirm, password);
   }
 
-  // 유효성 검사 (렌더링 중 직접 계산)
   const emailValid = email && !validateEmail(email);
   const passwordValid = password && !validatePassword(password);
   const passwordConfirmValid = passwordConfirm && !validatePasswordConfirm(passwordConfirm, password);

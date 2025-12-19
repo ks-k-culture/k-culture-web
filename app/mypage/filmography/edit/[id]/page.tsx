@@ -3,7 +3,6 @@
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -32,16 +31,12 @@ function XCircleIcon({ className }: { className?: string }) {
   );
 }
 
-// 역할 타입 옵션
 const roleTypes = ["주연", "조연", "단역", "특별출연"];
 
-// 연도 옵션
 const years = Array.from({ length: 30 }, (_, i) => 2024 - i);
 
-// 장르 옵션
 const genres = ["영화", "드라마", "뮤지컬", "연극", "웹드라마", "예능", "광고"];
 
-// 샘플 작품 데이터 (실제로는 API에서 가져옴)
 const sampleFilmography: Record<
   string,
   {
@@ -83,7 +78,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
   const { id } = use(params);
   const router = useRouter();
 
-  // 기존 데이터 불러오기 (실제로는 API 호출)
   const existingData = sampleFilmography[id] || {
     id: "",
     title: "",
@@ -103,7 +97,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
   const [showGenreDropdown, setShowGenreDropdown] = useState(false);
 
   const handleSave = () => {
-    // TODO: API 호출로 저장
     console.log("Save:", { title, year, genre, role, roleType });
     router.back();
   };
@@ -115,7 +108,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -127,7 +119,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
           </div>
         </header>
 
-        {/* 현재 편집중인 작품 정보 */}
         <div className="px-5 py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
           <p className="text-sm" style={{ color: "#4E5968" }}>
             편집중인 작품
@@ -137,9 +128,7 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
           </p>
         </div>
 
-        {/* 폼 영역 */}
         <main className="flex-1 px-5 py-6 space-y-6">
-          {/* 작품명 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               작품명
@@ -161,7 +150,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {/* 연도 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               연도
@@ -201,7 +189,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {/* 장르 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               장르
@@ -241,7 +228,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {/* 역할 배역 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               역할 배역
@@ -263,7 +249,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {/* 역할 타입 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               역할 타입
@@ -287,7 +272,6 @@ export default function FilmographyEditPage({ params }: { params: Promise<{ id: 
           </div>
         </main>
 
-        {/* 하단 버튼 영역 */}
         <div className="sticky bottom-0 bg-white px-5 py-6 border-t" style={{ borderColor: "#E5E8EB" }}>
           <div className="flex gap-3">
             <button

@@ -4,7 +4,6 @@ import { useSyncExternalStore, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg className={className} style={style} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -45,7 +44,6 @@ function XCircleIcon({ className, style }: { className?: string; style?: React.C
   );
 }
 
-// 캐릭터 타입
 interface Character {
   id: string;
   name: string;
@@ -57,7 +55,6 @@ interface Character {
   keywords?: string[];
 }
 
-// localStorage 커스텀 훅
 function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
   const getSnapshot = useCallback(() => {
     if (typeof window === "undefined") return JSON.stringify(initialValue);
@@ -103,7 +100,6 @@ export default function CharactersPage() {
   const handleComplete = () => {
     if (characters.length > 0) {
       console.log("프로젝트 생성 완료:", { characters });
-      // 임시 저장 데이터 삭제
       setCharacters([]);
       router.push("/mypage/projects");
     }
@@ -112,7 +108,6 @@ export default function CharactersPage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -124,9 +119,7 @@ export default function CharactersPage() {
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
         <main className="flex-1 px-5 pb-32">
-          {/* 안내 텍스트 */}
           <div className="py-4">
             <h2 className="text-xl font-bold mb-2" style={{ color: "#191F28" }}>
               캐릭터를 등록해보세요
@@ -136,7 +129,6 @@ export default function CharactersPage() {
             </p>
           </div>
 
-          {/* 캐릭터 목록 또는 빈 상태 */}
           {characters.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div
@@ -194,7 +186,6 @@ export default function CharactersPage() {
                 </div>
               ))}
 
-              {/* 캐릭터 추가 버튼 (목록 아래) */}
               <Link
                 href="/mypage/projects/new/characters/add"
                 className="w-full py-3 rounded-xl border border-dashed flex items-center justify-center gap-2"
@@ -207,7 +198,6 @@ export default function CharactersPage() {
           )}
         </main>
 
-        {/* 하단 버튼 */}
         <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
           {characters.length === 0 ? (
             <Link

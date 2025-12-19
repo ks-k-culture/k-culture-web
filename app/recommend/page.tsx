@@ -8,13 +8,11 @@ import EmptyState from "../components/EmptyState";
 import ActorCarousel from "../components/ActorCarousel";
 import type { Actor } from "../components/ActorCarousel";
 
-// 샘플 데이터
 const sampleActors: Actor[] = [
   {
     id: "1",
     name: "김배우",
-    imageUrl:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=533&fit=crop&crop=face",
+    imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=533&fit=crop&crop=face",
     age: "20대 중반",
     filmography: 15,
     tags: ["섬세한연기", "청춘물감정", "카리스마"],
@@ -22,8 +20,7 @@ const sampleActors: Actor[] = [
   {
     id: "2",
     name: "이연기",
-    imageUrl:
-      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=533&fit=crop&crop=face",
+    imageUrl: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=533&fit=crop&crop=face",
     age: "30대 초반",
     filmography: 23,
     tags: ["감성연기", "로맨스", "멜로"],
@@ -31,8 +28,7 @@ const sampleActors: Actor[] = [
   {
     id: "3",
     name: "박스타",
-    imageUrl:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=533&fit=crop&crop=face",
+    imageUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=533&fit=crop&crop=face",
     age: "20대 후반",
     filmography: 8,
     tags: ["신선함", "액션", "코미디"],
@@ -40,8 +36,7 @@ const sampleActors: Actor[] = [
   {
     id: "4",
     name: "최연기",
-    imageUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=533&fit=crop&crop=face",
+    imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=533&fit=crop&crop=face",
     age: "20대 초반",
     filmography: 5,
     tags: ["풋풋함", "학원물", "성장드라마"],
@@ -49,8 +44,7 @@ const sampleActors: Actor[] = [
   {
     id: "5",
     name: "정배우",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=533&fit=crop&crop=face",
+    imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=533&fit=crop&crop=face",
     age: "30대 중반",
     filmography: 42,
     tags: ["베테랑", "극한연기", "몰입력"],
@@ -64,7 +58,6 @@ const filterOptions = [
   { id: "views", label: "조회수" },
 ];
 
-// 필터별 옵션 데이터
 const filterOptionsData: Record<string, { value: string; label: string }[]> = {
   actorType: [
     { value: "movie", label: "영화배우" },
@@ -94,7 +87,6 @@ const filterOptionsData: Record<string, { value: string; label: string }[]> = {
   ],
 };
 
-// 필터 제목 매핑
 const filterTitles: Record<string, string> = {
   actorType: "배우유형",
   genderAge: "배우유형·성별·나이대",
@@ -103,11 +95,9 @@ const filterTitles: Record<string, string> = {
 };
 
 export default function RecommendPage() {
-  const [selectedFilters, setSelectedFilters] = useState<
-    Record<string, string>
-  >({});
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const [activeFilterId, setActiveFilterId] = useState<string | null>(null);
-  const [showEmpty, setShowEmpty] = useState(true); // 빈 상태로 시작
+  const [showEmpty, setShowEmpty] = useState(true);
 
   const handleFilterClick = (filterId: string) => {
     setActiveFilterId(filterId);
@@ -115,15 +105,13 @@ export default function RecommendPage() {
 
   const handleFilterSelect = (value: string) => {
     if (activeFilterId) {
-      const option = filterOptionsData[activeFilterId]?.find(
-        (opt) => opt.value === value
-      );
+      const option = filterOptionsData[activeFilterId]?.find((opt) => opt.value === value);
       if (option) {
         setSelectedFilters((prev) => ({
           ...prev,
           [activeFilterId]: option.label,
         }));
-        setShowEmpty(false); // 필터 선택 시 결과 표시
+        setShowEmpty(false);
       }
     }
   };
@@ -133,7 +121,6 @@ export default function RecommendPage() {
   };
 
   const handleEmptyButtonClick = () => {
-    // 첫 번째 필터 모달 열기
     setActiveFilterId("actorType");
   };
 
@@ -144,11 +131,7 @@ export default function RecommendPage() {
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col overflow-hidden">
         <Header title="역 추천 배우" highlightedName="서은우" />
 
-        <FilterBar
-          filters={filterOptions}
-          selectedFilters={selectedFilters}
-          onFilterClick={handleFilterClick}
-        />
+        <FilterBar filters={filterOptions} selectedFilters={selectedFilters} onFilterClick={handleFilterClick} />
 
         <main className="flex-1 flex flex-col justify-between pb-5">
           {hasResults ? (
@@ -162,7 +145,6 @@ export default function RecommendPage() {
           )}
         </main>
 
-        {/* Filter Modal */}
         <FilterModal
           isOpen={activeFilterId !== null}
           onClose={handleCloseModal}

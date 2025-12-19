@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// 아이콘 컴포넌트들
 function SettingsIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -93,7 +92,6 @@ function UserIcon({ className }: { className?: string }) {
   );
 }
 
-// 필모그래피 타입
 interface FilmographyItem {
   id: string;
   year: number;
@@ -104,7 +102,6 @@ interface FilmographyItem {
   thumbnail: string;
 }
 
-// 마이페이지 배우 데이터
 const myActorData = {
   id: "me",
   name: "김배우",
@@ -167,7 +164,6 @@ const myActorData = {
   ],
 };
 
-// 연도별로 필모그래피 그룹화
 function groupFilmographyByYear(filmography: FilmographyItem[]) {
   const grouped: Record<number, FilmographyItem[]> = {};
   filmography.forEach((item) => {
@@ -188,7 +184,6 @@ export default function MyPage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen pb-24">
-        {/* 헤더 */}
         <header className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center px-5 pt-12 pb-4">
           <h1 className="text-lg font-semibold text-white">마이페이지</h1>
           <button className="w-10 h-10 flex items-center justify-center">
@@ -196,16 +191,12 @@ export default function MyPage() {
           </button>
         </header>
 
-        {/* 히어로 섹션 */}
         <section className="relative h-[420px]">
-          {/* 배경 이미지 */}
           <div className="absolute inset-0">
             <Image src={actor.profileImage} alt={actor.name} fill className="object-cover" priority />
-            {/* 그라데이션 오버레이 */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
           </div>
 
-          {/* 배우 정보 */}
           <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-2">{actor.name}</h2>
             <p className="text-white/80 text-sm mb-2">
@@ -213,7 +204,6 @@ export default function MyPage() {
             </p>
             <p className="text-teal-300 text-sm mb-5">{actor.description}</p>
 
-            {/* 액션 버튼 */}
             <div className="flex gap-3 justify-center">
               <button className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium hover:bg-white/30 transition-colors">
                 <PencilIcon className="w-4 h-4" />
@@ -227,7 +217,6 @@ export default function MyPage() {
           </div>
         </section>
 
-        {/* 필모그래피 섹션 */}
         <section className="px-5 py-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-gray-900">필모그래피</h2>
@@ -246,7 +235,6 @@ export default function MyPage() {
               <div className="space-y-4">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-4">
-                    {/* 썸네일 */}
                     <div className="w-16 h-22 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
                       <Image
                         src={item.thumbnail}
@@ -256,7 +244,6 @@ export default function MyPage() {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    {/* 정보 */}
                     <div className="flex-1 min-w-0">
                       <span className="text-xs text-gray-400 mb-1 block">{item.type}</span>
                       <h4 className="text-sm font-medium text-gray-900 leading-snug mb-1 line-clamp-2">{item.title}</h4>
@@ -271,7 +258,6 @@ export default function MyPage() {
           ))}
         </section>
 
-        {/* 스킬 및 특기 섹션 */}
         <section className="px-5 py-6 border-t border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-gray-900">스킬 및 특기</h2>
@@ -289,7 +275,6 @@ export default function MyPage() {
           </div>
         </section>
 
-        {/* 대표 영상 섹션 */}
         <section className="px-5 py-6 border-t border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-gray-900">대표 영상</h2>
@@ -301,7 +286,6 @@ export default function MyPage() {
           <div className="space-y-4">
             {actor.showreels.map((showreel) => (
               <div key={showreel.id} className="group cursor-pointer">
-                {/* 썸네일 */}
                 <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100 mb-2">
                   <Image
                     src={showreel.thumbnail}
@@ -309,14 +293,12 @@ export default function MyPage() {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  {/* 재생 버튼 */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                       <PlayIcon className="w-6 h-6 text-gray-800 ml-1" />
                     </div>
                   </div>
                 </div>
-                {/* 영상 정보 */}
                 <h3 className="text-sm font-medium text-gray-900">{showreel.title}</h3>
                 <p className="text-xs text-gray-400">{showreel.duration}</p>
               </div>
@@ -324,11 +306,8 @@ export default function MyPage() {
           </div>
         </section>
 
-        {/* 프리미엄 프로모션 섹션 */}
         <section className="px-5 py-6 border-t border-gray-100 space-y-3">
-          {/* 프리미엄 포트폴리오 꾸미기 */}
           <Link href="#" className="block p-5 bg-[#F9FAFB] rounded-xl hover:bg-gray-100 transition-colors">
-            {/* 아이콘 */}
             <div className="mb-4">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -340,14 +319,11 @@ export default function MyPage() {
                 />
               </svg>
             </div>
-            {/* 텍스트 */}
             <h3 className="text-sm font-bold text-[#191F28] mb-1">프리미엄 포트폴리오 꾸미기</h3>
             <p className="text-xs text-[#4E5968] leading-relaxed">웹툴킷 마켓에서 더 개성있는 프로필을 만들어 보세요</p>
           </Link>
 
-          {/* 프로필 상단 노출 */}
           <Link href="#" className="block p-5 bg-[#F9FAFB] rounded-xl hover:bg-gray-100 transition-colors">
-            {/* 아이콘 */}
             <div className="mb-4">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -359,7 +335,6 @@ export default function MyPage() {
                 />
               </svg>
             </div>
-            {/* 텍스트 */}
             <h3 className="text-sm font-bold text-[#191F28] mb-1">프로필 상단 노출</h3>
             <p className="text-xs text-[#4E5968] leading-relaxed">
               광고를 통해 캐스팅 디렉터에게 나를 먼저 보여 보세요
@@ -367,7 +342,6 @@ export default function MyPage() {
           </Link>
         </section>
 
-        {/* 하단 네비게이션 */}
         <nav className="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-100">
           <div className="max-w-lg mx-auto flex justify-around items-center py-2">
             <Link href="/" className="flex flex-col items-center gap-1 px-4 py-2 text-gray-400">

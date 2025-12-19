@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg className={className} style={style} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -33,7 +32,6 @@ function PencilIcon({ className, style }: { className?: string; style?: React.CS
   );
 }
 
-// 토글 스위치 컴포넌트
 function ToggleSwitch({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
   return (
     <button
@@ -53,8 +51,7 @@ function ToggleSwitch({ enabled, onToggle }: { enabled: boolean; onToggle: () =>
 
 export default function SettingsPage() {
   const router = useRouter();
-  
-  // 알림 설정 상태
+
   const [castingNotification, setCastingNotification] = useState(true);
   const [messageNotification, setMessageNotification] = useState(true);
   const [marketingNotification, setMarketingNotification] = useState(false);
@@ -62,7 +59,6 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -74,9 +70,7 @@ export default function SettingsPage() {
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
         <main className="flex-1">
-          {/* 프로필 섹션 */}
           <section className="px-5 py-6 border-b" style={{ borderColor: "#E5E8EB" }}>
             <div className="flex items-center justify-between">
               <div>
@@ -95,13 +89,14 @@ export default function SettingsPage() {
                   user@email.com
                 </p>
               </div>
-              
-              {/* 프로필 이미지 */}
+
               <div className="relative">
-                <div className="w-[100px] h-[100px] rounded-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: "#8B95A1" }}>
+                <div
+                  className="w-[100px] h-[100px] rounded-full overflow-hidden flex items-center justify-center"
+                  style={{ backgroundColor: "#8B95A1" }}
+                >
                   <span className="text-white text-3xl font-bold">U</span>
                 </div>
-                {/* 수정 버튼 */}
                 <Link
                   href="/mypage/settings/profile"
                   className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-white border flex items-center justify-center"
@@ -113,14 +108,12 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          {/* 알림 설정 섹션 */}
           <section className="border-b" style={{ borderColor: "#F2F4F6" }}>
             <div className="px-5 py-4">
               <h3 className="text-sm font-medium mb-4" style={{ color: "#4E5968" }}>
                 알림 설정
               </h3>
-              
-              {/* 새로운 캐스팅 제안 */}
+
               <div className="flex items-center justify-between py-3">
                 <span className="text-base" style={{ color: "#4E5968" }}>
                   새로운 캐스팅 제안
@@ -130,8 +123,7 @@ export default function SettingsPage() {
                   onToggle={() => setCastingNotification(!castingNotification)}
                 />
               </div>
-              
-              {/* 메시지 알림 */}
+
               <div className="flex items-center justify-between py-3">
                 <span className="text-base" style={{ color: "#4E5968" }}>
                   메시지 알림
@@ -141,8 +133,7 @@ export default function SettingsPage() {
                   onToggle={() => setMessageNotification(!messageNotification)}
                 />
               </div>
-              
-              {/* 마케팅 알림 */}
+
               <div className="flex items-center justify-between py-3">
                 <span className="text-base" style={{ color: "#4E5968" }}>
                   마케팅 알림
@@ -155,30 +146,26 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          {/* 계정 관리 섹션 */}
           <section className="border-b" style={{ borderColor: "#F2F4F6" }}>
             <div className="px-5 py-4">
               <h3 className="text-sm font-medium mb-4" style={{ color: "#4E5968" }}>
                 계정 관리
               </h3>
-              
-              {/* 로그아웃 */}
+
               <button className="flex items-center justify-between w-full py-3">
                 <span className="text-base" style={{ color: "#4E5968" }}>
                   로그아웃
                 </span>
                 <ChevronRightIcon className="w-5 h-5" style={{ color: "#8B95A1" }} />
               </button>
-              
-              {/* 계정 삭제 */}
+
               <button className="flex items-center justify-between w-full py-3">
                 <span className="text-base" style={{ color: "#4E5968" }}>
                   계정 삭제
                 </span>
                 <ChevronRightIcon className="w-5 h-5" style={{ color: "#8B95A1" }} />
               </button>
-              
-              {/* 앱 정보 */}
+
               <div className="flex items-center justify-between py-3">
                 <span className="text-base" style={{ color: "#4E5968" }}>
                   앱 정보
@@ -190,7 +177,6 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          {/* 이용약관 및 개인정보 처리방침 */}
           <section className="border-b" style={{ borderColor: "#F2F4F6" }}>
             <div className="px-5 py-4">
               <button className="flex items-center justify-between w-full py-3">
@@ -202,7 +188,6 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          {/* 고객센터 문의 */}
           <section className="px-5 py-8 flex flex-col items-center">
             <p className="text-sm font-medium mb-2" style={{ color: "#E50815" }}>
               궁금한 점이 있으신가요?
@@ -216,4 +201,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-

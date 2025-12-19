@@ -12,13 +12,7 @@ interface FilterBarProps {
   onFilterClick?: (filterId: string) => void;
 }
 
-function ChevronDownIcon({
-  className,
-  isSelected,
-}: {
-  className?: string;
-  isSelected?: boolean;
-}) {
+function ChevronDownIcon({ className, isSelected }: { className?: string; isSelected?: boolean }) {
   return (
     <svg className={className} viewBox="0 0 20 20" fill="none">
       <path
@@ -32,11 +26,7 @@ function ChevronDownIcon({
   );
 }
 
-export default function FilterBar({
-  filters,
-  selectedFilters = {},
-  onFilterClick,
-}: FilterBarProps) {
+export default function FilterBar({ filters, selectedFilters = {}, onFilterClick }: FilterBarProps) {
   return (
     <div className="sticky top-12 z-40 bg-white">
       <div className="max-w-lg mx-auto px-5 py-2">

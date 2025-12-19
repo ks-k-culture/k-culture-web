@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg className={className} style={style} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -40,22 +39,17 @@ function PlusIcon({ className }: { className?: string }) {
   );
 }
 
-// 나이대 옵션
 const ageRangeOptions = ["10대", "20대", "30대", "40대", "50대", "60대 이상"];
 
-// 성별 옵션
 const genderOptions = ["남성", "여성", "무관"];
 
-// 역할 유형 옵션
 const roleTypeOptions = ["주연", "조연", "단역", "엑스트라", "특별출연"];
 
-// 특이사항 태그 옵션
 const specialTags = ["주연", "조연", "신인", "기타"];
 
 export default function CharacterAddPage() {
   const router = useRouter();
 
-  // 폼 상태
   const [characterName, setCharacterName] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [gender, setGender] = useState("");
@@ -64,7 +58,6 @@ export default function CharacterAddPage() {
   const [description, setDescription] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
 
-  // 드롭다운 상태
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [isRoleTypeDropdownOpen, setIsRoleTypeDropdownOpen] = useState(false);
 
@@ -81,7 +74,6 @@ export default function CharacterAddPage() {
   const handleAddCharacter = () => {
     if (!isFormValid) return;
 
-    // 캐릭터 데이터를 localStorage에 임시 저장 (실제로는 상태 관리나 API 사용)
     const existingCharacters = JSON.parse(localStorage.getItem("newProjectCharacters") || "[]");
     const newCharacter = {
       id: Date.now().toString(),
@@ -95,14 +87,12 @@ export default function CharacterAddPage() {
     };
     localStorage.setItem("newProjectCharacters", JSON.stringify([...existingCharacters, newCharacter]));
 
-    // 캐릭터 목록 페이지로 이동
     router.push("/mypage/projects/new/characters");
   };
 
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col">
-        {/* 헤더 */}
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
@@ -114,9 +104,7 @@ export default function CharacterAddPage() {
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
         <main className="flex-1 px-5 py-4 pb-32 space-y-6">
-          {/* 캐릭터명 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               캐릭터명
@@ -138,7 +126,6 @@ export default function CharacterAddPage() {
             </div>
           </div>
 
-          {/* 나이 드롭다운 */}
           <div className="relative">
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               나이
@@ -180,7 +167,6 @@ export default function CharacterAddPage() {
             )}
           </div>
 
-          {/* 성별 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               성별
@@ -202,7 +188,6 @@ export default function CharacterAddPage() {
             </div>
           </div>
 
-          {/* 역할 유형 드롭다운 */}
           <div className="relative">
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               역할 유형
@@ -244,7 +229,6 @@ export default function CharacterAddPage() {
             )}
           </div>
 
-          {/* 특이사항 태그 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               특이사항
@@ -266,7 +250,6 @@ export default function CharacterAddPage() {
             </div>
           </div>
 
-          {/* 상세 설명 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               상세 설명
@@ -281,13 +264,11 @@ export default function CharacterAddPage() {
             />
           </div>
 
-          {/* 키워드 추가 */}
           <div>
             <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
               키워드 추가
             </label>
 
-            {/* 추가된 키워드 */}
             {keywords.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3">
                 {keywords.map((keyword) => (
@@ -305,7 +286,6 @@ export default function CharacterAddPage() {
               </div>
             )}
 
-            {/* 키워드 입력 버튼 */}
             <button
               onClick={() => {
                 const input = prompt("키워드를 입력해주세요");
@@ -322,7 +302,6 @@ export default function CharacterAddPage() {
           </div>
         </main>
 
-        {/* 하단 버튼 */}
         <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
           <button
             onClick={handleAddCharacter}

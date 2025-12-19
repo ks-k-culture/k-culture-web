@@ -16,7 +16,7 @@ interface FilterModalProps {
   onSelect: (value: string) => void;
 }
 
-const ITEM_HEIGHT = 56; // 각 아이템 높이
+const ITEM_HEIGHT = 56;
 
 export default function FilterModal({ isOpen, onClose, title, options, selectedValue, onSelect }: FilterModalProps) {
   const [localSelected, setLocalSelected] = useState(selectedValue || "");
@@ -27,7 +27,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isClosingRef = useRef(false);
 
-  // 선택된 인덱스 계산
   const selectedIndex = options.findIndex((opt) => opt.value === localSelected);
 
   useEffect(() => {
@@ -53,7 +52,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
     setLocalSelected(selectedValue || "");
   }, [selectedValue, isOpen]);
 
-  // 모달 열릴 때 선택된 항목으로 스크롤
   useEffect(() => {
     if (isOpen && scrollContainerRef.current && options.length > 0) {
       const timer = setTimeout(() => {
@@ -64,7 +62,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
         const targetScroll = targetIndex * ITEM_HEIGHT;
         container.scrollTop = targetScroll;
 
-        // 초기 선택 설정
         if (!localSelected && options.length > 0) {
           setLocalSelected(options[0].value);
         }
@@ -73,13 +70,11 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
     }
   }, [isOpen, selectedIndex, options, localSelected]);
 
-  // 스크롤 핸들러 - 가운데 항목 선택
   const handleScroll = useCallback(() => {
     if (!scrollContainerRef.current || options.length === 0 || isClosingRef.current) return;
 
     isScrollingRef.current = true;
 
-    // 디바운스: 스크롤 멈추면 스냅
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
@@ -92,14 +87,12 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
       const centerIndex = Math.round(scrollTop / ITEM_HEIGHT);
       const clampedIndex = Math.max(0, Math.min(centerIndex, options.length - 1));
 
-      // 스냅 스크롤
       const targetScroll = clampedIndex * ITEM_HEIGHT;
       container.scrollTo({
         top: targetScroll,
         behavior: "smooth",
       });
 
-      // 선택 업데이트
       if (options[clampedIndex] && !isClosingRef.current) {
         setLocalSelected(options[clampedIndex].value);
       }
@@ -108,7 +101,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
     }, 100);
   }, [options]);
 
-  // 항목 클릭 시 해당 위치로 스크롤
   const handleItemClick = (index: number) => {
     if (!scrollContainerRef.current) return;
 
@@ -122,10 +114,8 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
   };
 
   const handleConfirm = () => {
-    // 닫힘 상태 설정
     isClosingRef.current = true;
 
-    // 스크롤 타임아웃 취소
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = null;
@@ -143,7 +133,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
     }
   };
 
-  // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
     return () => {
       if (scrollTimeoutRef.current) {
@@ -154,7 +143,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
 
   if (!isVisible) return null;
 
-  // 패딩용 빈 아이템 수 (가운데 정렬을 위해)
   const paddingItems = 2;
 
   return (
@@ -164,34 +152,28 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
       }`}
       onClick={handleBackdropClick}
     >
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/10 backdrop-blur-[15px]"
         style={{ transition: "opacity 300ms" }}
         onClick={onClose}
       />
 
-      {/* Bottom Sheet */}
       <div
         className={`relative w-full max-w-lg bg-white rounded-t-3xl transition-transform duration-300 ease-out ${
           isAnimating ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        {/* Drag Handle */}
         <div className="flex justify-center pt-3 pb-4">
           <div className="w-10 h-1 bg-[#E5E8EB] rounded-full" />
         </div>
 
-        {/* Title */}
         <div className="px-5 pb-4">
           <h2 className="text-xl font-bold text-[#191F28]" style={{ letterSpacing: "-0.02em" }}>
             {title}
           </h2>
         </div>
 
-        {/* Wheel Picker Container */}
         <div className="relative" style={{ height: `${ITEM_HEIGHT * 5}px` }}>
-          {/* Center Selection Indicator */}
           <div
             className="absolute left-5 right-5 bg-[#F2F4F6] rounded-lg pointer-events-none z-0"
             style={{
@@ -200,7 +182,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
             }}
           />
 
-          {/* Top Fade Gradient */}
           <div
             className="absolute top-0 left-0 right-0 pointer-events-none z-10"
             style={{
@@ -209,7 +190,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
             }}
           />
 
-          {/* Bottom Fade Gradient */}
           <div
             className="absolute bottom-0 left-0 right-0 pointer-events-none z-10"
             style={{
@@ -218,7 +198,6 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
             }}
           />
 
-          {/* Scrollable Options */}
           <div
             ref={scrollContainerRef}
             className="absolute inset-0 overflow-y-auto hide-scrollbar"
@@ -227,12 +206,10 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
               scrollSnapType: "y mandatory",
             }}
           >
-            {/* Top Padding */}
             {Array.from({ length: paddingItems }).map((_, i) => (
               <div key={`top-${i}`} style={{ height: `${ITEM_HEIGHT}px` }} />
             ))}
 
-            {/* Options */}
             {options.map((option, index) => {
               const isOptionSelected = localSelected === option.value;
               return (
@@ -257,14 +234,12 @@ export default function FilterModal({ isOpen, onClose, title, options, selectedV
               );
             })}
 
-            {/* Bottom Padding */}
             {Array.from({ length: paddingItems }).map((_, i) => (
               <div key={`bottom-${i}`} style={{ height: `${ITEM_HEIGHT}px` }} />
             ))}
           </div>
         </div>
 
-        {/* Confirm Button */}
         <div className="p-5 bg-white">
           <button
             onClick={handleConfirm}

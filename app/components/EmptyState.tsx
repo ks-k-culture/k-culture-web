@@ -8,12 +8,7 @@ interface EmptyStateProps {
 
 function XCircleIcon() {
   return (
-    <svg
-      width="47"
-      height="47"
-      viewBox="0 0 47 47"
-      fill="none"
-    >
+    <svg width="47" height="47" viewBox="0 0 47 47" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -31,7 +26,6 @@ export default function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-5">
-      {/* X Icon in Circle */}
       <div
         className="flex items-center justify-center mb-6"
         style={{
@@ -44,7 +38,6 @@ export default function EmptyState({
         <XCircleIcon />
       </div>
 
-      {/* Message */}
       <p
         className="text-center text-[#4E5968] text-sm leading-relaxed mb-8"
         style={{ letterSpacing: "-0.02em", maxWidth: "280px" }}
@@ -57,7 +50,6 @@ export default function EmptyState({
         ))}
       </p>
 
-      {/* Button */}
       {buttonLabel && (
         <button
           onClick={onButtonClick}
@@ -70,4 +62,3 @@ export default function EmptyState({
     </div>
   );
 }
-

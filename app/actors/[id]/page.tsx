@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// 아이콘 컴포넌트들
 function ChevronLeftIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -37,7 +36,11 @@ function PlayIcon({ className }: { className?: string }) {
 function DownloadIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+      />
     </svg>
   );
 }
@@ -54,7 +57,6 @@ function PhoneIcon({ className }: { className?: string }) {
   );
 }
 
-// 필모그래피 타입
 interface FilmographyItem {
   id: string;
   year: number;
@@ -65,7 +67,6 @@ interface FilmographyItem {
   thumbnail: string;
 }
 
-// 대표영상 타입
 interface ShowreelItem {
   id: string;
   title: string;
@@ -73,7 +74,6 @@ interface ShowreelItem {
   thumbnail: string;
 }
 
-// 배우 상세 데이터 타입
 interface ActorDetail {
   id: string;
   name: string;
@@ -86,7 +86,6 @@ interface ActorDetail {
   showreels: ShowreelItem[];
 }
 
-// 샘플 배우 데이터
 const actorData: Record<string, ActorDetail> = {
   "1": {
     id: "1",
@@ -179,7 +178,6 @@ const actorData: Record<string, ActorDetail> = {
   },
 };
 
-// 연도별로 필모그래피 그룹화
 function groupFilmographyByYear(filmography: FilmographyItem[]) {
   const grouped: Record<number, FilmographyItem[]> = {};
   filmography.forEach((item) => {
@@ -216,22 +214,12 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen pb-24">
-        {/* 히어로 섹션 */}
         <section className="relative h-[480px]">
-          {/* 배경 이미지 */}
           <div className="absolute inset-0">
-            <Image
-              src={actor.profileImage}
-              alt={actor.name}
-              fill
-              className="object-cover"
-              priority
-            />
-            {/* 그라데이션 오버레이 */}
+            <Image src={actor.profileImage} alt={actor.name} fill className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
           </div>
 
-          {/* 상단 네비게이션 */}
           <div className="absolute top-0 left-0 right-0 z-10 flex justify-between items-center px-4 pt-12 pb-4">
             <button
               onClick={() => router.back()}
@@ -244,7 +232,6 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
             </button>
           </div>
 
-          {/* 배우 정보 */}
           <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-8 text-center">
             <h1 className="text-3xl font-bold text-white mb-2">{actor.name}</h1>
             <p className="text-white/80 text-sm mb-3">
@@ -254,7 +241,6 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
           </div>
         </section>
 
-        {/* 필모그래피 섹션 */}
         <section className="px-5 py-8">
           <h2 className="text-lg font-bold text-gray-900 mb-6">필모그래피</h2>
 
@@ -264,7 +250,6 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
               <div className="space-y-4">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-4">
-                    {/* 썸네일 */}
                     <div className="w-16 h-22 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
                       <Image
                         src={item.thumbnail}
@@ -274,12 +259,9 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    {/* 정보 */}
                     <div className="flex-1 min-w-0">
                       <span className="text-xs text-gray-400 mb-1 block">{item.type}</span>
-                      <h4 className="text-sm font-medium text-gray-900 leading-snug mb-1 line-clamp-2">
-                        {item.title}
-                      </h4>
+                      <h4 className="text-sm font-medium text-gray-900 leading-snug mb-1 line-clamp-2">{item.title}</h4>
                       <p className="text-xs text-gray-500">
                         {item.role} · {item.character}
                       </p>
@@ -291,28 +273,22 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
           ))}
         </section>
 
-        {/* 스킬 및 특기 섹션 */}
         <section className="px-5 py-6 border-t border-gray-100">
           <h2 className="text-lg font-bold text-gray-900 mb-4">스킬 및 특기</h2>
           <div className="flex flex-wrap gap-2">
             {actor.skills.map((skill, index) => (
-              <span
-                key={index}
-                className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-full"
-              >
+              <span key={index} className="px-3 py-1.5 text-sm text-gray-600 bg-gray-100 rounded-full">
                 {skill}
               </span>
             ))}
           </div>
         </section>
 
-        {/* 대표 영상 섹션 */}
         <section className="px-5 py-6 border-t border-gray-100">
           <h2 className="text-lg font-bold text-gray-900 mb-4">대표 영상</h2>
           <div className="space-y-4">
             {actor.showreels.map((showreel) => (
               <div key={showreel.id} className="group cursor-pointer">
-                {/* 썸네일 */}
                 <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100 mb-2">
                   <Image
                     src={showreel.thumbnail}
@@ -320,14 +296,12 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  {/* 재생 버튼 */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                       <PlayIcon className="w-6 h-6 text-gray-800 ml-1" />
                     </div>
                   </div>
                 </div>
-                {/* 영상 정보 */}
                 <h3 className="text-sm font-medium text-gray-900">{showreel.title}</h3>
                 <p className="text-xs text-gray-400">{showreel.duration}</p>
               </div>
@@ -335,7 +309,6 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
           </div>
         </section>
 
-        {/* 하단 고정 버튼 */}
         <div className="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-100">
           <div className="max-w-lg mx-auto px-5 py-4 flex gap-3">
             <button className="flex-1 flex items-center justify-center gap-2 py-3.5 border border-gray-200 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors">
@@ -352,4 +325,3 @@ export default function ActorDetailPage({ params }: { params: Promise<{ id: stri
     </div>
   );
 }
-
