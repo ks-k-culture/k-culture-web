@@ -28,7 +28,7 @@ app/[feature]/
 - `ProfileSection.tsx` - useGetMyProfile
 - `FilmographySection.tsx` - useGetMyProfile + useGetActorFilmography
 - `SkillsSection.tsx` - (아직 mock 데이터)
-- `ShowreelSection.tsx` - (아직 mock 데이터)
+- `ShowreelSection.tsx` - useGetMyProfile + useGetActorShowreels
 
 ### 2. `/mypage/filmography` 필모그래피 관리
 
@@ -52,45 +52,50 @@ app/[feature]/
   - useUpdateMyProfile (프로필 수정)
 - `_components/Icons.tsx` - 공통 아이콘
 
----
-
-## ⏳ 남은 작업
-
 ### 4. `/mypage/showreel` 쇼릴 관리
 
-- [ ] ShowreelManageContent.tsx 생성
-- [ ] useGetActorShowreels 연동
-- [ ] useCreateShowreel, useDeleteShowreel 연동
+- `_components/ShowreelEditContent.tsx`
+  - useGetMyProfile (actorId 조회)
+  - useCreateShowreel (쇼릴 생성)
+- `_components/Icons.tsx` - 공통 아이콘
 
 ### 5. `/mypage/projects` 프로젝트 관리
 
-- [ ] ProjectsContent.tsx 생성
-- [ ] useGetProjects 연동
-- [ ] `/mypage/projects/new` 프로젝트 생성 폼
-  - useCreateProject 연동
+- `_components/ProjectsContent.tsx`
+  - useGetProjects (프로젝트 목록 조회)
+- `_components/Icons.tsx` - 공통 아이콘
 
-### 6. `/mypage/projects/new/characters` 캐릭터 관리
+### 6. `/mypage/projects/new` 프로젝트 생성
 
-- [ ] CharactersContent.tsx 생성
-- [ ] useGetProjectCharacters 연동
-- [ ] `/add` 캐릭터 추가 폼
-  - useCreateCharacter 연동
+- `_components/ProjectCreateForm.tsx`
+  - useCreateProject (프로젝트 생성)
 
-### 7. `/recommend` 추천 페이지
+### 7. `/mypage/projects/new/characters` 캐릭터 관리
 
-- [ ] RecommendContent.tsx 생성
-- [ ] useRecommendActors 연동
+- `_components/CharactersContent.tsx`
+  - useGetProjectCharacters (캐릭터 목록 조회)
+  - useDeleteCharacter (캐릭터 삭제)
+- `_components/CharacterAddForm.tsx`
+  - useCreateCharacter (캐릭터 생성)
+- `_components/Icons.tsx` - 공통 아이콘
 
-### 8. `/actors/[id]` 배우 상세 페이지
+### 8. `/recommend` 추천 페이지
 
-- [ ] ActorDetailContent.tsx 생성
-- [ ] useGetActorDetail 연동
-- [ ] useAddFavorite, useRemoveFavorite 연동
+- `_components/RecommendContent.tsx`
+  - useGetActors (배우 목록 조회)
+  - 필터 기반 검색
 
-### 9. 메인 페이지 `/`
+### 9. `/actors/[id]` 배우 상세 페이지
 
-- [ ] HomeContent.tsx 생성
-- [ ] useGetActors 연동
+- `_components/ActorDetailContent.tsx`
+  - useGetActorDetail (배우 상세 조회)
+  - useContactActor (배우 연락)
+  - useDownloadActorPortfolio (포트폴리오 다운로드)
+- `_components/Icons.tsx` - 공통 아이콘
+
+### 10. `/` 메인 페이지
+
+- `_components/OnboardingContent.tsx` - 온보딩 UI
 
 ---
 
@@ -102,8 +107,8 @@ app/[feature]/
 | `src/filmography/filmography.ts` | useGetActorFilmography, useGetFilmographyDetail, useCreateFilmography, useUpdateFilmography, useDeleteFilmography |
 | `src/showreels/showreels.ts`     | useGetActorShowreels, useCreateShowreel, useDeleteShowreel                                                        |
 | `src/projects/projects.ts`       | useGetProjects, useCreateProject, useGetProjectDetail                                                             |
-| `src/characters/characters.ts`   | useGetProjectCharacters, useCreateCharacter                                                                       |
-| `src/actors/actors.ts`           | useGetActors, useGetActorDetail, useRecommendActors, useContactActor                                              |
+| `src/characters/characters.ts`   | useGetProjectCharacters, useCreateCharacter, useDeleteCharacter                                                   |
+| `src/actors/actors.ts`           | useGetActors, useGetActorDetail, useRecommendActors, useContactActor, useDownloadActorPortfolio                   |
 | `src/favorites/favorites.ts`     | useGetFavorites, useAddFavorite, useRemoveFavorite                                                                |
 | `src/auth/auth.ts`               | useLogin, useSignup, useLogout                                                                                    |
 
