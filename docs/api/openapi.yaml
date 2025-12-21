@@ -1601,12 +1601,17 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - success
+                  - data
                 properties:
                   success:
                     type: boolean
                     const: true
                   data:
                     type: object
+                    required:
+                      - filmography
                     properties:
                       filmography:
                         type: array
@@ -1826,12 +1831,17 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - success
+                  - data
                 properties:
                   success:
                     type: boolean
                     const: true
                   data:
                     type: object
+                    required:
+                      - showreels
                     properties:
                       showreels:
                         type: array
@@ -2584,6 +2594,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - success
+                  - data
                 properties:
                   success:
                     type: boolean

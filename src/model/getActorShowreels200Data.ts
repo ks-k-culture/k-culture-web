@@ -18,5 +18,5 @@
 import type { ShowreelItem } from './showreelItem';
 
 export type GetActorShowreels200Data = {
-  showreels?: ShowreelItem[];
+  showreels: ShowreelItem[];
 };

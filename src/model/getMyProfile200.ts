@@ -18,6 +18,6 @@
 import type { UserProfile } from './userProfile';
 
 export type GetMyProfile200 = {
-  success?: true;
-  data?: UserProfile;
+  success: true;
+  data: UserProfile;
 };

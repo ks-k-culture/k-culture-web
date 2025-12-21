@@ -18,5 +18,5 @@
 import type { FilmographyItem } from './filmographyItem';
 
 export type GetActorFilmography200Data = {
-  filmography?: FilmographyItem[];
+  filmography: FilmographyItem[];
 };

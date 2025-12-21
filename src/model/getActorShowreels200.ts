@@ -18,6 +18,6 @@
 import type { GetActorShowreels200Data } from './getActorShowreels200Data';
 
 export type GetActorShowreels200 = {
-  success?: true;
-  data?: GetActorShowreels200Data;
+  success: true;
+  data: GetActorShowreels200Data;
 };
