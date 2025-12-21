@@ -34,13 +34,6 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   CreateShowreel201,
   CreateShowreelBody,
@@ -51,6 +44,8 @@ import type {
   UpdateShowreel200
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -59,15 +54,17 @@ import type {
  * @summary 쇼릴 목록 조회
  */
 export const getActorShowreels = (
-    actorId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetActorShowreels200>> => {
-    
-    
-    return axios.get(
-      `/api/actors/${actorId}/showreels`,options
-    );
-  }
-
+    actorId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetActorShowreels200>(
+      {url: `/api/actors/${actorId}/showreels`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -78,16 +75,16 @@ export const getGetActorShowreelsQueryKey = (actorId?: string,) => {
     }
 
     
-export const getGetActorShowreelsQueryOptions = <TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = AxiosError<unknown>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetActorShowreelsQueryOptions = <TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetActorShowreelsQueryKey(actorId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorShowreels>>> = ({ signal }) => getActorShowreels(actorId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorShowreels>>> = ({ signal }) => getActorShowreels(actorId, signal);
 
       
 
@@ -97,39 +94,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetActorShowreelsQueryResult = NonNullable<Awaited<ReturnType<typeof getActorShowreels>>>
-export type GetActorShowreelsQueryError = AxiosError<unknown>
+export type GetActorShowreelsQueryError = ErrorType<unknown>
 
 
-export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = AxiosError<unknown>>(
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
  actorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorShowreels>>,
           TError,
           Awaited<ReturnType<typeof getActorShowreels>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = AxiosError<unknown>>(
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
  actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorShowreels>>,
           TError,
           Awaited<ReturnType<typeof getActorShowreels>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = AxiosError<unknown>>(
- actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 쇼릴 목록 조회
  */
 
-export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = AxiosError<unknown>>(
- actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -148,10 +145,11 @@ export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorS
  * @summary 쇼릴 생성
  */
 export const createShowreel = (
-    createShowreelBody: CreateShowreelBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateShowreel201>> => {
-    
-    const formData = new FormData();
+    createShowreelBody: BodyType<CreateShowreelBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
 if(createShowreelBody.videos !== undefined) {
  createShowreelBody.videos.forEach(value => formData.append(`videos`, value));
  }
@@ -173,32 +171,34 @@ if(createShowreelBody.tags !== undefined) {
  createShowreelBody.tags.forEach(value => formData.append(`tags`, value));
  }
 
-    return axios.post(
-      `/api/showreels`,
-      formData,options
-    );
-  }
+      return customFetch<CreateShowreel201>(
+      {url: `/api/showreels`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCreateShowreelMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: CreateShowreelBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: CreateShowreelBody}, TContext> => {
+export const getCreateShowreelMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: BodyType<CreateShowreelBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: BodyType<CreateShowreelBody>}, TContext> => {
 
 const mutationKey = ['createShowreel'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createShowreel>>, {data: CreateShowreelBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createShowreel>>, {data: BodyType<CreateShowreelBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  createShowreel(data,axiosOptions)
+          return  createShowreel(data,)
         }
 
         
@@ -207,18 +207,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof createShowreel>>>
-    export type CreateShowreelMutationBody = CreateShowreelBody
-    export type CreateShowreelMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type CreateShowreelMutationBody = BodyType<CreateShowreelBody>
+    export type CreateShowreelMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 쇼릴 생성
  */
-export const useCreateShowreel = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: CreateShowreelBody}, TContext>, axios?: AxiosRequestConfig}
+export const useCreateShowreel = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: BodyType<CreateShowreelBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createShowreel>>,
         TError,
-        {data: CreateShowreelBody},
+        {data: BodyType<CreateShowreelBody>},
         TContext
       > => {
 
@@ -231,36 +231,38 @@ export const useCreateShowreel = <TError = AxiosError<UnauthorizedErrorResponse>
  */
 export const updateShowreel = (
     showreelId: string,
-    showreelCreateRequest: ShowreelCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateShowreel200>> => {
-    
-    
-    return axios.put(
-      `/api/showreels/${showreelId}`,
-      showreelCreateRequest,options
-    );
-  }
+    showreelCreateRequest: BodyType<ShowreelCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateShowreel200>(
+      {url: `/api/showreels/${showreelId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: showreelCreateRequest
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateShowreelMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: ShowreelCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: ShowreelCreateRequest}, TContext> => {
+export const getUpdateShowreelMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: BodyType<ShowreelCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: BodyType<ShowreelCreateRequest>}, TContext> => {
 
 const mutationKey = ['updateShowreel'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateShowreel>>, {showreelId: string;data: ShowreelCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateShowreel>>, {showreelId: string;data: BodyType<ShowreelCreateRequest>}> = (props) => {
           const {showreelId,data} = props ?? {};
 
-          return  updateShowreel(showreelId,data,axiosOptions)
+          return  updateShowreel(showreelId,data,)
         }
 
         
@@ -269,18 +271,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof updateShowreel>>>
-    export type UpdateShowreelMutationBody = ShowreelCreateRequest
-    export type UpdateShowreelMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type UpdateShowreelMutationBody = BodyType<ShowreelCreateRequest>
+    export type UpdateShowreelMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 쇼릴 수정
  */
-export const useUpdateShowreel = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: ShowreelCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useUpdateShowreel = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: BodyType<ShowreelCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateShowreel>>,
         TError,
-        {showreelId: string;data: ShowreelCreateRequest},
+        {showreelId: string;data: BodyType<ShowreelCreateRequest>},
         TContext
       > => {
 
@@ -292,27 +294,28 @@ export const useUpdateShowreel = <TError = AxiosError<UnauthorizedErrorResponse>
  * @summary 쇼릴 삭제
  */
 export const deleteShowreel = (
-    showreelId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteShowreel200>> => {
-    
-    
-    return axios.delete(
-      `/api/showreels/${showreelId}`,options
-    );
-  }
+    showreelId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteShowreel200>(
+      {url: `/api/showreels/${showreelId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteShowreelMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteShowreelMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext> => {
 
 const mutationKey = ['deleteShowreel'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -320,7 +323,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteShowreel>>, {showreelId: string}> = (props) => {
           const {showreelId} = props ?? {};
 
-          return  deleteShowreel(showreelId,axiosOptions)
+          return  deleteShowreel(showreelId,)
         }
 
         
@@ -330,13 +333,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof deleteShowreel>>>
     
-    export type DeleteShowreelMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type DeleteShowreelMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 쇼릴 삭제
  */
-export const useDeleteShowreel = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext>, axios?: AxiosRequestConfig}
+export const useDeleteShowreel = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteShowreel>>,
         TError,

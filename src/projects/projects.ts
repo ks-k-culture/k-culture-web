@@ -34,13 +34,6 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   CreateProject201,
   DeleteProject200,
@@ -53,6 +46,8 @@ import type {
   UpdateProject200
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -61,17 +56,18 @@ import type {
  * @summary 프로젝트 목록 조회
  */
 export const getProjects = (
-    params?: GetProjectsParams, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetProjects200>> => {
-    
-    
-    return axios.get(
-      `/api/projects`,{
-    ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
-
+    params?: GetProjectsParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetProjects200>(
+      {url: `/api/projects`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
 
 
@@ -82,16 +78,16 @@ export const getGetProjectsQueryKey = (params?: GetProjectsParams,) => {
     }
 
     
-export const getGetProjectsQueryOptions = <TData = Awaited<ReturnType<typeof getProjects>>, TError = AxiosError<UnauthorizedErrorResponse>>(params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProjectsQueryOptions = <TData = Awaited<ReturnType<typeof getProjects>>, TError = ErrorType<UnauthorizedErrorResponse>>(params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectsQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjects>>> = ({ signal }) => getProjects(params, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjects>>> = ({ signal }) => getProjects(params, signal);
 
       
 
@@ -101,39 +97,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProjectsQueryResult = NonNullable<Awaited<ReturnType<typeof getProjects>>>
-export type GetProjectsQueryError = AxiosError<UnauthorizedErrorResponse>
+export type GetProjectsQueryError = ErrorType<UnauthorizedErrorResponse>
 
 
-export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = ErrorType<UnauthorizedErrorResponse>>(
  params: undefined |  GetProjectsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjects>>,
           TError,
           Awaited<ReturnType<typeof getProjects>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = ErrorType<UnauthorizedErrorResponse>>(
  params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjects>>,
           TError,
           Awaited<ReturnType<typeof getProjects>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = AxiosError<UnauthorizedErrorResponse>>(
- params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 프로젝트 목록 조회
  */
 
-export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = AxiosError<UnauthorizedErrorResponse>>(
- params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetProjectsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjects>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -152,36 +148,39 @@ export function useGetProjects<TData = Awaited<ReturnType<typeof getProjects>>, 
  * @summary 프로젝트 생성
  */
 export const createProject = (
-    projectCreateRequest: ProjectCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateProject201>> => {
-    
-    
-    return axios.post(
-      `/api/projects`,
-      projectCreateRequest,options
-    );
-  }
+    projectCreateRequest: BodyType<ProjectCreateRequest>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<CreateProject201>(
+      {url: `/api/projects`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: projectCreateRequest, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCreateProjectMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createProject>>, TError,{data: ProjectCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createProject>>, TError,{data: ProjectCreateRequest}, TContext> => {
+export const getCreateProjectMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createProject>>, TError,{data: BodyType<ProjectCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createProject>>, TError,{data: BodyType<ProjectCreateRequest>}, TContext> => {
 
 const mutationKey = ['createProject'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createProject>>, {data: ProjectCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createProject>>, {data: BodyType<ProjectCreateRequest>}> = (props) => {
           const {data} = props ?? {};
 
-          return  createProject(data,axiosOptions)
+          return  createProject(data,)
         }
 
         
@@ -190,18 +189,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateProjectMutationResult = NonNullable<Awaited<ReturnType<typeof createProject>>>
-    export type CreateProjectMutationBody = ProjectCreateRequest
-    export type CreateProjectMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type CreateProjectMutationBody = BodyType<ProjectCreateRequest>
+    export type CreateProjectMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 프로젝트 생성
  */
-export const useCreateProject = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createProject>>, TError,{data: ProjectCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useCreateProject = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createProject>>, TError,{data: BodyType<ProjectCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createProject>>,
         TError,
-        {data: ProjectCreateRequest},
+        {data: BodyType<ProjectCreateRequest>},
         TContext
       > => {
 
@@ -213,15 +212,17 @@ export const useCreateProject = <TError = AxiosError<UnauthorizedErrorResponse>,
  * @summary 프로젝트 상세 조회
  */
 export const getProjectDetail = (
-    projectId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetProjectDetail200>> => {
-    
-    
-    return axios.get(
-      `/api/projects/${projectId}`,options
-    );
-  }
-
+    projectId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetProjectDetail200>(
+      {url: `/api/projects/${projectId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -232,16 +233,16 @@ export const getGetProjectDetailQueryKey = (projectId?: string,) => {
     }
 
     
-export const getGetProjectDetailQueryOptions = <TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>>(projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProjectDetailQueryOptions = <TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>>(projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectDetailQueryKey(projectId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectDetail>>> = ({ signal }) => getProjectDetail(projectId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectDetail>>> = ({ signal }) => getProjectDetail(projectId, signal);
 
       
 
@@ -251,39 +252,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProjectDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getProjectDetail>>>
-export type GetProjectDetailQueryError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>
+export type GetProjectDetailQueryError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>
 
 
-export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
+export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
  projectId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjectDetail>>,
           TError,
           Awaited<ReturnType<typeof getProjectDetail>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
+export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
  projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjectDetail>>,
           TError,
           Awaited<ReturnType<typeof getProjectDetail>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
- projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 프로젝트 상세 조회
  */
 
-export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
- projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProjectDetail>>, TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectDetail>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -303,36 +304,38 @@ export function useGetProjectDetail<TData = Awaited<ReturnType<typeof getProject
  */
 export const updateProject = (
     projectId: string,
-    projectCreateRequest: ProjectCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateProject200>> => {
-    
-    
-    return axios.put(
-      `/api/projects/${projectId}`,
-      projectCreateRequest,options
-    );
-  }
+    projectCreateRequest: BodyType<ProjectCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateProject200>(
+      {url: `/api/projects/${projectId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: projectCreateRequest
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateProjectMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProject>>, TError,{projectId: string;data: ProjectCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateProject>>, TError,{projectId: string;data: ProjectCreateRequest}, TContext> => {
+export const getUpdateProjectMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProject>>, TError,{projectId: string;data: BodyType<ProjectCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateProject>>, TError,{projectId: string;data: BodyType<ProjectCreateRequest>}, TContext> => {
 
 const mutationKey = ['updateProject'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProject>>, {projectId: string;data: ProjectCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProject>>, {projectId: string;data: BodyType<ProjectCreateRequest>}> = (props) => {
           const {projectId,data} = props ?? {};
 
-          return  updateProject(projectId,data,axiosOptions)
+          return  updateProject(projectId,data,)
         }
 
         
@@ -341,18 +344,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateProjectMutationResult = NonNullable<Awaited<ReturnType<typeof updateProject>>>
-    export type UpdateProjectMutationBody = ProjectCreateRequest
-    export type UpdateProjectMutationError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>
+    export type UpdateProjectMutationBody = BodyType<ProjectCreateRequest>
+    export type UpdateProjectMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>
 
     /**
  * @summary 프로젝트 수정
  */
-export const useUpdateProject = <TError = AxiosError<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProject>>, TError,{projectId: string;data: ProjectCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useUpdateProject = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProject>>, TError,{projectId: string;data: BodyType<ProjectCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateProject>>,
         TError,
-        {projectId: string;data: ProjectCreateRequest},
+        {projectId: string;data: BodyType<ProjectCreateRequest>},
         TContext
       > => {
 
@@ -364,27 +367,28 @@ export const useUpdateProject = <TError = AxiosError<UnauthorizedErrorResponse |
  * @summary 프로젝트 삭제
  */
 export const deleteProject = (
-    projectId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteProject200>> => {
-    
-    
-    return axios.delete(
-      `/api/projects/${projectId}`,options
-    );
-  }
+    projectId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteProject200>(
+      {url: `/api/projects/${projectId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteProjectMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProject>>, TError,{projectId: string}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteProjectMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProject>>, TError,{projectId: string}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteProject>>, TError,{projectId: string}, TContext> => {
 
 const mutationKey = ['deleteProject'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -392,7 +396,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProject>>, {projectId: string}> = (props) => {
           const {projectId} = props ?? {};
 
-          return  deleteProject(projectId,axiosOptions)
+          return  deleteProject(projectId,)
         }
 
         
@@ -402,13 +406,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteProjectMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProject>>>
     
-    export type DeleteProjectMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type DeleteProjectMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 프로젝트 삭제
  */
-export const useDeleteProject = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProject>>, TError,{projectId: string}, TContext>, axios?: AxiosRequestConfig}
+export const useDeleteProject = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProject>>, TError,{projectId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteProject>>,
         TError,

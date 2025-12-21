@@ -34,13 +34,6 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   AddFavorite201,
   AddFavoriteBody,
@@ -50,6 +43,8 @@ import type {
   UnauthorizedErrorResponse
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -58,17 +53,18 @@ import type {
  * @summary 찜 목록 조회
  */
 export const getFavorites = (
-    params?: GetFavoritesParams, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetFavorites200>> => {
-    
-    
-    return axios.get(
-      `/api/favorites`,{
-    ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
-
+    params?: GetFavoritesParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetFavorites200>(
+      {url: `/api/favorites`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
 
 
@@ -79,16 +75,16 @@ export const getGetFavoritesQueryKey = (params?: GetFavoritesParams,) => {
     }
 
     
-export const getGetFavoritesQueryOptions = <TData = Awaited<ReturnType<typeof getFavorites>>, TError = AxiosError<UnauthorizedErrorResponse>>(params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFavoritesQueryOptions = <TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFavoritesQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFavorites>>> = ({ signal }) => getFavorites(params, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFavorites>>> = ({ signal }) => getFavorites(params, signal);
 
       
 
@@ -98,39 +94,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFavoritesQueryResult = NonNullable<Awaited<ReturnType<typeof getFavorites>>>
-export type GetFavoritesQueryError = AxiosError<UnauthorizedErrorResponse>
+export type GetFavoritesQueryError = ErrorType<UnauthorizedErrorResponse>
 
 
-export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
  params: undefined |  GetFavoritesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFavorites>>,
           TError,
           Awaited<ReturnType<typeof getFavorites>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
  params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFavorites>>,
           TError,
           Awaited<ReturnType<typeof getFavorites>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = AxiosError<UnauthorizedErrorResponse>>(
- params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 찜 목록 조회
  */
 
-export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = AxiosError<UnauthorizedErrorResponse>>(
- params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -149,36 +145,39 @@ export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>
  * @summary 찜 추가
  */
 export const addFavorite = (
-    addFavoriteBody: AddFavoriteBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AddFavorite201>> => {
-    
-    
-    return axios.post(
-      `/api/favorites`,
-      addFavoriteBody,options
-    );
-  }
+    addFavoriteBody: BodyType<AddFavoriteBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<AddFavorite201>(
+      {url: `/api/favorites`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: addFavoriteBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddFavoriteMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: AddFavoriteBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: AddFavoriteBody}, TContext> => {
+export const getAddFavoriteMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: BodyType<AddFavoriteBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: BodyType<AddFavoriteBody>}, TContext> => {
 
 const mutationKey = ['addFavorite'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFavorite>>, {data: AddFavoriteBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFavorite>>, {data: BodyType<AddFavoriteBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  addFavorite(data,axiosOptions)
+          return  addFavorite(data,)
         }
 
         
@@ -187,18 +186,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AddFavoriteMutationResult = NonNullable<Awaited<ReturnType<typeof addFavorite>>>
-    export type AddFavoriteMutationBody = AddFavoriteBody
-    export type AddFavoriteMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type AddFavoriteMutationBody = BodyType<AddFavoriteBody>
+    export type AddFavoriteMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 찜 추가
  */
-export const useAddFavorite = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: AddFavoriteBody}, TContext>, axios?: AxiosRequestConfig}
+export const useAddFavorite = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: BodyType<AddFavoriteBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addFavorite>>,
         TError,
-        {data: AddFavoriteBody},
+        {data: BodyType<AddFavoriteBody>},
         TContext
       > => {
 
@@ -210,27 +209,28 @@ export const useAddFavorite = <TError = AxiosError<UnauthorizedErrorResponse>,
  * @summary 찜 삭제
  */
 export const deleteFavorite = (
-    favoriteId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteFavorite200>> => {
-    
-    
-    return axios.delete(
-      `/api/favorites/${favoriteId}`,options
-    );
-  }
+    favoriteId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteFavorite200>(
+      {url: `/api/favorites/${favoriteId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteFavoriteMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteFavoriteMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext> => {
 
 const mutationKey = ['deleteFavorite'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -238,7 +238,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFavorite>>, {favoriteId: string}> = (props) => {
           const {favoriteId} = props ?? {};
 
-          return  deleteFavorite(favoriteId,axiosOptions)
+          return  deleteFavorite(favoriteId,)
         }
 
         
@@ -248,13 +248,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteFavoriteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFavorite>>>
     
-    export type DeleteFavoriteMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type DeleteFavoriteMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 찜 삭제
  */
-export const useDeleteFavorite = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext>, axios?: AxiosRequestConfig}
+export const useDeleteFavorite = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteFavorite>>,
         TError,

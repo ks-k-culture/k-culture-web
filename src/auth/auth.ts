@@ -25,13 +25,6 @@ import type {
   UseMutationResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   DeleteAccount200,
   ErrorResponse,
@@ -48,6 +41,8 @@ import type {
   ValidationErrorResponse
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -57,36 +52,39 @@ import type {
  * @summary 로그인
  */
 export const login = (
-    loginBody: LoginBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Login200>> => {
-    
-    
-    return axios.post(
-      `/api/auth/login`,
-      loginBody,options
-    );
-  }
+    loginBody: BodyType<LoginBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Login200>(
+      {url: `/api/auth/login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getLoginMutationOptions = <TError = AxiosError<ValidationErrorResponse | ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext> => {
+export const getLoginMutationOptions = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginBody>}, TContext> => {
 
 const mutationKey = ['login'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: LoginBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: BodyType<LoginBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  login(data,axiosOptions)
+          return  login(data,)
         }
 
         
@@ -95,18 +93,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
-    export type LoginMutationBody = LoginBody
-    export type LoginMutationError = AxiosError<ValidationErrorResponse | ErrorResponse>
+    export type LoginMutationBody = BodyType<LoginBody>
+    export type LoginMutationError = ErrorType<ValidationErrorResponse | ErrorResponse>
 
     /**
  * @summary 로그인
  */
-export const useLogin = <TError = AxiosError<ValidationErrorResponse | ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext>, axios?: AxiosRequestConfig}
+export const useLogin = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof login>>,
         TError,
-        {data: LoginBody},
+        {data: BodyType<LoginBody>},
         TContext
       > => {
 
@@ -119,36 +117,39 @@ export const useLogin = <TError = AxiosError<ValidationErrorResponse | ErrorResp
  * @summary 회원가입
  */
 export const signup = (
-    signupBody: SignupBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Signup201>> => {
-    
-    
-    return axios.post(
-      `/api/auth/signup`,
-      signupBody,options
-    );
-  }
+    signupBody: BodyType<SignupBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Signup201>(
+      {url: `/api/auth/signup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: signupBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getSignupMutationOptions = <TError = AxiosError<ValidationErrorResponse | ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: SignupBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: SignupBody}, TContext> => {
+export const getSignupMutationOptions = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: BodyType<SignupBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: BodyType<SignupBody>}, TContext> => {
 
 const mutationKey = ['signup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof signup>>, {data: SignupBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof signup>>, {data: BodyType<SignupBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  signup(data,axiosOptions)
+          return  signup(data,)
         }
 
         
@@ -157,18 +158,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type SignupMutationResult = NonNullable<Awaited<ReturnType<typeof signup>>>
-    export type SignupMutationBody = SignupBody
-    export type SignupMutationError = AxiosError<ValidationErrorResponse | ErrorResponse>
+    export type SignupMutationBody = BodyType<SignupBody>
+    export type SignupMutationError = ErrorType<ValidationErrorResponse | ErrorResponse>
 
     /**
  * @summary 회원가입
  */
-export const useSignup = <TError = AxiosError<ValidationErrorResponse | ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: SignupBody}, TContext>, axios?: AxiosRequestConfig}
+export const useSignup = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: BodyType<SignupBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof signup>>,
         TError,
-        {data: SignupBody},
+        {data: BodyType<SignupBody>},
         TContext
       > => {
 
@@ -181,36 +182,39 @@ export const useSignup = <TError = AxiosError<ValidationErrorResponse | ErrorRes
  * @summary 비밀번호 찾기
  */
 export const forgotPassword = (
-    forgotPasswordBody: ForgotPasswordBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ForgotPassword200>> => {
-    
-    
-    return axios.post(
-      `/api/auth/forgot-password`,
-      forgotPasswordBody,options
-    );
-  }
+    forgotPasswordBody: BodyType<ForgotPasswordBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ForgotPassword200>(
+      {url: `/api/auth/forgot-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: forgotPasswordBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getForgotPasswordMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: ForgotPasswordBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: ForgotPasswordBody}, TContext> => {
+export const getForgotPasswordMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: BodyType<ForgotPasswordBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: BodyType<ForgotPasswordBody>}, TContext> => {
 
 const mutationKey = ['forgotPassword'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof forgotPassword>>, {data: ForgotPasswordBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof forgotPassword>>, {data: BodyType<ForgotPasswordBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  forgotPassword(data,axiosOptions)
+          return  forgotPassword(data,)
         }
 
         
@@ -219,18 +223,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ForgotPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof forgotPassword>>>
-    export type ForgotPasswordMutationBody = ForgotPasswordBody
-    export type ForgotPasswordMutationError = AxiosError<unknown>
+    export type ForgotPasswordMutationBody = BodyType<ForgotPasswordBody>
+    export type ForgotPasswordMutationError = ErrorType<unknown>
 
     /**
  * @summary 비밀번호 찾기
  */
-export const useForgotPassword = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: ForgotPasswordBody}, TContext>, axios?: AxiosRequestConfig}
+export const useForgotPassword = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: BodyType<ForgotPasswordBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof forgotPassword>>,
         TError,
-        {data: ForgotPasswordBody},
+        {data: BodyType<ForgotPasswordBody>},
         TContext
       > => {
 
@@ -243,27 +247,29 @@ export const useForgotPassword = <TError = AxiosError<unknown>,
  * @summary 로그아웃
  */
 export const logout = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Logout200>> => {
     
-    
-    return axios.post(
-      `/api/auth/logout`,undefined,options
-    );
-  }
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Logout200>(
+      {url: `/api/auth/logout`, method: 'POST', signal
+    },
+      );
+    }
+  
 
 
-
-export const getLogoutMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const getLogoutMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext> => {
 
 const mutationKey = ['logout'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -271,7 +277,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof logout>>, void> = () => {
           
 
-          return  logout(axiosOptions)
+          return  logout()
         }
 
         
@@ -281,13 +287,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>
     
-    export type LogoutMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type LogoutMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 로그아웃
  */
-export const useLogout = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const useLogout = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof logout>>,
         TError,
@@ -304,27 +310,28 @@ export const useLogout = <TError = AxiosError<UnauthorizedErrorResponse>,
  * @summary 계정 삭제
  */
 export const deleteAccount = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteAccount200>> => {
     
-    
-    return axios.delete(
-      `/api/auth/account`,options
-    );
-  }
+ ) => {
+      
+      
+      return customFetch<DeleteAccount200>(
+      {url: `/api/auth/account`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteAccountMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteAccountMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext> => {
 
 const mutationKey = ['deleteAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -332,7 +339,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAccount>>, void> = () => {
           
 
-          return  deleteAccount(axiosOptions)
+          return  deleteAccount()
         }
 
         
@@ -342,13 +349,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAccount>>>
     
-    export type DeleteAccountMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type DeleteAccountMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 계정 삭제
  */
-export const useDeleteAccount = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const useDeleteAccount = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteAccount>>,
         TError,
@@ -365,36 +372,39 @@ export const useDeleteAccount = <TError = AxiosError<UnauthorizedErrorResponse>,
  * @summary 토큰 갱신
  */
 export const refreshToken = (
-    refreshTokenBody: RefreshTokenBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<RefreshToken200>> => {
-    
-    
-    return axios.post(
-      `/api/auth/refresh`,
-      refreshTokenBody,options
-    );
-  }
+    refreshTokenBody: BodyType<RefreshTokenBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<RefreshToken200>(
+      {url: `/api/auth/refresh`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: refreshTokenBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getRefreshTokenMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: RefreshTokenBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: RefreshTokenBody}, TContext> => {
+export const getRefreshTokenMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: BodyType<RefreshTokenBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: BodyType<RefreshTokenBody>}, TContext> => {
 
 const mutationKey = ['refreshToken'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshToken>>, {data: RefreshTokenBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshToken>>, {data: BodyType<RefreshTokenBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  refreshToken(data,axiosOptions)
+          return  refreshToken(data,)
         }
 
         
@@ -403,18 +413,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type RefreshTokenMutationResult = NonNullable<Awaited<ReturnType<typeof refreshToken>>>
-    export type RefreshTokenMutationBody = RefreshTokenBody
-    export type RefreshTokenMutationError = AxiosError<unknown>
+    export type RefreshTokenMutationBody = BodyType<RefreshTokenBody>
+    export type RefreshTokenMutationError = ErrorType<unknown>
 
     /**
  * @summary 토큰 갱신
  */
-export const useRefreshToken = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: RefreshTokenBody}, TContext>, axios?: AxiosRequestConfig}
+export const useRefreshToken = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: BodyType<RefreshTokenBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof refreshToken>>,
         TError,
-        {data: RefreshTokenBody},
+        {data: BodyType<RefreshTokenBody>},
         TContext
       > => {
 

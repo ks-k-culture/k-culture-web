@@ -1,4 +1,5 @@
 import { defineConfig } from 'orval';
+
 export default defineConfig({
   petstore: {
     output: {
@@ -7,6 +8,12 @@ export default defineConfig({
       schemas: 'src/model',
       client: 'react-query',
       mock: true,
+      override: {
+        mutator: {
+          path: './lib/fetcher.ts',
+          name: 'customFetch',
+        },
+      },
     },
     input: {
       target: './docs/api/openapi.yaml',

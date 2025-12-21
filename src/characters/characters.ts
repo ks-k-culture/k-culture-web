@@ -34,13 +34,6 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   CharacterCreateRequest,
   CreateCharacter201,
@@ -50,6 +43,8 @@ import type {
   UpdateCharacter200
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -58,15 +53,17 @@ import type {
  * @summary 캐릭터 목록 조회 (프로젝트별)
  */
 export const getProjectCharacters = (
-    projectId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetProjectCharacters200>> => {
-    
-    
-    return axios.get(
-      `/api/projects/${projectId}/characters`,options
-    );
-  }
-
+    projectId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetProjectCharacters200>(
+      {url: `/api/projects/${projectId}/characters`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -77,16 +74,16 @@ export const getGetProjectCharactersQueryKey = (projectId?: string,) => {
     }
 
     
-export const getGetProjectCharactersQueryOptions = <TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = AxiosError<UnauthorizedErrorResponse>>(projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProjectCharactersQueryOptions = <TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectCharactersQueryKey(projectId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectCharacters>>> = ({ signal }) => getProjectCharacters(projectId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectCharacters>>> = ({ signal }) => getProjectCharacters(projectId, signal);
 
       
 
@@ -96,39 +93,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProjectCharactersQueryResult = NonNullable<Awaited<ReturnType<typeof getProjectCharacters>>>
-export type GetProjectCharactersQueryError = AxiosError<UnauthorizedErrorResponse>
+export type GetProjectCharactersQueryError = ErrorType<UnauthorizedErrorResponse>
 
 
-export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
  projectId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjectCharacters>>,
           TError,
           Awaited<ReturnType<typeof getProjectCharacters>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
  projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjectCharacters>>,
           TError,
           Awaited<ReturnType<typeof getProjectCharacters>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = AxiosError<UnauthorizedErrorResponse>>(
- projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 캐릭터 목록 조회 (프로젝트별)
  */
 
-export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = AxiosError<UnauthorizedErrorResponse>>(
- projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -148,36 +145,39 @@ export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getPro
  */
 export const createCharacter = (
     projectId: string,
-    characterCreateRequest: CharacterCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateCharacter201>> => {
-    
-    
-    return axios.post(
-      `/api/projects/${projectId}/characters`,
-      characterCreateRequest,options
-    );
-  }
+    characterCreateRequest: BodyType<CharacterCreateRequest>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<CreateCharacter201>(
+      {url: `/api/projects/${projectId}/characters`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: characterCreateRequest, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCreateCharacterMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: CharacterCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: CharacterCreateRequest}, TContext> => {
+export const getCreateCharacterMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: BodyType<CharacterCreateRequest>}, TContext> => {
 
 const mutationKey = ['createCharacter'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCharacter>>, {projectId: string;data: CharacterCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCharacter>>, {projectId: string;data: BodyType<CharacterCreateRequest>}> = (props) => {
           const {projectId,data} = props ?? {};
 
-          return  createCharacter(projectId,data,axiosOptions)
+          return  createCharacter(projectId,data,)
         }
 
         
@@ -186,18 +186,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof createCharacter>>>
-    export type CreateCharacterMutationBody = CharacterCreateRequest
-    export type CreateCharacterMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type CreateCharacterMutationBody = BodyType<CharacterCreateRequest>
+    export type CreateCharacterMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 캐릭터 생성
  */
-export const useCreateCharacter = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: CharacterCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useCreateCharacter = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createCharacter>>,
         TError,
-        {projectId: string;data: CharacterCreateRequest},
+        {projectId: string;data: BodyType<CharacterCreateRequest>},
         TContext
       > => {
 
@@ -210,36 +210,38 @@ export const useCreateCharacter = <TError = AxiosError<UnauthorizedErrorResponse
  */
 export const updateCharacter = (
     characterId: string,
-    characterCreateRequest: CharacterCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateCharacter200>> => {
-    
-    
-    return axios.put(
-      `/api/characters/${characterId}`,
-      characterCreateRequest,options
-    );
-  }
+    characterCreateRequest: BodyType<CharacterCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateCharacter200>(
+      {url: `/api/characters/${characterId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: characterCreateRequest
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCharacterMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: CharacterCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: CharacterCreateRequest}, TContext> => {
+export const getUpdateCharacterMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: BodyType<CharacterCreateRequest>}, TContext> => {
 
 const mutationKey = ['updateCharacter'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCharacter>>, {characterId: string;data: CharacterCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCharacter>>, {characterId: string;data: BodyType<CharacterCreateRequest>}> = (props) => {
           const {characterId,data} = props ?? {};
 
-          return  updateCharacter(characterId,data,axiosOptions)
+          return  updateCharacter(characterId,data,)
         }
 
         
@@ -248,18 +250,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof updateCharacter>>>
-    export type UpdateCharacterMutationBody = CharacterCreateRequest
-    export type UpdateCharacterMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type UpdateCharacterMutationBody = BodyType<CharacterCreateRequest>
+    export type UpdateCharacterMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 캐릭터 수정
  */
-export const useUpdateCharacter = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: CharacterCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useUpdateCharacter = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateCharacter>>,
         TError,
-        {characterId: string;data: CharacterCreateRequest},
+        {characterId: string;data: BodyType<CharacterCreateRequest>},
         TContext
       > => {
 
@@ -271,27 +273,28 @@ export const useUpdateCharacter = <TError = AxiosError<UnauthorizedErrorResponse
  * @summary 캐릭터 삭제
  */
 export const deleteCharacter = (
-    characterId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteCharacter200>> => {
-    
-    
-    return axios.delete(
-      `/api/characters/${characterId}`,options
-    );
-  }
+    characterId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteCharacter200>(
+      {url: `/api/characters/${characterId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCharacterMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCharacterMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext> => {
 
 const mutationKey = ['deleteCharacter'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -299,7 +302,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCharacter>>, {characterId: string}> = (props) => {
           const {characterId} = props ?? {};
 
-          return  deleteCharacter(characterId,axiosOptions)
+          return  deleteCharacter(characterId,)
         }
 
         
@@ -309,13 +312,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCharacter>>>
     
-    export type DeleteCharacterMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type DeleteCharacterMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 캐릭터 삭제
  */
-export const useDeleteCharacter = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext>, axios?: AxiosRequestConfig}
+export const useDeleteCharacter = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteCharacter>>,
         TError,

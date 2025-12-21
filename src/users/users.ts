@@ -34,13 +34,6 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   GetMyProfile200,
   GetNotificationSettings200,
@@ -51,6 +44,8 @@ import type {
   UpdateNotificationSettings200
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -59,15 +54,17 @@ import type {
  * @summary 내 정보 조회
  */
 export const getMyProfile = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetMyProfile200>> => {
     
-    
-    return axios.get(
-      `/api/users/me`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetMyProfile200>(
+      {url: `/api/users/me`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -78,16 +75,16 @@ export const getGetMyProfileQueryKey = () => {
     }
 
     
-export const getGetMyProfileQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfile>>, TError = AxiosError<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMyProfileQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMyProfileQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfile>>> = ({ signal }) => getMyProfile({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfile>>> = ({ signal }) => getMyProfile(signal);
 
       
 
@@ -97,39 +94,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMyProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getMyProfile>>>
-export type GetMyProfileQueryError = AxiosError<UnauthorizedErrorResponse>
+export type GetMyProfileQueryError = ErrorType<UnauthorizedErrorResponse>
 
 
-export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyProfile>>,
           TError,
           Awaited<ReturnType<typeof getMyProfile>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyProfile>>,
           TError,
           Awaited<ReturnType<typeof getMyProfile>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = AxiosError<UnauthorizedErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 내 정보 조회
  */
 
-export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = AxiosError<UnauthorizedErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -148,10 +145,10 @@ export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>
  * @summary 프로필 수정
  */
 export const updateMyProfile = (
-    updateMyProfileBody: UpdateMyProfileBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateMyProfile200>> => {
-    
-    const formData = new FormData();
+    updateMyProfileBody: BodyType<UpdateMyProfileBody>,
+ ) => {
+      
+      const formData = new FormData();
 if(updateMyProfileBody.name !== undefined) {
  formData.append(`name`, updateMyProfileBody.name)
  }
@@ -180,32 +177,34 @@ if(updateMyProfileBody.profileImage !== undefined) {
  formData.append(`profileImage`, updateMyProfileBody.profileImage)
  }
 
-    return axios.put(
-      `/api/users/profile`,
-      formData,options
-    );
-  }
+      return customFetch<UpdateMyProfile200>(
+      {url: `/api/users/profile`, method: 'PUT',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateMyProfileMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: UpdateMyProfileBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: UpdateMyProfileBody}, TContext> => {
+export const getUpdateMyProfileMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: BodyType<UpdateMyProfileBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: BodyType<UpdateMyProfileBody>}, TContext> => {
 
 const mutationKey = ['updateMyProfile'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyProfile>>, {data: UpdateMyProfileBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyProfile>>, {data: BodyType<UpdateMyProfileBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  updateMyProfile(data,axiosOptions)
+          return  updateMyProfile(data,)
         }
 
         
@@ -214,18 +213,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateMyProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyProfile>>>
-    export type UpdateMyProfileMutationBody = UpdateMyProfileBody
-    export type UpdateMyProfileMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type UpdateMyProfileMutationBody = BodyType<UpdateMyProfileBody>
+    export type UpdateMyProfileMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 프로필 수정
  */
-export const useUpdateMyProfile = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: UpdateMyProfileBody}, TContext>, axios?: AxiosRequestConfig}
+export const useUpdateMyProfile = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: BodyType<UpdateMyProfileBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateMyProfile>>,
         TError,
-        {data: UpdateMyProfileBody},
+        {data: BodyType<UpdateMyProfileBody>},
         TContext
       > => {
 
@@ -237,15 +236,17 @@ export const useUpdateMyProfile = <TError = AxiosError<UnauthorizedErrorResponse
  * @summary 알림 설정 조회
  */
 export const getNotificationSettings = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetNotificationSettings200>> => {
     
-    
-    return axios.get(
-      `/api/users/settings/notifications`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetNotificationSettings200>(
+      {url: `/api/users/settings/notifications`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -256,16 +257,16 @@ export const getGetNotificationSettingsQueryKey = () => {
     }
 
     
-export const getGetNotificationSettingsQueryOptions = <TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = AxiosError<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetNotificationSettingsQueryOptions = <TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetNotificationSettingsQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotificationSettings>>> = ({ signal }) => getNotificationSettings({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotificationSettings>>> = ({ signal }) => getNotificationSettings(signal);
 
       
 
@@ -275,39 +276,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetNotificationSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotificationSettings>>>
-export type GetNotificationSettingsQueryError = AxiosError<UnauthorizedErrorResponse>
+export type GetNotificationSettingsQueryError = ErrorType<UnauthorizedErrorResponse>
 
 
-export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotificationSettings>>,
           TError,
           Awaited<ReturnType<typeof getNotificationSettings>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = AxiosError<UnauthorizedErrorResponse>>(
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotificationSettings>>,
           TError,
           Awaited<ReturnType<typeof getNotificationSettings>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = AxiosError<UnauthorizedErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 알림 설정 조회
  */
 
-export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = AxiosError<UnauthorizedErrorResponse>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -326,36 +327,38 @@ export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof get
  * @summary 알림 설정 수정
  */
 export const updateNotificationSettings = (
-    notificationSettings: NotificationSettings, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateNotificationSettings200>> => {
-    
-    
-    return axios.put(
-      `/api/users/settings/notifications`,
-      notificationSettings,options
-    );
-  }
+    notificationSettings: BodyType<NotificationSettings>,
+ ) => {
+      
+      
+      return customFetch<UpdateNotificationSettings200>(
+      {url: `/api/users/settings/notifications`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: notificationSettings
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateNotificationSettingsMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: NotificationSettings}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: NotificationSettings}, TContext> => {
+export const getUpdateNotificationSettingsMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: BodyType<NotificationSettings>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: BodyType<NotificationSettings>}, TContext> => {
 
 const mutationKey = ['updateNotificationSettings'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateNotificationSettings>>, {data: NotificationSettings}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateNotificationSettings>>, {data: BodyType<NotificationSettings>}> = (props) => {
           const {data} = props ?? {};
 
-          return  updateNotificationSettings(data,axiosOptions)
+          return  updateNotificationSettings(data,)
         }
 
         
@@ -364,18 +367,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateNotificationSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateNotificationSettings>>>
-    export type UpdateNotificationSettingsMutationBody = NotificationSettings
-    export type UpdateNotificationSettingsMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type UpdateNotificationSettingsMutationBody = BodyType<NotificationSettings>
+    export type UpdateNotificationSettingsMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 알림 설정 수정
  */
-export const useUpdateNotificationSettings = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: NotificationSettings}, TContext>, axios?: AxiosRequestConfig}
+export const useUpdateNotificationSettings = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: BodyType<NotificationSettings>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateNotificationSettings>>,
         TError,
-        {data: NotificationSettings},
+        {data: BodyType<NotificationSettings>},
         TContext
       > => {
 

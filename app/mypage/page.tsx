@@ -182,12 +182,6 @@ function groupFilmographyByYear(filmography: FilmographyItem[]) {
 export default function MyPage() {
   const actor = myActorData;
   const groupedFilmography = groupFilmographyByYear(actor.filmography);
-
-  getFilmographyDetail("").then((r) => {
-    if (r.status === 200) {
-      const b = r.data;
-    }
-  });
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="relative w-full max-w-lg bg-white min-h-screen pb-24">

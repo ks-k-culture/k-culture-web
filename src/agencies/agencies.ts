@@ -25,13 +25,6 @@ import type {
   UseMutationResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   AgencyCreateRequest,
   CreateAgencyProfile201,
@@ -39,6 +32,8 @@ import type {
   UpdateAgencyProfile200
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -47,36 +42,39 @@ import type {
  * @summary 에이전시 프로필 등록
  */
 export const createAgencyProfile = (
-    agencyCreateRequest: AgencyCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateAgencyProfile201>> => {
-    
-    
-    return axios.post(
-      `/api/agencies/profile`,
-      agencyCreateRequest,options
-    );
-  }
+    agencyCreateRequest: BodyType<AgencyCreateRequest>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<CreateAgencyProfile201>(
+      {url: `/api/agencies/profile`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: agencyCreateRequest, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCreateAgencyProfileMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAgencyProfile>>, TError,{data: AgencyCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createAgencyProfile>>, TError,{data: AgencyCreateRequest}, TContext> => {
+export const getCreateAgencyProfileMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAgencyProfile>>, TError,{data: BodyType<AgencyCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createAgencyProfile>>, TError,{data: BodyType<AgencyCreateRequest>}, TContext> => {
 
 const mutationKey = ['createAgencyProfile'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAgencyProfile>>, {data: AgencyCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAgencyProfile>>, {data: BodyType<AgencyCreateRequest>}> = (props) => {
           const {data} = props ?? {};
 
-          return  createAgencyProfile(data,axiosOptions)
+          return  createAgencyProfile(data,)
         }
 
         
@@ -85,18 +83,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateAgencyProfileMutationResult = NonNullable<Awaited<ReturnType<typeof createAgencyProfile>>>
-    export type CreateAgencyProfileMutationBody = AgencyCreateRequest
-    export type CreateAgencyProfileMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type CreateAgencyProfileMutationBody = BodyType<AgencyCreateRequest>
+    export type CreateAgencyProfileMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 에이전시 프로필 등록
  */
-export const useCreateAgencyProfile = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAgencyProfile>>, TError,{data: AgencyCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useCreateAgencyProfile = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAgencyProfile>>, TError,{data: BodyType<AgencyCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createAgencyProfile>>,
         TError,
-        {data: AgencyCreateRequest},
+        {data: BodyType<AgencyCreateRequest>},
         TContext
       > => {
 
@@ -108,36 +106,38 @@ export const useCreateAgencyProfile = <TError = AxiosError<UnauthorizedErrorResp
  * @summary 에이전시 프로필 수정
  */
 export const updateAgencyProfile = (
-    agencyCreateRequest: AgencyCreateRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateAgencyProfile200>> => {
-    
-    
-    return axios.put(
-      `/api/agencies/profile`,
-      agencyCreateRequest,options
-    );
-  }
+    agencyCreateRequest: BodyType<AgencyCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateAgencyProfile200>(
+      {url: `/api/agencies/profile`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: agencyCreateRequest
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateAgencyProfileMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAgencyProfile>>, TError,{data: AgencyCreateRequest}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateAgencyProfile>>, TError,{data: AgencyCreateRequest}, TContext> => {
+export const getUpdateAgencyProfileMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAgencyProfile>>, TError,{data: BodyType<AgencyCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateAgencyProfile>>, TError,{data: BodyType<AgencyCreateRequest>}, TContext> => {
 
 const mutationKey = ['updateAgencyProfile'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAgencyProfile>>, {data: AgencyCreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAgencyProfile>>, {data: BodyType<AgencyCreateRequest>}> = (props) => {
           const {data} = props ?? {};
 
-          return  updateAgencyProfile(data,axiosOptions)
+          return  updateAgencyProfile(data,)
         }
 
         
@@ -146,18 +146,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateAgencyProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateAgencyProfile>>>
-    export type UpdateAgencyProfileMutationBody = AgencyCreateRequest
-    export type UpdateAgencyProfileMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type UpdateAgencyProfileMutationBody = BodyType<AgencyCreateRequest>
+    export type UpdateAgencyProfileMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 에이전시 프로필 수정
  */
-export const useUpdateAgencyProfile = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAgencyProfile>>, TError,{data: AgencyCreateRequest}, TContext>, axios?: AxiosRequestConfig}
+export const useUpdateAgencyProfile = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAgencyProfile>>, TError,{data: BodyType<AgencyCreateRequest>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateAgencyProfile>>,
         TError,
-        {data: AgencyCreateRequest},
+        {data: BodyType<AgencyCreateRequest>},
         TContext
       > => {
 

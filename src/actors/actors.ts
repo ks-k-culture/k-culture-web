@@ -34,13 +34,6 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   ContactActor200,
   ContactActorBody,
@@ -55,6 +48,8 @@ import type {
   UnauthorizedErrorResponse
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -64,17 +59,18 @@ import type {
  * @summary 배우 목록 조회
  */
 export const getActors = (
-    params?: GetActorsParams, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetActors200>> => {
-    
-    
-    return axios.get(
-      `/api/actors`,{
-    ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
-
+    params?: GetActorsParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetActors200>(
+      {url: `/api/actors`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
 
 
@@ -85,16 +81,16 @@ export const getGetActorsQueryKey = (params?: GetActorsParams,) => {
     }
 
     
-export const getGetActorsQueryOptions = <TData = Awaited<ReturnType<typeof getActors>>, TError = AxiosError<unknown>>(params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetActorsQueryOptions = <TData = Awaited<ReturnType<typeof getActors>>, TError = ErrorType<unknown>>(params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetActorsQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActors>>> = ({ signal }) => getActors(params, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActors>>> = ({ signal }) => getActors(params, signal);
 
       
 
@@ -104,39 +100,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetActorsQueryResult = NonNullable<Awaited<ReturnType<typeof getActors>>>
-export type GetActorsQueryError = AxiosError<unknown>
+export type GetActorsQueryError = ErrorType<unknown>
 
 
-export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = AxiosError<unknown>>(
+export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = ErrorType<unknown>>(
  params: undefined |  GetActorsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActors>>,
           TError,
           Awaited<ReturnType<typeof getActors>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = AxiosError<unknown>>(
+export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = ErrorType<unknown>>(
  params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActors>>,
           TError,
           Awaited<ReturnType<typeof getActors>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = AxiosError<unknown>>(
- params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = ErrorType<unknown>>(
+ params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 배우 목록 조회
  */
 
-export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = AxiosError<unknown>>(
- params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TError = ErrorType<unknown>>(
+ params?: GetActorsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -156,15 +152,17 @@ export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TErr
  * @summary 배우 상세 조회
  */
 export const getActorDetail = (
-    actorId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetActorDetail200>> => {
-    
-    
-    return axios.get(
-      `/api/actors/${actorId}`,options
-    );
-  }
-
+    actorId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetActorDetail200>(
+      {url: `/api/actors/${actorId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -175,16 +173,16 @@ export const getGetActorDetailQueryKey = (actorId?: string,) => {
     }
 
     
-export const getGetActorDetailQueryOptions = <TData = Awaited<ReturnType<typeof getActorDetail>>, TError = AxiosError<NotFoundErrorResponse>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetActorDetailQueryOptions = <TData = Awaited<ReturnType<typeof getActorDetail>>, TError = ErrorType<NotFoundErrorResponse>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetActorDetailQueryKey(actorId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorDetail>>> = ({ signal }) => getActorDetail(actorId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorDetail>>> = ({ signal }) => getActorDetail(actorId, signal);
 
       
 
@@ -194,39 +192,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetActorDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getActorDetail>>>
-export type GetActorDetailQueryError = AxiosError<NotFoundErrorResponse>
+export type GetActorDetailQueryError = ErrorType<NotFoundErrorResponse>
 
 
-export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = AxiosError<NotFoundErrorResponse>>(
+export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
  actorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorDetail>>,
           TError,
           Awaited<ReturnType<typeof getActorDetail>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = AxiosError<NotFoundErrorResponse>>(
+export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
  actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorDetail>>,
           TError,
           Awaited<ReturnType<typeof getActorDetail>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = AxiosError<NotFoundErrorResponse>>(
- actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 배우 상세 조회
  */
 
-export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = AxiosError<NotFoundErrorResponse>>(
- actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -246,36 +244,39 @@ export function useGetActorDetail<TData = Awaited<ReturnType<typeof getActorDeta
  * @summary AI 배우 추천
  */
 export const recommendActors = (
-    recommendActorsBody: RecommendActorsBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<RecommendActors200>> => {
-    
-    
-    return axios.post(
-      `/api/actors/recommend`,
-      recommendActorsBody,options
-    );
-  }
+    recommendActorsBody: BodyType<RecommendActorsBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<RecommendActors200>(
+      {url: `/api/actors/recommend`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: recommendActorsBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getRecommendActorsMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recommendActors>>, TError,{data: RecommendActorsBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof recommendActors>>, TError,{data: RecommendActorsBody}, TContext> => {
+export const getRecommendActorsMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recommendActors>>, TError,{data: BodyType<RecommendActorsBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof recommendActors>>, TError,{data: BodyType<RecommendActorsBody>}, TContext> => {
 
 const mutationKey = ['recommendActors'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof recommendActors>>, {data: RecommendActorsBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof recommendActors>>, {data: BodyType<RecommendActorsBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  recommendActors(data,axiosOptions)
+          return  recommendActors(data,)
         }
 
         
@@ -284,18 +285,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type RecommendActorsMutationResult = NonNullable<Awaited<ReturnType<typeof recommendActors>>>
-    export type RecommendActorsMutationBody = RecommendActorsBody
-    export type RecommendActorsMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type RecommendActorsMutationBody = BodyType<RecommendActorsBody>
+    export type RecommendActorsMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary AI 배우 추천
  */
-export const useRecommendActors = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recommendActors>>, TError,{data: RecommendActorsBody}, TContext>, axios?: AxiosRequestConfig}
+export const useRecommendActors = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recommendActors>>, TError,{data: BodyType<RecommendActorsBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof recommendActors>>,
         TError,
-        {data: RecommendActorsBody},
+        {data: BodyType<RecommendActorsBody>},
         TContext
       > => {
 
@@ -308,10 +309,11 @@ export const useRecommendActors = <TError = AxiosError<UnauthorizedErrorResponse
  * @summary 배우 프로필 등록
  */
 export const createActorProfile = (
-    createActorProfileBody: CreateActorProfileBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateActorProfile201>> => {
-    
-    const formData = new FormData();
+    createActorProfileBody: BodyType<CreateActorProfileBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
 formData.append(`name`, createActorProfileBody.name)
 formData.append(`introduction`, createActorProfileBody.introduction)
 formData.append(`ageGroup`, createActorProfileBody.ageGroup)
@@ -319,32 +321,34 @@ if(createActorProfileBody.profileImage !== undefined) {
  formData.append(`profileImage`, createActorProfileBody.profileImage)
  }
 
-    return axios.post(
-      `/api/actors/profile`,
-      formData,options
-    );
-  }
+      return customFetch<CreateActorProfile201>(
+      {url: `/api/actors/profile`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCreateActorProfileMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createActorProfile>>, TError,{data: CreateActorProfileBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createActorProfile>>, TError,{data: CreateActorProfileBody}, TContext> => {
+export const getCreateActorProfileMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createActorProfile>>, TError,{data: BodyType<CreateActorProfileBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createActorProfile>>, TError,{data: BodyType<CreateActorProfileBody>}, TContext> => {
 
 const mutationKey = ['createActorProfile'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createActorProfile>>, {data: CreateActorProfileBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createActorProfile>>, {data: BodyType<CreateActorProfileBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  createActorProfile(data,axiosOptions)
+          return  createActorProfile(data,)
         }
 
         
@@ -353,18 +357,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateActorProfileMutationResult = NonNullable<Awaited<ReturnType<typeof createActorProfile>>>
-    export type CreateActorProfileMutationBody = CreateActorProfileBody
-    export type CreateActorProfileMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type CreateActorProfileMutationBody = BodyType<CreateActorProfileBody>
+    export type CreateActorProfileMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 배우 프로필 등록
  */
-export const useCreateActorProfile = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createActorProfile>>, TError,{data: CreateActorProfileBody}, TContext>, axios?: AxiosRequestConfig}
+export const useCreateActorProfile = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createActorProfile>>, TError,{data: BodyType<CreateActorProfileBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createActorProfile>>,
         TError,
-        {data: CreateActorProfileBody},
+        {data: BodyType<CreateActorProfileBody>},
         TContext
       > => {
 
@@ -377,17 +381,18 @@ export const useCreateActorProfile = <TError = AxiosError<UnauthorizedErrorRespo
  * @summary 포트폴리오 다운로드
  */
 export const downloadActorPortfolio = (
-    actorId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Blob>> => {
-    
-    
-    return axios.get(
-      `/api/actors/${actorId}/portfolio`,{
-        responseType: 'blob',
-    ...options,}
-    );
-  }
-
+    actorId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Blob>(
+      {url: `/api/actors/${actorId}/portfolio`, method: 'GET',
+        responseType: 'blob', signal
+    },
+      );
+    }
+  
 
 
 
@@ -398,16 +403,16 @@ export const getDownloadActorPortfolioQueryKey = (actorId?: string,) => {
     }
 
     
-export const getDownloadActorPortfolioQueryOptions = <TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = AxiosError<NotFoundErrorResponse>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getDownloadActorPortfolioQueryOptions = <TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = ErrorType<NotFoundErrorResponse>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getDownloadActorPortfolioQueryKey(actorId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadActorPortfolio>>> = ({ signal }) => downloadActorPortfolio(actorId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadActorPortfolio>>> = ({ signal }) => downloadActorPortfolio(actorId, signal);
 
       
 
@@ -417,39 +422,39 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type DownloadActorPortfolioQueryResult = NonNullable<Awaited<ReturnType<typeof downloadActorPortfolio>>>
-export type DownloadActorPortfolioQueryError = AxiosError<NotFoundErrorResponse>
+export type DownloadActorPortfolioQueryError = ErrorType<NotFoundErrorResponse>
 
 
-export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = AxiosError<NotFoundErrorResponse>>(
+export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = ErrorType<NotFoundErrorResponse>>(
  actorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof downloadActorPortfolio>>,
           TError,
           Awaited<ReturnType<typeof downloadActorPortfolio>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = AxiosError<NotFoundErrorResponse>>(
+export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = ErrorType<NotFoundErrorResponse>>(
  actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof downloadActorPortfolio>>,
           TError,
           Awaited<ReturnType<typeof downloadActorPortfolio>>
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = AxiosError<NotFoundErrorResponse>>(
- actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = ErrorType<NotFoundErrorResponse>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 포트폴리오 다운로드
  */
 
-export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = AxiosError<NotFoundErrorResponse>>(
- actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof downloadActorPortfolio>>, TError = ErrorType<NotFoundErrorResponse>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -470,36 +475,39 @@ export function useDownloadActorPortfolio<TData = Awaited<ReturnType<typeof down
  */
 export const contactActor = (
     actorId: string,
-    contactActorBody: ContactActorBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ContactActor200>> => {
-    
-    
-    return axios.post(
-      `/api/actors/${actorId}/contact`,
-      contactActorBody,options
-    );
-  }
+    contactActorBody: BodyType<ContactActorBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ContactActor200>(
+      {url: `/api/actors/${actorId}/contact`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: contactActorBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getContactActorMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof contactActor>>, TError,{actorId: string;data: ContactActorBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof contactActor>>, TError,{actorId: string;data: ContactActorBody}, TContext> => {
+export const getContactActorMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof contactActor>>, TError,{actorId: string;data: BodyType<ContactActorBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof contactActor>>, TError,{actorId: string;data: BodyType<ContactActorBody>}, TContext> => {
 
 const mutationKey = ['contactActor'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof contactActor>>, {actorId: string;data: ContactActorBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof contactActor>>, {actorId: string;data: BodyType<ContactActorBody>}> = (props) => {
           const {actorId,data} = props ?? {};
 
-          return  contactActor(actorId,data,axiosOptions)
+          return  contactActor(actorId,data,)
         }
 
         
@@ -508,18 +516,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ContactActorMutationResult = NonNullable<Awaited<ReturnType<typeof contactActor>>>
-    export type ContactActorMutationBody = ContactActorBody
-    export type ContactActorMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type ContactActorMutationBody = BodyType<ContactActorBody>
+    export type ContactActorMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 배우에게 연락하기
  */
-export const useContactActor = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof contactActor>>, TError,{actorId: string;data: ContactActorBody}, TContext>, axios?: AxiosRequestConfig}
+export const useContactActor = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof contactActor>>, TError,{actorId: string;data: BodyType<ContactActorBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof contactActor>>,
         TError,
-        {actorId: string;data: ContactActorBody},
+        {actorId: string;data: BodyType<ContactActorBody>},
         TContext
       > => {
 

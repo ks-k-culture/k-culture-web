@@ -25,13 +25,6 @@ import type {
   UseMutationResult
 } from '@tanstack/react-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   ErrorResponse,
   UnauthorizedErrorResponse,
@@ -41,6 +34,8 @@ import type {
   UploadVideoBody
 } from '.././model';
 
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
 
 
 
@@ -49,39 +44,42 @@ import type {
  * @summary 이미지 업로드
  */
 export const uploadImage = (
-    uploadImageBody: UploadImageBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UploadImage200>> => {
-    
-    const formData = new FormData();
+    uploadImageBody: BodyType<UploadImageBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
 formData.append(`file`, uploadImageBody.file)
 formData.append(`type`, uploadImageBody.type)
 
-    return axios.post(
-      `/api/upload/image`,
-      formData,options
-    );
-  }
+      return customFetch<UploadImage200>(
+      {url: `/api/upload/image`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
 
-
-export const getUploadImageMutationOptions = <TError = AxiosError<ErrorResponse | UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: UploadImageBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: UploadImageBody}, TContext> => {
+export const getUploadImageMutationOptions = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: BodyType<UploadImageBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: BodyType<UploadImageBody>}, TContext> => {
 
 const mutationKey = ['uploadImage'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadImage>>, {data: UploadImageBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadImage>>, {data: BodyType<UploadImageBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  uploadImage(data,axiosOptions)
+          return  uploadImage(data,)
         }
 
         
@@ -90,18 +88,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UploadImageMutationResult = NonNullable<Awaited<ReturnType<typeof uploadImage>>>
-    export type UploadImageMutationBody = UploadImageBody
-    export type UploadImageMutationError = AxiosError<ErrorResponse | UnauthorizedErrorResponse>
+    export type UploadImageMutationBody = BodyType<UploadImageBody>
+    export type UploadImageMutationError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>
 
     /**
  * @summary 이미지 업로드
  */
-export const useUploadImage = <TError = AxiosError<ErrorResponse | UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: UploadImageBody}, TContext>, axios?: AxiosRequestConfig}
+export const useUploadImage = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: BodyType<UploadImageBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof uploadImage>>,
         TError,
-        {data: UploadImageBody},
+        {data: BodyType<UploadImageBody>},
         TContext
       > => {
 
@@ -113,39 +111,42 @@ export const useUploadImage = <TError = AxiosError<ErrorResponse | UnauthorizedE
  * @summary 영상 업로드
  */
 export const uploadVideo = (
-    uploadVideoBody: UploadVideoBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UploadVideo200>> => {
-    
-    const formData = new FormData();
+    uploadVideoBody: BodyType<UploadVideoBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
 formData.append(`file`, uploadVideoBody.file)
 formData.append(`type`, uploadVideoBody.type)
 
-    return axios.post(
-      `/api/upload/video`,
-      formData,options
-    );
-  }
+      return customFetch<UploadVideo200>(
+      {url: `/api/upload/video`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
 
-
-export const getUploadVideoMutationOptions = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: UploadVideoBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: UploadVideoBody}, TContext> => {
+export const getUploadVideoMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: BodyType<UploadVideoBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: BodyType<UploadVideoBody>}, TContext> => {
 
 const mutationKey = ['uploadVideo'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadVideo>>, {data: UploadVideoBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadVideo>>, {data: BodyType<UploadVideoBody>}> = (props) => {
           const {data} = props ?? {};
 
-          return  uploadVideo(data,axiosOptions)
+          return  uploadVideo(data,)
         }
 
         
@@ -154,18 +155,18 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UploadVideoMutationResult = NonNullable<Awaited<ReturnType<typeof uploadVideo>>>
-    export type UploadVideoMutationBody = UploadVideoBody
-    export type UploadVideoMutationError = AxiosError<UnauthorizedErrorResponse>
+    export type UploadVideoMutationBody = BodyType<UploadVideoBody>
+    export type UploadVideoMutationError = ErrorType<UnauthorizedErrorResponse>
 
     /**
  * @summary 영상 업로드
  */
-export const useUploadVideo = <TError = AxiosError<UnauthorizedErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: UploadVideoBody}, TContext>, axios?: AxiosRequestConfig}
+export const useUploadVideo = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: BodyType<UploadVideoBody>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof uploadVideo>>,
         TError,
-        {data: UploadVideoBody},
+        {data: BodyType<UploadVideoBody>},
         TContext
       > => {
 
