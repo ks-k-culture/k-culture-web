@@ -44,3 +44,5 @@ fs.writeFileSync(outputPath, JSON.stringify(converted, null, 2), 'utf8');
 
 console.log('✅ OpenAPI 3.0.3 변환 완료:', outputPath);
 
+
+
