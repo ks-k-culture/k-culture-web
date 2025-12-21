@@ -1,102 +1,81 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Header from "../../components/Header";
 import FilterBar from "../../components/FilterBar";
 import FilterModal from "../../components/FilterModal";
 import EmptyState from "../../components/EmptyState";
 import ActorCarousel from "../../components/ActorCarousel";
-import { useGetActors } from "@/src/actors/actors";
-import type { GetActorsParams } from "@/src/model";
+import { useRecommendActors } from "@/src/actors/actors";
 
 const filterOptions = [
-  { id: "actorType", label: "배우유형" },
-  { id: "genderAge", label: "성별/나이대" },
-  { id: "workType", label: "출연한작품유형/분위기" },
-  { id: "views", label: "조회수" },
+  { id: "gender", label: "성별" },
+  { id: "ageRange", label: "나이대" },
+  { id: "roleType", label: "역할유형" },
 ];
 
 const filterOptionsData: Record<string, { value: string; label: string }[]> = {
-  actorType: [
-    { value: "movie", label: "영화배우" },
-    { value: "drama", label: "드라마배우" },
-    { value: "musical", label: "뮤지컬배우" },
-    { value: "theater", label: "연극배우" },
-    { value: "cf", label: "CF모델" },
+  gender: [
+    { value: "남성", label: "남성" },
+    { value: "여성", label: "여성" },
+    { value: "무관", label: "무관" },
   ],
-  genderAge: [
-    { value: "50s", label: "50대" },
-    { value: "40s", label: "40대" },
-    { value: "30s", label: "30대" },
-    { value: "20s", label: "20대" },
-    { value: "10s", label: "10대" },
+  ageRange: [
+    { value: "10대", label: "10대" },
+    { value: "20대", label: "20대" },
+    { value: "30대", label: "30대" },
+    { value: "40대", label: "40대" },
+    { value: "50대", label: "50대" },
+    { value: "60대 이상", label: "60대 이상" },
   ],
-  workType: [
-    { value: "romance", label: "로맨스" },
-    { value: "action", label: "액션" },
-    { value: "comedy", label: "코미디" },
-    { value: "thriller", label: "스릴러" },
-    { value: "drama", label: "드라마" },
-  ],
-  views: [
-    { value: "high", label: "조회수 높은순" },
-    { value: "low", label: "조회수 낮은순" },
-    { value: "recent", label: "최신순" },
+  roleType: [
+    { value: "주연", label: "주연" },
+    { value: "조연", label: "조연" },
+    { value: "단역", label: "단역" },
+    { value: "엑스트라", label: "엑스트라" },
+    { value: "특별출연", label: "특별출연" },
   ],
 };
 
 const filterTitles: Record<string, string> = {
-  actorType: "배우유형",
-  genderAge: "배우유형·성별·나이대",
-  workType: "출연한작품유형/분위기",
-  views: "조회수",
+  gender: "성별",
+  ageRange: "나이대",
+  roleType: "역할 유형",
 };
 
 export function RecommendContent() {
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
   const [activeFilterId, setActiveFilterId] = useState<string | null>(null);
-  const [hasSearched, setHasSearched] = useState(false);
 
-  const queryParams: GetActorsParams | undefined = useMemo(() => {
-    if (!hasSearched) return undefined;
-
-    const params: GetActorsParams = {};
-
-    if (selectedFilters.genderAge) {
-      params.ageGroup = selectedFilters.genderAge;
-    }
-    if (selectedFilters.workType) {
-      params.genre = selectedFilters.workType;
-    }
-    if (selectedFilters.views === "조회수 높은순") {
-      params.sortBy = "views";
-      params.sortOrder = "desc";
-    } else if (selectedFilters.views === "조회수 낮은순") {
-      params.sortBy = "views";
-      params.sortOrder = "asc";
-    } else if (selectedFilters.views === "최신순") {
-      params.sortBy = "createdAt";
-      params.sortOrder = "desc";
-    }
-
-    return params;
-  }, [selectedFilters, hasSearched]);
-
-  const { data, isLoading } = useGetActors(queryParams, {
-    query: { enabled: hasSearched },
-  });
+  const { mutate: recommendActors, data, isPending } = useRecommendActors();
 
   const actors = useMemo(() => {
-    const actorList = data?.data?.actors ?? [];
+    const actorList = data?.data?.recommendedActors ?? [];
     return actorList.map((actor) => ({
       id: actor.id,
       name: actor.name,
-      imageUrl: actor.profileImage ?? "",
-      age: actor.ageGroup ?? "",
-      filmography: actor.filmographyCount ?? 0,
-      tags: actor.skills ?? [],
+      imageUrl: actor.imageUrl ?? "",
+      age: "",
+      filmography: 0,
+      tags: actor.matchReasons ?? [],
+      matchScore: actor.matchScore,
     }));
   }, [data]);
+
+  // 필터가 변경될 때마다 추천 요청
+  useEffect(() => {
+    if (Object.keys(selectedFilters).length > 0) {
+      recommendActors({
+        data: {
+          filters: {
+            gender: selectedFilters.gender,
+            ageRange: selectedFilters.ageRange,
+            roleType: selectedFilters.roleType,
+          },
+        },
+      });
+    }
+  }, [selectedFilters, recommendActors]);
 
   const handleFilterClick = (filterId: string) => {
     setActiveFilterId(filterId);
@@ -108,9 +87,8 @@ export function RecommendContent() {
       if (option) {
         setSelectedFilters((prev) => ({
           ...prev,
-          [activeFilterId]: option.label,
+          [activeFilterId]: option.value,
         }));
-        setHasSearched(true);
       }
     }
   };
@@ -120,9 +98,10 @@ export function RecommendContent() {
   };
 
   const handleEmptyButtonClick = () => {
-    setActiveFilterId("actorType");
+    setActiveFilterId("gender");
   };
 
+  const hasSearched = Object.keys(selectedFilters).length > 0;
   const hasResults = hasSearched && actors.length > 0;
 
   return (
@@ -130,10 +109,19 @@ export function RecommendContent() {
       <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col overflow-hidden">
         <Header title="역 추천 배우" highlightedName="서은우" />
 
-        <FilterBar filters={filterOptions} selectedFilters={selectedFilters} onFilterClick={handleFilterClick} />
+        <FilterBar
+          filters={filterOptions}
+          selectedFilters={Object.fromEntries(
+            Object.entries(selectedFilters).map(([key, value]) => {
+              const option = filterOptionsData[key]?.find((opt) => opt.value === value);
+              return [key, option?.label ?? value];
+            })
+          )}
+          onFilterClick={handleFilterClick}
+        />
 
         <main className="flex-1 flex flex-col justify-between pb-5">
-          {isLoading ? (
+          {isPending ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
             </div>
@@ -141,7 +129,11 @@ export function RecommendContent() {
             <ActorCarousel actors={actors} />
           ) : (
             <EmptyState
-              message={`검색조건에 해당되는 배우를\n찾을 수 없습니다`}
+              message={
+                hasSearched
+                  ? `검색조건에 해당되는 배우를\n찾을 수 없습니다`
+                  : `조건을 선택하면\nAI가 배우를 추천해드립니다`
+              }
               buttonLabel="조건 선택하기"
               onButtonClick={handleEmptyButtonClick}
             />
@@ -153,17 +145,10 @@ export function RecommendContent() {
           onClose={handleCloseModal}
           title={activeFilterId ? filterTitles[activeFilterId] : ""}
           options={activeFilterId ? filterOptionsData[activeFilterId] || [] : []}
-          selectedValue={
-            activeFilterId
-              ? Object.entries(filterOptionsData[activeFilterId] || []).find(
-                  ([, opt]) => opt.label === selectedFilters[activeFilterId]
-                )?.[1]?.value
-              : undefined
-          }
+          selectedValue={activeFilterId ? selectedFilters[activeFilterId] : undefined}
           onSelect={handleFilterSelect}
         />
       </div>
     </div>
   );
 }
-
