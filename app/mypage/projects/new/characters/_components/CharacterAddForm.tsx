@@ -115,7 +115,10 @@ export function CharacterAddForm() {
                 setIsRoleTypeDropdownOpen(false);
               }}
               className="w-full px-4 py-3 rounded-xl border text-left flex items-center justify-between text-base"
-              style={{ borderColor: COLORS.border.default, color: ageRange ? COLORS.text.primary : COLORS.text.disabled }}
+              style={{
+                borderColor: COLORS.border.default,
+                color: ageRange ? COLORS.text.primary : COLORS.text.disabled,
+              }}
             >
               {ageRange || "나이대를 선택해주세요"}
               <ChevronDownIcon
@@ -177,7 +180,10 @@ export function CharacterAddForm() {
                 setIsAgeDropdownOpen(false);
               }}
               className="w-full px-4 py-3 rounded-xl border text-left flex items-center justify-between text-base"
-              style={{ borderColor: COLORS.border.default, color: roleType ? COLORS.text.primary : COLORS.text.disabled }}
+              style={{
+                borderColor: COLORS.border.default,
+                color: roleType ? COLORS.text.primary : COLORS.text.disabled,
+              }}
             >
               {roleType || "역할 유형을 선택해주세요"}
               <ChevronDownIcon
@@ -218,7 +224,9 @@ export function CharacterAddForm() {
                   onClick={() => toggleSpecialTag(tag)}
                   className="px-4 py-2 rounded-full text-sm font-medium transition-colors"
                   style={{
-                    backgroundColor: selectedSpecialTags.includes(tag) ? COLORS.status.ongoing.bg : COLORS.background.secondary,
+                    backgroundColor: selectedSpecialTags.includes(tag)
+                      ? COLORS.status.ongoing.bg
+                      : COLORS.background.secondary,
                     color: selectedSpecialTags.includes(tag) ? COLORS.accent.red : COLORS.text.secondary,
                   }}
                 >
