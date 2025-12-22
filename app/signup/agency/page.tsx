@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@/app/components/Icons";
 import { Button } from "@/components/ui/button";
-import { COLORS } from "@/lib/constants";
-
-const specialtyOptions = ["드라마", "영화제작", "광고/CF", "뮤직비디오", "웹드라마", "SF", "스릴러배우전문"];
+import { COLORS, SPECIALTY_OPTIONS } from "@/lib/constants";
 
 export default function AgencySignupPage() {
   const router = useRouter();
@@ -165,7 +163,7 @@ export default function AgencySignupPage() {
                 주요 분야
               </h2>
               <div className="flex flex-wrap gap-2">
-                {specialtyOptions.map((specialty) => {
+                {SPECIALTY_OPTIONS.map((specialty) => {
                   const isSelected = selectedSpecialties.includes(specialty);
                   return (
                     <button

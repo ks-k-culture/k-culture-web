@@ -7,9 +7,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, XCircleIcon, PlusIcon } from "@/app/components/Icons";
 import type { CharacterCreateRequestGender } from "@/src/model/characterCreateRequestGender";
 import type { CharacterCreateRequestRoleType } from "@/src/model/characterCreateRequestRoleType";
-import { COLORS } from "@/lib/constants";
+import { COLORS, AGE_RANGE_OPTIONS } from "@/lib/constants";
 
-const ageRangeOptions = ["10대", "20대", "30대", "40대", "50대", "60대 이상"];
 const genderOptions: CharacterCreateRequestGender[] = ["남성", "여성", "기타"];
 const roleTypeOptions: CharacterCreateRequestRoleType[] = ["주연", "조연", "단역", "특별출연"];
 const specialTags = ["주연", "조연", "신인", "기타"];
@@ -131,7 +130,7 @@ export function CharacterAddForm() {
                 className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
                 style={{ borderColor: COLORS.border.default }}
               >
-                {ageRangeOptions.map((option) => (
+                {AGE_RANGE_OPTIONS.map((option) => (
                   <button
                     key={option}
                     onClick={() => {

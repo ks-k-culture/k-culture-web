@@ -12,10 +12,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, XCircleIcon } from "@/app/components/Icons";
 import { FilmographyItemType } from "@/src/model/filmographyItemType";
 import { FilmographyItemRoleType } from "@/src/model/filmographyItemRoleType";
-import { COLORS } from "@/lib/constants";
+import { COLORS, generateYears } from "@/lib/constants";
 
 const roleTypes = Object.values(FilmographyItemRoleType);
-const years = Array.from({ length: 30 }, (_, i) => 2024 - i);
+const years = generateYears(30);
 const genres = Object.values(FilmographyItemType);
 
 function FormSkeleton() {

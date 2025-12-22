@@ -6,10 +6,7 @@ import Image from "next/image";
 import { useGetMyProfile, useUpdateMyProfile, getGetMyProfileQueryKey } from "@/src/users/users";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, PencilIcon, XCircleIcon } from "@/app/components/Icons";
-import { COLORS } from "@/lib/constants";
-
-const positionOptions = ["배우", "모델", "가수", "MC", "기타"];
-const feeOptions = ["협의", "100만원 이하", "100~300만원", "300~500만원", "500만원 이상"];
+import { COLORS, POSITION_OPTIONS, FEE_OPTIONS } from "@/lib/constants";
 
 function FormSkeleton() {
   return (
@@ -181,7 +178,7 @@ export function ProfileEditForm() {
                     className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
                     style={{ borderColor: COLORS.border.default }}
                   >
-                    {positionOptions.map((option) => (
+                    {POSITION_OPTIONS.map((option) => (
                       <button
                         key={option}
                         onClick={() => {
@@ -306,7 +303,7 @@ export function ProfileEditForm() {
                           className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
                           style={{ borderColor: COLORS.border.default }}
                         >
-                          {feeOptions.map((option) => (
+                          {FEE_OPTIONS.map((option) => (
                             <button
                               key={option}
                               onClick={() => {

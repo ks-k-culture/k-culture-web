@@ -10,7 +10,7 @@ interface AgeSelectModalProps {
   onSelect: (age: string) => void;
 }
 
-const ageOptions = ["50대", "40대", "30대", "20대", "10대"];
+const ageOptions = ["60대 이상", "50대", "40대", "30대", "20대", "10대"];
 
 export default function AgeSelectModal({ open, onOpenChange, selectedAge, onSelect }: AgeSelectModalProps) {
   const [tempSelectedAge, setTempSelectedAge] = useState(selectedAge);

@@ -6,7 +6,7 @@ import { useGetMyProfile } from "@/src/users/users";
 import { useCreateShowreel, getGetActorShowreelsQueryKey } from "@/src/showreels/showreels";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, UploadIcon, XMarkIcon } from "@/app/components/Icons";
-import { COLORS } from "@/lib/constants";
+import { COLORS, ROLE_TYPE_OPTIONS, GENRE_OPTIONS, REPRESENTATIVE_GENRE_OPTIONS, generateYears } from "@/lib/constants";
 
 interface UploadedFile {
   id: string;
@@ -16,10 +16,7 @@ interface UploadedFile {
   file?: File;
 }
 
-const roleTypes = ["주연", "조연", "단역", "엑스트라", "특별출연"];
-const genres = ["영화", "드라마", "뮤지컬", "연극", "웹드라마", "광고", "기타"];
-const representativeGenres = ["액션", "로맨스", "코미디", "스릴러", "공포", "SF", "판타지", "드라마"];
-const years = Array.from({ length: 20 }, (_, i) => 2024 - i);
+const years = generateYears(20);
 
 const availableTags = [
   { id: "acting", label: "연기" },
@@ -232,7 +229,7 @@ export function ShowreelEditContent() {
                   className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg max-h-48 overflow-y-auto z-10"
                   style={{ borderColor: COLORS.border.default }}
                 >
-                  {roleTypes.map((type) => (
+                  {ROLE_TYPE_OPTIONS.map((type) => (
                     <button
                       key={type}
                       onClick={() => {
@@ -323,7 +320,7 @@ export function ShowreelEditContent() {
                     className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg max-h-48 overflow-y-auto z-10"
                     style={{ borderColor: COLORS.border.default }}
                   >
-                    {genres.map((g) => (
+                    {GENRE_OPTIONS.map((g) => (
                       <button
                         key={g}
                         onClick={() => {
@@ -375,7 +372,7 @@ export function ShowreelEditContent() {
                   className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg max-h-48 overflow-y-auto z-10"
                   style={{ borderColor: COLORS.border.default }}
                 >
-                  {representativeGenres.map((rg) => (
+                  {REPRESENTATIVE_GENRE_OPTIONS.map((rg) => (
                     <button
                       key={rg}
                       onClick={() => {
