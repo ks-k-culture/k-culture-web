@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, XCircleIcon, PlusIcon } from "@/app/components/Icons";
 import type { CharacterCreateRequestGender } from "@/src/model/characterCreateRequestGender";
 import type { CharacterCreateRequestRoleType } from "@/src/model/characterCreateRequestRoleType";
+import { COLORS } from "@/lib/constants";
 
 const ageRangeOptions = ["10대", "20대", "30대", "40대", "50대", "60대 이상"];
 const genderOptions: CharacterCreateRequestGender[] = ["남성", "여성", "기타"];
@@ -73,9 +74,9 @@ export function CharacterAddForm() {
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: "#191F28" }} />
+              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
             </button>
-            <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
+            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
               캐릭터 입력
             </h1>
           </div>
@@ -83,7 +84,7 @@ export function CharacterAddForm() {
 
         <main className="flex-1 px-5 py-4 pb-32 space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               캐릭터명
             </label>
             <div className="relative">
@@ -93,18 +94,18 @@ export function CharacterAddForm() {
                 onChange={(e) => setCharacterName(e.target.value)}
                 placeholder="캐릭터명을 입력해주세요"
                 className="w-full px-4 py-3 rounded-xl border text-base outline-none"
-                style={{ borderColor: "#E5E8EB", color: "#191F28" }}
+                style={{ borderColor: COLORS.border.default, color: COLORS.text.primary }}
               />
               {characterName && (
                 <button onClick={() => setCharacterName("")} className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <XCircleIcon className="w-5 h-5" style={{ color: "#B0B8C1" }} />
+                  <XCircleIcon className="w-5 h-5" style={{ color: COLORS.text.disabled }} />
                 </button>
               )}
             </div>
           </div>
 
           <div className="relative">
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               나이
             </label>
             <button
@@ -114,18 +115,18 @@ export function CharacterAddForm() {
                 setIsRoleTypeDropdownOpen(false);
               }}
               className="w-full px-4 py-3 rounded-xl border text-left flex items-center justify-between text-base"
-              style={{ borderColor: "#E5E8EB", color: ageRange ? "#191F28" : "#B0B8C1" }}
+              style={{ borderColor: COLORS.border.default, color: ageRange ? COLORS.text.primary : COLORS.text.disabled }}
             >
               {ageRange || "나이대를 선택해주세요"}
               <ChevronDownIcon
                 className={`w-5 h-5 transition-transform ${isAgeDropdownOpen ? "rotate-180" : ""}`}
-                style={{ color: "#6B7684" }}
+                style={{ color: COLORS.text.tertiary }}
               />
             </button>
             {isAgeDropdownOpen && (
               <div
                 className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
-                style={{ borderColor: "#E5E8EB" }}
+                style={{ borderColor: COLORS.border.default }}
               >
                 {ageRangeOptions.map((option) => (
                   <button
@@ -134,8 +135,8 @@ export function CharacterAddForm() {
                       setAgeRange(option);
                       setIsAgeDropdownOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-3 text-base hover:bg-[#F2F4F6]"
-                    style={{ color: "#191F28" }}
+                    className="block w-full text-left px-4 py-3 text-base"
+                    style={{ color: COLORS.text.primary }}
                   >
                     {option}
                   </button>
@@ -145,7 +146,7 @@ export function CharacterAddForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               성별
             </label>
             <div className="flex gap-2">
@@ -155,8 +156,8 @@ export function CharacterAddForm() {
                   onClick={() => setGender(option)}
                   className="flex-1 py-3 rounded-xl text-sm font-medium transition-colors"
                   style={{
-                    backgroundColor: gender === option ? "rgba(229, 8, 21, 0.1)" : "#F2F4F6",
-                    color: gender === option ? "#E50815" : "#4E5968",
+                    backgroundColor: gender === option ? COLORS.status.ongoing.bg : COLORS.background.secondary,
+                    color: gender === option ? COLORS.accent.red : COLORS.text.secondary,
                   }}
                 >
                   {option}
@@ -166,7 +167,7 @@ export function CharacterAddForm() {
           </div>
 
           <div className="relative">
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               역할 유형
             </label>
             <button
@@ -176,18 +177,18 @@ export function CharacterAddForm() {
                 setIsAgeDropdownOpen(false);
               }}
               className="w-full px-4 py-3 rounded-xl border text-left flex items-center justify-between text-base"
-              style={{ borderColor: "#E5E8EB", color: roleType ? "#191F28" : "#B0B8C1" }}
+              style={{ borderColor: COLORS.border.default, color: roleType ? COLORS.text.primary : COLORS.text.disabled }}
             >
               {roleType || "역할 유형을 선택해주세요"}
               <ChevronDownIcon
                 className={`w-5 h-5 transition-transform ${isRoleTypeDropdownOpen ? "rotate-180" : ""}`}
-                style={{ color: "#6B7684" }}
+                style={{ color: COLORS.text.tertiary }}
               />
             </button>
             {isRoleTypeDropdownOpen && (
               <div
                 className="absolute z-10 w-full bg-white border rounded-xl shadow-lg mt-1 max-h-60 overflow-y-auto"
-                style={{ borderColor: "#E5E8EB" }}
+                style={{ borderColor: COLORS.border.default }}
               >
                 {roleTypeOptions.map((option) => (
                   <button
@@ -196,8 +197,8 @@ export function CharacterAddForm() {
                       setRoleType(option);
                       setIsRoleTypeDropdownOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-3 text-base hover:bg-[#F2F4F6]"
-                    style={{ color: "#191F28" }}
+                    className="block w-full text-left px-4 py-3 text-base"
+                    style={{ color: COLORS.text.primary }}
                   >
                     {option}
                   </button>
@@ -207,7 +208,7 @@ export function CharacterAddForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               특이사항
             </label>
             <div className="flex flex-wrap gap-2">
@@ -217,8 +218,8 @@ export function CharacterAddForm() {
                   onClick={() => toggleSpecialTag(tag)}
                   className="px-4 py-2 rounded-full text-sm font-medium transition-colors"
                   style={{
-                    backgroundColor: selectedSpecialTags.includes(tag) ? "rgba(229, 8, 21, 0.1)" : "#F2F4F6",
-                    color: selectedSpecialTags.includes(tag) ? "#E50815" : "#4E5968",
+                    backgroundColor: selectedSpecialTags.includes(tag) ? COLORS.status.ongoing.bg : COLORS.background.secondary,
+                    color: selectedSpecialTags.includes(tag) ? COLORS.accent.red : COLORS.text.secondary,
                   }}
                 >
                   {tag}
@@ -228,7 +229,7 @@ export function CharacterAddForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               상세 설명
             </label>
             <textarea
@@ -237,12 +238,12 @@ export function CharacterAddForm() {
               placeholder="캐릭터에 대한 상세 설명을 입력해주세요"
               rows={4}
               className="w-full px-4 py-3 rounded-xl border text-base outline-none resize-none"
-              style={{ borderColor: "#E5E8EB", color: "#191F28" }}
+              style={{ borderColor: COLORS.border.default, color: COLORS.text.primary }}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.text.secondary }}>
               키워드 추가
             </label>
 
@@ -252,11 +253,11 @@ export function CharacterAddForm() {
                   <span
                     key={keyword}
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm"
-                    style={{ backgroundColor: "rgba(229, 8, 21, 0.1)", color: "#E50815" }}
+                    style={{ backgroundColor: COLORS.status.ongoing.bg, color: COLORS.accent.red }}
                   >
                     {keyword}
                     <button onClick={() => removeKeyword(keyword)}>
-                      <XCircleIcon className="w-4 h-4" style={{ color: "#E50815" }} />
+                      <XCircleIcon className="w-4 h-4" style={{ color: COLORS.accent.red }} />
                     </button>
                   </span>
                 ))}
@@ -271,7 +272,7 @@ export function CharacterAddForm() {
                 }
               }}
               className="w-full py-3 rounded-xl border border-dashed flex items-center justify-center gap-2"
-              style={{ borderColor: "#D1D6DB", color: "#4E5968" }}
+              style={{ borderColor: COLORS.border.dark, color: COLORS.text.secondary }}
             >
               <PlusIcon className="w-5 h-5" />
               <span className="text-sm">키워드 입력</span>
@@ -285,8 +286,8 @@ export function CharacterAddForm() {
             disabled={!isFormValid || isCreating}
             className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
             style={{
-              backgroundColor: isFormValid && !isCreating ? "#191F28" : "#E5E8EB",
-              color: isFormValid && !isCreating ? "#FFFFFF" : "#B0B8C1",
+              backgroundColor: isFormValid && !isCreating ? COLORS.text.primary : COLORS.border.default,
+              color: isFormValid && !isCreating ? COLORS.background.primary : COLORS.text.disabled,
             }}
           >
             {isCreating ? "추가중..." : "캐릭터 추가하기"}

@@ -6,19 +6,20 @@ import Image from "next/image";
 import { useGetProjects } from "@/src/projects/projects";
 import { ChevronLeftIcon, PlusIcon } from "@/app/components/Icons";
 import { GetProjectsStatus } from "@/src/model/getProjectsStatus";
+import { COLORS } from "@/lib/constants";
 
 type TabType = "all" | "ongoing" | "planning" | "completed";
 
 const statusStyles: Record<string, { bg: string; text: string }> = {
-  기획중: { bg: "rgba(78, 89, 104, 0.1)", text: "#4E5968" },
-  진행중: { bg: "rgba(229, 8, 21, 0.1)", text: "#E50815" },
-  캐스팅완료: { bg: "rgba(0, 157, 255, 0.1)", text: "#009DFF" },
+  기획중: COLORS.status.planning,
+  진행중: COLORS.status.ongoing,
+  캐스팅완료: COLORS.status.completed,
 };
 
 const progressColors: Record<string, string> = {
-  기획중: "#4E5968",
-  진행중: "#E50815",
-  캐스팅완료: "#009DFF",
+  기획중: COLORS.status.planning.text,
+  진행중: COLORS.status.ongoing.text,
+  캐스팅완료: COLORS.status.completed.text,
 };
 
 const statusMap: Record<TabType, GetProjectsStatus | null> = {
@@ -73,16 +74,16 @@ export function ProjectsContent() {
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
+              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
             </button>
-            <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
+            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
               진행중인 프로젝트
             </h1>
           </div>
         </header>
 
         <div className="px-5">
-          <div className="flex rounded-lg overflow-hidden" style={{ backgroundColor: "#F2F4F6" }}>
+          <div className="flex rounded-lg overflow-hidden" style={{ backgroundColor: COLORS.background.secondary }}>
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -91,7 +92,7 @@ export function ProjectsContent() {
                   activeTab === tab.key ? "bg-white rounded-lg shadow-sm" : ""
                 }`}
                 style={{
-                  color: activeTab === tab.key ? "#191F28" : "#8B95A1",
+                  color: activeTab === tab.key ? COLORS.text.primary : COLORS.text.muted,
                   margin: activeTab === tab.key ? "4px" : "4px 0",
                 }}
               >
@@ -102,7 +103,7 @@ export function ProjectsContent() {
         </div>
 
         <main className="flex-1 pb-32">
-          <section className="px-5 py-6 border-b" style={{ borderColor: "#F2F4F6" }}>
+          <section className="px-5 py-6 border-b" style={{ borderColor: COLORS.border.light }}>
             {isLoading ? (
               <ProjectsSkeleton />
             ) : projects.length === 0 ? (
@@ -121,7 +122,7 @@ export function ProjectsContent() {
                     <div key={project.id} className="flex gap-4">
                       <div
                         className="w-[110px] h-[147px] shrink-0 rounded-lg overflow-hidden"
-                        style={{ backgroundColor: "#F2F4F6" }}
+                        style={{ backgroundColor: COLORS.background.secondary }}
                       >
                         {project.thumbnail ? (
                           <Image
@@ -138,10 +139,10 @@ export function ProjectsContent() {
 
                       <div className="flex-1 flex flex-col justify-between py-1">
                         <div>
-                          <p className="text-xs mb-1" style={{ color: "#8B95A1" }}>
+                          <p className="text-xs mb-1" style={{ color: COLORS.text.muted }}>
                             {project.company}
                           </p>
-                          <h3 className="text-base font-semibold mb-2" style={{ color: "#191F28" }}>
+                          <h3 className="text-base font-semibold mb-2" style={{ color: COLORS.text.primary }}>
                             {project.title}
                           </h3>
                           <span
@@ -170,7 +171,7 @@ export function ProjectsContent() {
                               />
                             </div>
                           </div>
-                          <p className="text-xs" style={{ color: "#8B95A1" }}>
+                          <p className="text-xs" style={{ color: COLORS.text.muted }}>
                             {progress}%
                           </p>
                         </div>
@@ -187,7 +188,7 @@ export function ProjectsContent() {
           <button
             onClick={() => router.push("/mypage/projects/new")}
             className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2"
-            style={{ backgroundColor: "#191F28" }}
+            style={{ backgroundColor: COLORS.text.primary }}
           >
             <PlusIcon className="w-5 h-5" />
             <span>새 프로젝트 추가하기</span>

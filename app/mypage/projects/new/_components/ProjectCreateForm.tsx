@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon } from "@/app/components/Icons";
 import type { ProjectCreateRequestGenre } from "@/src/model/projectCreateRequestGenre";
 import type { ProjectCreateRequestProjectType } from "@/src/model/projectCreateRequestProjectType";
+import { COLORS } from "@/lib/constants";
 
 const projectTypes: ProjectCreateRequestProjectType[] = [
   "영화",
@@ -81,17 +82,17 @@ export function ProjectCreateForm() {
         <header className="sticky top-0 z-20 bg-white">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
+              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
             </button>
-            <h1 className="text-lg font-semibold" style={{ color: "#191F28" }}>
+            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
               새 프로젝트 만들기
             </h1>
           </div>
         </header>
 
         <main className="flex-1 px-5 pb-32">
-          <div className="py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
-            <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
+          <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
               프로젝트명
             </label>
             <input
@@ -100,12 +101,12 @@ export function ProjectCreateForm() {
               onChange={(e) => setProjectName(e.target.value)}
               placeholder="프로젝트명을 입력해주세요"
               className="w-full text-base outline-none"
-              style={{ color: "#191F28" }}
+              style={{ color: COLORS.text.primary }}
             />
           </div>
 
-          <div className="py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
-            <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
+          <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
               제작사
             </label>
             <input
@@ -114,12 +115,12 @@ export function ProjectCreateForm() {
               onChange={(e) => setCompany(e.target.value)}
               placeholder="제작사를 입력해주세요"
               className="w-full text-base outline-none"
-              style={{ color: "#191F28" }}
+              style={{ color: COLORS.text.primary }}
             />
           </div>
 
-          <div className="py-4 border-b relative" style={{ borderColor: "#E5E8EB" }}>
-            <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
+          <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
+            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
               작품 유형
             </label>
             <button
@@ -129,14 +130,16 @@ export function ProjectCreateForm() {
               }}
               className="w-full flex items-center justify-between text-base"
             >
-              <span style={{ color: projectType ? "#191F28" : "#8B95A1" }}>{projectType || "유형을 선택해주세요"}</span>
-              <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
+              <span style={{ color: projectType ? COLORS.text.primary : COLORS.text.muted }}>
+                {projectType || "유형을 선택해주세요"}
+              </span>
+              <ChevronDownIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
             </button>
 
             {showTypeDropdown && (
               <div
                 className="absolute left-0 right-0 top-full bg-white border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
-                style={{ borderColor: "#E5E8EB" }}
+                style={{ borderColor: COLORS.border.default }}
               >
                 {projectTypes.map((type) => (
                   <button
@@ -146,7 +149,7 @@ export function ProjectCreateForm() {
                       setShowTypeDropdown(false);
                     }}
                     className="w-full px-4 py-3 text-left hover:bg-gray-50 text-base"
-                    style={{ color: "#191F28" }}
+                    style={{ color: COLORS.text.primary }}
                   >
                     {type}
                   </button>
@@ -155,8 +158,8 @@ export function ProjectCreateForm() {
             )}
           </div>
 
-          <div className="py-4 border-b relative" style={{ borderColor: "#E5E8EB" }}>
-            <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
+          <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
+            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
               장르
             </label>
             <button
@@ -166,14 +169,16 @@ export function ProjectCreateForm() {
               }}
               className="w-full flex items-center justify-between text-base"
             >
-              <span style={{ color: genre ? "#191F28" : "#8B95A1" }}>{genre || "장르를 선택해주세요"}</span>
-              <ChevronDownIcon className="w-5 h-5 text-[#6B7684]" />
+              <span style={{ color: genre ? COLORS.text.primary : COLORS.text.muted }}>
+                {genre || "장르를 선택해주세요"}
+              </span>
+              <ChevronDownIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
             </button>
 
             {showGenreDropdown && (
               <div
                 className="absolute left-0 right-0 top-full bg-white border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
-                style={{ borderColor: "#E5E8EB" }}
+                style={{ borderColor: COLORS.border.default }}
               >
                 {genres.map((g) => (
                   <button
@@ -183,7 +188,7 @@ export function ProjectCreateForm() {
                       setShowGenreDropdown(false);
                     }}
                     className="w-full px-4 py-3 text-left hover:bg-gray-50 text-base"
-                    style={{ color: "#191F28" }}
+                    style={{ color: COLORS.text.primary }}
                   >
                     {g}
                   </button>
@@ -192,8 +197,8 @@ export function ProjectCreateForm() {
             )}
           </div>
 
-          <div className="py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
-            <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
+          <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
               촬영 기간
             </label>
             <input
@@ -202,12 +207,12 @@ export function ProjectCreateForm() {
               onChange={(e) => setShootingPeriod(e.target.value)}
               placeholder="예: 2024.03 ~ 2024.06"
               className="w-full text-base outline-none"
-              style={{ color: "#191F28" }}
+              style={{ color: COLORS.text.primary }}
             />
           </div>
 
           <div className="py-4">
-            <label className="block text-sm mb-2" style={{ color: "#8B95A1" }}>
+            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
               배역 정보
             </label>
             <textarea
@@ -217,9 +222,9 @@ export function ProjectCreateForm() {
               rows={5}
               className="w-full text-base outline-none resize-none rounded-lg p-4"
               style={{
-                color: "#191F28",
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #E5E8EB",
+                color: COLORS.text.primary,
+                backgroundColor: COLORS.background.primary,
+                border: `1px solid ${COLORS.border.default}`,
               }}
             />
           </div>
@@ -231,8 +236,8 @@ export function ProjectCreateForm() {
             disabled={!isFormValid || isCreating}
             className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
             style={{
-              backgroundColor: isFormValid && !isCreating ? "#191F28" : "rgba(25, 31, 40, 0.3)",
-              color: "#FFFFFF",
+              backgroundColor: isFormValid && !isCreating ? COLORS.text.primary : "rgba(25, 31, 40, 0.3)",
+              color: COLORS.background.primary,
             }}
           >
             {isCreating ? "생성중..." : "프로젝트 추가하기"}
