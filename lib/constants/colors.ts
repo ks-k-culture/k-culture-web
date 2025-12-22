@@ -1,8 +1,3 @@
-/**
- * 공용 색상 상수
- * 디자인 시스템 기반 색상 정의
- */
-
 export const COLORS = {
   // 텍스트 색상
   text: {
@@ -50,7 +45,6 @@ export const COLORS = {
   },
 } as const;
 
-// 타입 추출
 export type TextColor = (typeof COLORS.text)[keyof typeof COLORS.text];
 export type BackgroundColor = (typeof COLORS.background)[keyof typeof COLORS.background];
 export type BorderColor = (typeof COLORS.border)[keyof typeof COLORS.border];
