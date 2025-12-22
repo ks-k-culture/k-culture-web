@@ -26,6 +26,7 @@ export const COLORS = {
   accent: {
     red: "#E50815", // 강조, 활성
     blue: "#009DFF", // 정보, 완료
+    teal: "#2DD4BF", // teal-300
   },
 
   // 상태별 색상

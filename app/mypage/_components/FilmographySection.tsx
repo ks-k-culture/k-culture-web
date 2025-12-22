@@ -6,6 +6,7 @@ import { useGetMyProfile } from "@/src/users/users";
 import { useGetActorFilmography } from "@/src/filmography/filmography";
 import { PencilIcon } from "@/app/components/Icons";
 import type { FilmographyItem } from "@/src/model";
+import { COLORS } from "@/lib/constants";
 
 function FilmographySkeleton() {
   return (
@@ -50,8 +51,14 @@ export function FilmographySection() {
   return (
     <section className="px-5 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-gray-900">필모그래피</h2>
-        <Link href="/mypage/filmography" className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600">
+        <h2 className="text-lg font-bold" style={{ color: COLORS.text.primary }}>
+          필모그래피
+        </h2>
+        <Link
+          href="/mypage/filmography"
+          className="flex items-center gap-1 text-sm hover:opacity-70"
+          style={{ color: COLORS.text.disabled }}
+        >
           <PencilIcon className="w-4 h-4" />
           <span>수정하기</span>
         </Link>
@@ -60,16 +67,18 @@ export function FilmographySection() {
       {isLoading || !actorId ? (
         <FilmographySkeleton />
       ) : filmography.length === 0 ? (
-        <div className="text-center py-8 text-gray-400">
+        <div className="text-center py-8" style={{ color: COLORS.text.disabled }}>
           <p>등록된 필모그래피가 없습니다.</p>
-          <Link href="/mypage/filmography" className="text-teal-500 text-sm mt-2 inline-block">
+          <Link href="/mypage/filmography" className="text-sm mt-2 inline-block" style={{ color: COLORS.accent.teal }}>
             + 필모그래피 추가하기
           </Link>
         </div>
       ) : (
         groupedFilmography.map(({ year, items }) => (
           <div key={year} className="mb-8">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">{year}</h3>
+            <h3 className="text-base font-semibold mb-4" style={{ color: COLORS.text.primary }}>
+              {year}
+            </h3>
             <div className="space-y-4">
               {items.map((item) => (
                 <div key={item.id} className="flex gap-4">
@@ -87,9 +96,13 @@ export function FilmographySection() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-xs text-gray-400 mb-1 block">{item.type}</span>
-                    <h4 className="text-sm font-medium text-gray-900 leading-snug mb-1 line-clamp-2">{item.title}</h4>
-                    <p className="text-xs text-gray-500">
+                    <span className="text-xs mb-1 block" style={{ color: COLORS.text.disabled }}>
+                      {item.type}
+                    </span>
+                    <h4 className="text-sm font-medium leading-snug mb-1 line-clamp-2" style={{ color: COLORS.text.primary }}>
+                      {item.title}
+                    </h4>
+                    <p className="text-xs" style={{ color: COLORS.text.tertiary }}>
                       {item.roleType} · {item.role}
                     </p>
                   </div>

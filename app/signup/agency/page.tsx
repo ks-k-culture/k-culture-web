@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon } from "@/app/components/Icons";
 import { Button } from "@/components/ui/button";
+import { COLORS } from "@/lib/constants";
 
 const specialtyOptions = ["드라마", "영화제작", "광고/CF", "뮤직비디오", "웹드라마", "SF", "스릴러배우전문"];
 
@@ -46,30 +47,38 @@ export default function AgencySignupPage() {
               className="w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-gray-100 transition-colors"
               aria-label="뒤로가기"
             >
-              <ChevronLeftIcon className="w-6 h-6 text-[#191F28]" />
+              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
             </button>
-            <h1 className="ml-2 text-base font-semibold text-[#191F28]">에이전시 프로필 등록</h1>
+            <h1 className="ml-2 text-base font-semibold" style={{ color: COLORS.text.primary }}>
+              에이전시 프로필 등록
+            </h1>
           </div>
         </header>
         <main className="flex-1 w-full px-5 py-6">
           <div className="space-y-6">
             <div className="space-y-4">
-              <h2 className="text-sm font-medium text-[#4E5968]">에이전시 소개</h2>
+              <h2 className="text-sm font-medium" style={{ color: COLORS.text.secondary }}>
+                에이전시 소개
+              </h2>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4E5968]">에이전시명</label>
-                <div className="relative border-b border-[#E5E8EB]">
+                <label className="text-sm font-medium" style={{ color: COLORS.text.secondary }}>
+                  에이전시명
+                </label>
+                <div className="relative border-b" style={{ borderColor: COLORS.border.default }}>
                   <input
                     type="text"
                     placeholder="에이전시명 입력"
                     value={agencyName}
                     onChange={(e) => setAgencyName(e.target.value)}
-                    className="w-full pb-3 pt-1 text-base text-[#191F28] placeholder-[#8B95A1] focus:outline-none bg-transparent pr-8"
+                    className="w-full pb-3 pt-1 text-base focus:outline-none bg-transparent pr-8"
+                    style={{ color: COLORS.text.primary }}
                   />
                   {agencyName && (
                     <button
                       type="button"
                       onClick={handleClearAgencyName}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#B0B8C1] flex items-center justify-center"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: COLORS.text.disabled }}
                     >
                       <svg
                         className="w-3 h-3 text-white"
@@ -85,20 +94,24 @@ export default function AgencySignupPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4E5968]">대표자명</label>
-                <div className="relative border-b border-[#E5E8EB]">
+                <label className="text-sm font-medium" style={{ color: COLORS.text.secondary }}>
+                  대표자명
+                </label>
+                <div className="relative border-b" style={{ borderColor: COLORS.border.default }}>
                   <input
                     type="text"
                     placeholder="대표자명 입력"
                     value={representativeName}
                     onChange={(e) => setRepresentativeName(e.target.value)}
-                    className="w-full pb-3 pt-1 text-base text-[#191F28] placeholder-[#8B95A1] focus:outline-none bg-transparent pr-8"
+                    className="w-full pb-3 pt-1 text-base focus:outline-none bg-transparent pr-8"
+                    style={{ color: COLORS.text.primary }}
                   />
                   {representativeName && (
                     <button
                       type="button"
                       onClick={handleClearRepresentativeName}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#B0B8C1] flex items-center justify-center"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: COLORS.text.disabled }}
                     >
                       <svg
                         className="w-3 h-3 text-white"
@@ -114,20 +127,24 @@ export default function AgencySignupPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4E5968]">설립연도</label>
-                <div className="relative border-b border-[#E5E8EB]">
+                <label className="text-sm font-medium" style={{ color: COLORS.text.secondary }}>
+                  설립연도
+                </label>
+                <div className="relative border-b" style={{ borderColor: COLORS.border.default }}>
                   <input
                     type="text"
                     placeholder="설립연도 입력 (예: 2020)"
                     value={foundedYear}
                     onChange={(e) => setFoundedYear(e.target.value)}
-                    className="w-full pb-3 pt-1 text-base text-[#191F28] placeholder-[#8B95A1] focus:outline-none bg-transparent pr-8"
+                    className="w-full pb-3 pt-1 text-base focus:outline-none bg-transparent pr-8"
+                    style={{ color: COLORS.text.primary }}
                   />
                   {foundedYear && (
                     <button
                       type="button"
                       onClick={handleClearFoundedYear}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#B0B8C1] flex items-center justify-center"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: COLORS.text.disabled }}
                     >
                       <svg
                         className="w-3 h-3 text-white"
@@ -144,7 +161,9 @@ export default function AgencySignupPage() {
               </div>
             </div>
             <div className="space-y-4 pt-4">
-              <h2 className="text-sm font-medium text-[#4E5968]">주요 분야</h2>
+              <h2 className="text-sm font-medium" style={{ color: COLORS.text.secondary }}>
+                주요 분야
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {specialtyOptions.map((specialty) => {
                   const isSelected = selectedSpecialties.includes(specialty);
@@ -153,11 +172,11 @@ export default function AgencySignupPage() {
                       key={specialty}
                       type="button"
                       onClick={() => handleSpecialtyToggle(specialty)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
-                        isSelected
-                          ? "border-[#E50815] text-[#E50815] bg-white"
-                          : "border-[#E5E8EB] text-[#4E5968] bg-white"
-                      }`}
+                      className="px-4 py-2 rounded-lg text-sm font-medium transition-all border bg-white"
+                      style={{
+                        borderColor: isSelected ? COLORS.accent.red : COLORS.border.default,
+                        color: isSelected ? COLORS.accent.red : COLORS.text.secondary,
+                      }}
                     >
                       {specialty}
                     </button>
@@ -171,9 +190,11 @@ export default function AgencySignupPage() {
           <Button
             onClick={handleSubmit}
             disabled={!isValid}
-            className={`w-full h-14 text-base font-semibold rounded-xl transition-all ${
-              isValid ? "bg-[#191F28] hover:bg-gray-800 text-white" : "bg-[#191F28]/30 text-white cursor-not-allowed"
-            }`}
+            className="w-full h-14 text-base font-semibold rounded-xl transition-all"
+            style={{
+              backgroundColor: isValid ? COLORS.text.primary : "rgba(25, 31, 40, 0.3)",
+              color: COLORS.background.primary,
+            }}
           >
             다음
           </Button>

@@ -11,6 +11,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, PencilIcon, XMarkIcon } from "@/app/components/Icons";
 import type { FilmographyItem } from "@/src/model";
+import { COLORS } from "@/lib/constants";
 
 function FilmographySkeleton() {
   return (
@@ -93,9 +94,11 @@ export function FilmographyManageContent() {
         <header className="sticky top-0 z-20 bg-white border-b border-gray-100">
           <div className="flex items-center gap-3 px-4 py-4">
             <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6 text-gray-900" />
+              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
             </button>
-            <h1 className="text-lg font-semibold text-gray-900">필모그래피 관리</h1>
+            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
+              필모그래피 관리
+            </h1>
           </div>
         </header>
 
@@ -105,7 +108,7 @@ export function FilmographyManageContent() {
           <main className="px-5 py-6">
             {groupedFilmography.map(({ year, items }, groupIndex) => (
               <div key={year} className="mb-2">
-                <h2 className="text-xl font-bold mb-5" style={{ color: "#191F28" }}>
+                <h2 className="text-xl font-bold mb-5" style={{ color: COLORS.text.primary }}>
                   {year}
                 </h2>
 
@@ -120,12 +123,12 @@ export function FilmographyManageContent() {
                         <div className="flex flex-col items-center mr-4">
                           <div
                             className="w-2 h-2 rounded-full border bg-white z-10 mt-1"
-                            style={{ borderColor: "#4E5968" }}
+                            style={{ borderColor: COLORS.text.secondary }}
                           />
                           {showLine && (
                             <div
                               className="w-px flex-1 mt-1"
-                              style={{ backgroundColor: "#F2F4F6", minHeight: "160px" }}
+                              style={{ backgroundColor: COLORS.background.secondary, minHeight: "160px" }}
                             />
                           )}
                         </div>
@@ -148,16 +151,16 @@ export function FilmographyManageContent() {
                           </div>
 
                           <div className="flex-1 flex flex-col pt-1">
-                            <span className="text-sm mb-1" style={{ color: "#8B95A1" }}>
+                            <span className="text-sm mb-1" style={{ color: COLORS.text.muted }}>
                               {item.type}
                             </span>
                             <h3
                               className="text-base font-semibold leading-snug mb-2 line-clamp-3"
-                              style={{ color: "#191F28" }}
+                              style={{ color: COLORS.text.primary }}
                             >
                               {item.title}
                             </h3>
-                            <p className="text-sm" style={{ color: "#4E5968" }}>
+                            <p className="text-sm" style={{ color: COLORS.text.secondary }}>
                               {item.roleType} · {item.role}
                             </p>
                           </div>
@@ -168,14 +171,14 @@ export function FilmographyManageContent() {
                               disabled={isDeleting}
                               className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 rounded-full transition-colors disabled:opacity-50"
                             >
-                              <PencilIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                              <PencilIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
                             </button>
                             <button
                               onClick={() => handleDelete(item.id)}
                               disabled={isDeleting}
                               className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 rounded-full transition-colors disabled:opacity-50"
                             >
-                              <XMarkIcon className="w-5 h-5" style={{ color: "#6B7684" }} />
+                              <XMarkIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
                             </button>
                           </div>
                         </div>

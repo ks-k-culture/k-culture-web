@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HomeIcon, SparklesIcon, BookmarkIcon, UserIcon } from "@/app/components/Icons";
+import { COLORS } from "@/lib/constants";
 
 const navItems = [
   { href: "/", icon: HomeIcon, label: "홈" },
@@ -23,7 +24,8 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center gap-1 px-4 py-2 ${isActive ? "text-gray-900" : "text-gray-400"}`}
+              className="flex flex-col items-center gap-1 px-4 py-2"
+              style={{ color: isActive ? COLORS.text.primary : COLORS.text.disabled }}
             >
               <Icon className="w-6 h-6" />
               <span className={`text-xs ${isActive ? "font-medium" : ""}`}>{label}</span>

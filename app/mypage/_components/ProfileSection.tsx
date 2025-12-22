@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGetMyProfile } from "@/src/users/users";
 import { PencilIcon, HeartIcon, SettingsIcon } from "@/app/components/Icons";
+import { COLORS } from "@/lib/constants";
 
 function ProfileSkeleton() {
   return (
@@ -27,9 +28,11 @@ export function ProfileSection() {
   return (
     <>
       <header className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center px-5 pt-12 pb-4">
-        <h1 className="text-lg font-semibold text-white">마이페이지</h1>
+        <h1 className="text-lg font-semibold" style={{ color: COLORS.background.primary }}>
+          마이페이지
+        </h1>
         <Link href="/mypage/settings" className="w-10 h-10 flex items-center justify-center">
-          <SettingsIcon className="w-6 h-6 text-white" />
+          <SettingsIcon className="w-6 h-6" style={{ color: COLORS.background.primary }} />
         </Link>
       </header>
 
@@ -46,22 +49,30 @@ export function ProfileSection() {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-6 text-center">
-          <h2 className="text-3xl font-bold text-white mb-2">{profile?.name || "이름 없음"}</h2>
+          <h2 className="text-3xl font-bold mb-2" style={{ color: COLORS.background.primary }}>
+            {profile?.name || "이름 없음"}
+          </h2>
           <p className="text-white/80 text-sm mb-2">
             {profile?.position || "배우"}
             {profile?.agency && ` · ${profile.agency}`}
           </p>
-          <p className="text-teal-300 text-sm mb-5">{profile?.bio || "한 줄 소개를 입력해주세요"}</p>
+          <p className="text-sm mb-5" style={{ color: COLORS.accent.teal }}>
+            {profile?.bio || "한 줄 소개를 입력해주세요"}
+          </p>
 
           <div className="flex gap-3 justify-center">
             <Link
               href="/mypage/settings/profile"
-              className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium hover:bg-white/30 transition-colors"
+              className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium hover:bg-white/30 transition-colors"
+              style={{ color: COLORS.background.primary }}
             >
               <PencilIcon className="w-4 h-4" />
               <span>수정하기</span>
             </Link>
-            <button className="flex items-center gap-2 px-5 py-2.5 bg-rose-500 rounded-full text-white text-sm font-medium hover:bg-rose-600 transition-colors">
+            <button
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-colors"
+              style={{ backgroundColor: COLORS.accent.red, color: COLORS.background.primary }}
+            >
               <HeartIcon className="w-4 h-4" />
               <span>팬에게 후원받기</span>
             </button>
