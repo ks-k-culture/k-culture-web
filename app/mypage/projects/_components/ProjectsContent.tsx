@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useGetProjects } from "@/src/projects/projects";
 import { ChevronLeftIcon, PlusIcon } from "@/app/components/Icons";
-import type { ProjectStatus } from "@/src/model/projectStatus";
+import { GetProjectsStatus } from "@/src/model/getProjectsStatus";
 
 type TabType = "all" | "ongoing" | "planning" | "completed";
 
@@ -21,11 +21,11 @@ const progressColors: Record<string, string> = {
   캐스팅완료: "#009DFF",
 };
 
-const statusMap: Record<TabType, ProjectStatus | null> = {
+const statusMap: Record<TabType, GetProjectsStatus | null> = {
   all: null,
-  ongoing: "진행중",
-  planning: "기획중",
-  completed: "캐스팅완료",
+  ongoing: GetProjectsStatus.ongoing,
+  planning: GetProjectsStatus.planning,
+  completed: GetProjectsStatus.completed,
 };
 
 function ProjectsSkeleton() {

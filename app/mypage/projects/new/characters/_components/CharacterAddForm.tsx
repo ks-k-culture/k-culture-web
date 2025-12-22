@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCreateCharacter, getGetProjectCharactersQueryKey } from "@/src/characters/characters";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, XCircleIcon, PlusIcon } from "@/app/components/Icons";
+import type { CharacterCreateRequestGender } from "@/src/model/characterCreateRequestGender";
+import type { CharacterCreateRequestRoleType } from "@/src/model/characterCreateRequestRoleType";
 
 const ageRangeOptions = ["10대", "20대", "30대", "40대", "50대", "60대 이상"];
-const genderOptions = ["남성", "여성", "무관"];
-const roleTypeOptions = ["주연", "조연", "단역", "엑스트라", "특별출연"];
+const genderOptions: CharacterCreateRequestGender[] = ["남성", "여성", "기타"];
+const roleTypeOptions: CharacterCreateRequestRoleType[] = ["주연", "조연", "단역", "특별출연"];
 const specialTags = ["주연", "조연", "신인", "기타"];
 
 export function CharacterAddForm() {
@@ -30,8 +32,8 @@ export function CharacterAddForm() {
 
   const [characterName, setCharacterName] = useState("");
   const [ageRange, setAgeRange] = useState("");
-  const [gender, setGender] = useState("");
-  const [roleType, setRoleType] = useState("");
+  const [gender, setGender] = useState<CharacterCreateRequestGender | "">("");
+  const [roleType, setRoleType] = useState<CharacterCreateRequestRoleType | "">("");
   const [selectedSpecialTags, setSelectedSpecialTags] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -39,7 +41,7 @@ export function CharacterAddForm() {
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [isRoleTypeDropdownOpen, setIsRoleTypeDropdownOpen] = useState(false);
 
-  const isFormValid = characterName.trim() !== "" && gender !== "" && ageRange !== "";
+  const isFormValid = characterName.trim() !== "" && gender !== "" && ageRange !== "" && roleType !== "";
 
   const toggleSpecialTag = (tag: string) => {
     setSelectedSpecialTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
@@ -56,9 +58,9 @@ export function CharacterAddForm() {
       projectId,
       data: {
         name: characterName,
-        gender,
+        gender: gender as CharacterCreateRequestGender,
         ageRange,
-        roleType: roleType || undefined,
+        roleType: roleType as CharacterCreateRequestRoleType,
         description: description || undefined,
         keywords: keywords.length > 0 ? keywords : undefined,
       },

@@ -5,9 +5,30 @@ import { useRouter } from "next/navigation";
 import { useCreateProject, getGetProjectsQueryKey } from "@/src/projects/projects";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon } from "@/app/components/Icons";
+import type { ProjectCreateRequestGenre } from "@/src/model/projectCreateRequestGenre";
+import type { ProjectCreateRequestProjectType } from "@/src/model/projectCreateRequestProjectType";
 
-const projectTypes = ["영화", "드라마", "웹드라마", "OTT 시리즈", "뮤직비디오", "광고", "기타"];
-const genres = ["액션", "로맨스", "코미디", "드라마", "스릴러", "공포", "SF", "판타지", "사극", "기타"];
+const projectTypes: ProjectCreateRequestProjectType[] = [
+  "영화",
+  "드라마",
+  "웹드라마",
+  "OTT 시리즈",
+  "뮤직비디오",
+  "광고",
+  "기타",
+];
+const genres: ProjectCreateRequestGenre[] = [
+  "액션",
+  "로맨스",
+  "코미디",
+  "드라마",
+  "스릴러",
+  "공포",
+  "SF",
+  "판타지",
+  "사극",
+  "기타",
+];
 
 export function ProjectCreateForm() {
   const router = useRouter();
@@ -29,8 +50,8 @@ export function ProjectCreateForm() {
 
   const [projectName, setProjectName] = useState("");
   const [company, setCompany] = useState("");
-  const [projectType, setProjectType] = useState("");
-  const [genre, setGenre] = useState("");
+  const [projectType, setProjectType] = useState<ProjectCreateRequestProjectType | "">("");
+  const [genre, setGenre] = useState<ProjectCreateRequestGenre | "">("");
   const [shootingPeriod, setShootingPeriod] = useState("");
   const [roleInfo, setRoleInfo] = useState("");
 
@@ -44,12 +65,12 @@ export function ProjectCreateForm() {
 
     createProject({
       data: {
-        title: projectName,
+        projectName,
         company,
-        type: projectType,
-        genre,
+        projectType: projectType as ProjectCreateRequestProjectType,
+        genre: genre as ProjectCreateRequestGenre,
         shootingPeriod: shootingPeriod || undefined,
-        synopsis: roleInfo || undefined,
+        roleInfo: roleInfo || undefined,
       },
     });
   };

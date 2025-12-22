@@ -86,9 +86,9 @@ export function SettingsContent() {
 
   useEffect(() => {
     if (notifications) {
-      setCastingNotification(notifications.castingOffers ?? false);
-      setMessageNotification(notifications.messages ?? false);
-      setMarketingNotification(notifications.marketing ?? false);
+      setCastingNotification(notifications.castingNotification ?? false);
+      setMessageNotification(notifications.messageNotification ?? false);
+      setMarketingNotification(notifications.marketingNotification ?? false);
     }
   }, [notifications]);
 
@@ -103,9 +103,9 @@ export function SettingsContent() {
 
     updateNotificationSettings({
       data: {
-        castingOffers: newCasting,
-        messages: newMessage,
-        marketing: newMarketing,
+        castingNotification: newCasting,
+        messageNotification: newMessage,
+        marketingNotification: newMarketing,
       },
     });
   };
