@@ -33,4 +33,3 @@ export function XMarkIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-

@@ -53,4 +53,3 @@ export function PlusIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-

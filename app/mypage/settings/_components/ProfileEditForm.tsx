@@ -240,7 +240,10 @@ export function ProfileEditForm() {
             </section>
 
             <section className="px-5 py-4 border-b" style={{ borderColor: "#E5E8EB" }}>
-              <button onClick={() => setIsBioOpen(!isBioOpen)} className="w-full flex items-center justify-between py-2">
+              <button
+                onClick={() => setIsBioOpen(!isBioOpen)}
+                className="w-full flex items-center justify-between py-2"
+              >
                 <span className="text-sm font-medium" style={{ color: "#4E5968" }}>
                   자기소개
                 </span>
@@ -367,4 +370,3 @@ export function ProfileEditForm() {
     </div>
   );
 }
-

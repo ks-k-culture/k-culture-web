@@ -45,4 +45,3 @@ export function XCircleIcon({ className, style }: { className?: string; style?: 
     </svg>
   );
 }
-

@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useGetFilmographyDetail, useUpdateFilmography, getGetActorFilmographyQueryKey } from "@/src/filmography/filmography";
+import {
+  useGetFilmographyDetail,
+  useUpdateFilmography,
+  getGetActorFilmographyQueryKey,
+} from "@/src/filmography/filmography";
 import { useGetMyProfile } from "@/src/users/users";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon, XCircleIcon } from "./Icons";
@@ -79,9 +83,9 @@ export function FilmographyEditForm({ filmographyId }: FilmographyEditFormProps)
       data: {
         title,
         year,
-        type: genre as typeof FilmographyItemType[keyof typeof FilmographyItemType],
+        type: genre as (typeof FilmographyItemType)[keyof typeof FilmographyItemType],
         role,
-        roleType: roleType as typeof FilmographyItemRoleType[keyof typeof FilmographyItemRoleType],
+        roleType: roleType as (typeof FilmographyItemRoleType)[keyof typeof FilmographyItemRoleType],
       },
     });
   };
@@ -109,7 +113,7 @@ export function FilmographyEditForm({ filmographyId }: FilmographyEditFormProps)
             편집중인 작품
           </p>
           <p className="text-base font-medium mt-1" style={{ color: "#191F28" }}>
-            {isLoading ? "로딩중..." : (filmographyData?.title || "새 작품")}
+            {isLoading ? "로딩중..." : filmographyData?.title || "새 작품"}
           </p>
         </div>
 
@@ -121,7 +125,10 @@ export function FilmographyEditForm({ filmographyId }: FilmographyEditFormProps)
               <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
                 작품명
               </label>
-              <div className="relative flex items-center border rounded-xl px-4 py-3" style={{ borderColor: "#E5E8EB" }}>
+              <div
+                className="relative flex items-center border rounded-xl px-4 py-3"
+                style={{ borderColor: "#E5E8EB" }}
+              >
                 <input
                   type="text"
                   value={title}
@@ -220,7 +227,10 @@ export function FilmographyEditForm({ filmographyId }: FilmographyEditFormProps)
               <label className="block text-sm font-medium mb-2" style={{ color: "#4E5968" }}>
                 역할 배역
               </label>
-              <div className="relative flex items-center border rounded-xl px-4 py-3" style={{ borderColor: "#E5E8EB" }}>
+              <div
+                className="relative flex items-center border rounded-xl px-4 py-3"
+                style={{ borderColor: "#E5E8EB" }}
+              >
                 <input
                   type="text"
                   value={role}
@@ -285,4 +295,3 @@ export function FilmographyEditForm({ filmographyId }: FilmographyEditFormProps)
     </div>
   );
 }
-

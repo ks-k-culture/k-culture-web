@@ -13,15 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from "./Icons";
 
-function ToggleSwitch({
-  enabled,
-  onToggle,
-  disabled,
-}: {
-  enabled: boolean;
-  onToggle: () => void;
-  disabled?: boolean;
-}) {
+function ToggleSwitch({ enabled, onToggle, disabled }: { enabled: boolean; onToggle: () => void; disabled?: boolean }) {
   return (
     <button
       onClick={onToggle}
@@ -289,4 +281,3 @@ export function SettingsContent() {
     </div>
   );
 }
-

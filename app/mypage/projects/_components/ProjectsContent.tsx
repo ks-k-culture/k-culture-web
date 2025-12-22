@@ -56,9 +56,7 @@ export function ProjectsContent() {
   const [activeTab, setActiveTab] = useState<TabType>("all");
 
   const statusFilter = statusMap[activeTab];
-  const { data, isLoading } = useGetProjects(
-    statusFilter ? { status: statusFilter } : undefined
-  );
+  const { data, isLoading } = useGetProjects(statusFilter ? { status: statusFilter } : undefined);
 
   const projects = data?.data?.projects ?? [];
 
@@ -199,4 +197,3 @@ export function ProjectsContent() {
     </div>
   );
 }
-

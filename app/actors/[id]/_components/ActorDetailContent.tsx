@@ -254,4 +254,3 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
     </div>
   );
 }
-

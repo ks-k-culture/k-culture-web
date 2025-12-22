@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useState, type ReactNode } from 'react';
-import { createQueryClient } from '@/lib/query-client';
-import { MSWProvider } from './components/MSWProvider';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useState, type ReactNode } from "react";
+import { createQueryClient } from "@/lib/query-client";
+import { MSWProvider } from "./components/MSWProvider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -29,4 +29,3 @@ export function Providers({ children }: ProvidersProps) {
     </MSWProvider>
   );
 }
-

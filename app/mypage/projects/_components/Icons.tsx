@@ -33,4 +33,3 @@ export function XCircleIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-

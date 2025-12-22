@@ -75,7 +75,13 @@ export function FilmographySection() {
                 <div key={item.id} className="flex gap-4">
                   <div className="w-16 h-22 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
                     {item.thumbnail ? (
-                      <Image src={item.thumbnail} alt={item.title ?? ""} width={64} height={88} className="w-full h-full object-cover" />
+                      <Image
+                        src={item.thumbnail}
+                        alt={item.title ?? ""}
+                        width={64}
+                        height={88}
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
                       <div className="w-full h-full bg-gray-200" />
                     )}
@@ -96,4 +102,3 @@ export function FilmographySection() {
     </section>
   );
 }
-
