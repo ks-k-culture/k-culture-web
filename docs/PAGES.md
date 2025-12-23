@@ -4,13 +4,14 @@
 
 ## 메인
 
-| 페이지   | URL                             |
-| -------- | ------------------------------- |
-| 홈       | http://localhost:3000           |
-| 로그인   | http://localhost:3000/login     |
+| 페이지        | URL                                   |
+| ------------- | ------------------------------------- |
+| 홈            | http://localhost:3000                 |
+| 로그인        | http://localhost:3000/login           |
 | 비밀번호 찾기 | http://localhost:3000/forgot-password |
-| 추천     | http://localhost:3000/recommend |
-| API 문서 | http://localhost:3000/api-docs  |
+| 비밀번호 재설정 | http://localhost:3000/reset-password |
+| 추천          | http://localhost:3000/recommend       |
+| API 문서      | http://localhost:3000/api-docs        |
 
 ## 회원가입
 
