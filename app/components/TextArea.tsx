@@ -10,7 +10,7 @@ interface TextAreaProps {
 }
 
 export function TextArea({ value, onChange, placeholder, rows = 4, variant = "box", className = "" }: TextAreaProps) {
-  const baseStyles = "w-full text-base outline-none resize-none focus:border-gray-400";
+  const baseStyles = "w-full text-base outline-none resize-none";
   const variantStyles = variant === "box" ? "px-4 py-3 rounded-xl border" : "rounded-lg p-4 border";
 
   return (
