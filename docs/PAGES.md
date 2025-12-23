@@ -8,6 +8,7 @@
 | -------- | ------------------------------- |
 | 홈       | http://localhost:3000           |
 | 로그인   | http://localhost:3000/login     |
+| 비밀번호 찾기 | http://localhost:3000/forgot-password |
 | 추천     | http://localhost:3000/recommend |
 | API 문서 | http://localhost:3000/api-docs  |
 
