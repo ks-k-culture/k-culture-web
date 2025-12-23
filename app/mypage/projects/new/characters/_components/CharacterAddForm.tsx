@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronDownIcon, XCircleIcon, PlusIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
+import { FixedBottomArea } from "@/app/components/FixedBottomArea";
 import type { CharacterCreateRequestGender } from "@/src/model/characterCreateRequestGender";
 import type { CharacterCreateRequestRoleType } from "@/src/model/characterCreateRequestRoleType";
 import { COLORS, AGE_RANGE_OPTIONS, GENDER_OPTIONS, ROLE_TYPE_OPTIONS } from "@/lib/constants";
@@ -281,7 +282,7 @@ export function CharacterAddForm() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
+      <FixedBottomArea>
         <button
           onClick={handleAddCharacter}
           disabled={!isFormValid || isCreating}
@@ -293,7 +294,7 @@ export function CharacterAddForm() {
         >
           {isCreating ? "추가중..." : "캐릭터 추가하기"}
         </button>
-      </div>
+      </FixedBottomArea>
     </PageLayout>
   );
 }

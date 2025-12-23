@@ -7,6 +7,7 @@ import { useGetProjects } from "@/src/projects/projects";
 import { PlusIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
+import { FixedBottomArea } from "@/app/components/FixedBottomArea";
 import { GetProjectsStatus } from "@/src/model/getProjectsStatus";
 import { COLORS } from "@/lib/constants";
 
@@ -176,7 +177,7 @@ export function ProjectsContent() {
         </section>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
+      <FixedBottomArea>
         <button
           onClick={() => router.push("/mypage/projects/new")}
           className="w-full py-4 rounded-xl font-medium text-white flex items-center justify-center gap-2"
@@ -185,7 +186,7 @@ export function ProjectsContent() {
           <PlusIcon className="w-5 h-5" />
           <span>새 프로젝트 추가하기</span>
         </button>
-      </div>
+      </FixedBottomArea>
     </PageLayout>
   );
 }

@@ -11,6 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { PencilIcon, XMarkIcon, XCircleIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
+import { FixedBottomArea } from "@/app/components/FixedBottomArea";
 import { COLORS } from "@/lib/constants";
 
 function CharactersSkeleton() {
@@ -159,7 +160,7 @@ export function CharactersContent() {
         )}
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
+      <FixedBottomArea>
         {characters.length === 0 ? (
           <Link
             href={addCharacterUrl}
@@ -177,7 +178,7 @@ export function CharactersContent() {
             완료
           </button>
         )}
-      </div>
+      </FixedBottomArea>
     </PageLayout>
   );
 }

@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronDownIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
+import { FixedBottomArea } from "@/app/components/FixedBottomArea";
 import type { ProjectCreateRequestGenre } from "@/src/model/projectCreateRequestGenre";
 import type { ProjectCreateRequestProjectType } from "@/src/model/projectCreateRequestProjectType";
 import { COLORS, PROJECT_TYPE_OPTIONS, PROJECT_GENRE_OPTIONS } from "@/lib/constants";
@@ -203,7 +204,7 @@ export function ProjectCreateForm() {
         </div>
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
+      <FixedBottomArea>
         <button
           onClick={handleSubmit}
           disabled={!isFormValid || isCreating}
@@ -215,7 +216,7 @@ export function ProjectCreateForm() {
         >
           {isCreating ? "생성중..." : "프로젝트 추가하기"}
         </button>
-      </div>
+      </FixedBottomArea>
     </PageLayout>
   );
 }
