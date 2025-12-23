@@ -11,7 +11,7 @@ interface TextAreaProps {
 
 export function TextArea({ value, onChange, placeholder, rows = 4, variant = "box", className = "" }: TextAreaProps) {
   const baseStyles = "w-full text-base outline-none resize-none";
-  const variantStyles = variant === "box" ? "px-4 py-3 rounded-xl border" : "rounded-lg p-4";
+  const variantStyles = variant === "box" ? "px-4 py-3 rounded-xl border" : "rounded-lg p-4 border";
 
   return (
     <textarea
@@ -22,7 +22,7 @@ export function TextArea({ value, onChange, placeholder, rows = 4, variant = "bo
       className={`${baseStyles} ${variantStyles} ${className}`}
       style={{
         color: COLORS.text.primary,
-        borderColor: variant === "box" ? COLORS.border.default : undefined,
+        borderColor: COLORS.border.default,
         backgroundColor: variant === "underline" ? COLORS.background.primary : undefined,
       }}
     />

@@ -180,17 +180,12 @@ export function ProjectCreateForm() {
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
             배역 정보
           </label>
-          <textarea
+          <TextArea
             value={roleInfo}
             onChange={(e) => setRoleInfo(e.target.value)}
             placeholder="캐스팅 중인 배역의 상세 정보를 입력해주세요. 배역명, 나이대, 성별, 캐릭터 특징 등을 포함해주세요."
             rows={5}
-            className="w-full text-base outline-none resize-none rounded-lg p-4"
-            style={{
-              color: COLORS.text.primary,
-              backgroundColor: COLORS.background.primary,
-              border: `1px solid ${COLORS.border.default}`,
-            }}
+            variant="underline"
           />
         </div>
       </main>
