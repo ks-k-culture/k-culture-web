@@ -6,7 +6,7 @@ import { EyeIcon, EyeOffIcon } from "@/app/components/Icons";
 import { BackHeader } from "@/app/components/BackHeader";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import TermsModal from "./TermsModal";
+import { TermsModal } from "./_components";
 
 interface FormErrors {
   email?: string;

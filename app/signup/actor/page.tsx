@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { BackHeader } from "@/app/components/BackHeader";
 import { Button } from "@/components/ui/button";
-import AgeSelectModal from "./AgeSelectModal";
+import { AgeSelectModal } from "../_components";
 import { COLORS } from "@/lib/constants";
 
 export default function ActorSignupPage() {

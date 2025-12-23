@@ -63,8 +63,8 @@ export default function TermsModal({ open, onOpenChange, onAgree }: TermsModalPr
 
   return (
     <>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-[60]" onClick={() => onOpenChange(false)} />
-      <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl z-[70] animate-slide-up">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-60" onClick={() => onOpenChange(false)} />
+      <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl z-70 animate-slide-up">
         <div className="flex justify-center pt-3 pb-2">
           <div className="w-10 h-1 bg-gray-300 rounded-full" />
         </div>
@@ -128,20 +128,6 @@ export default function TermsModal({ open, onOpenChange, onAgree }: TermsModalPr
           </Button>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes slide-up {
-          from {
-            transform: translateY(100%);
-          }
-          to {
-            transform: translateY(0);
-          }
-        }
-        .animate-slide-up {
-          animation: slide-up 0.3s ease-out;
-        }
-      `}</style>
     </>
   );
 }
