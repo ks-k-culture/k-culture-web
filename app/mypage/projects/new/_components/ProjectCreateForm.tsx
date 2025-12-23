@@ -8,6 +8,7 @@ import { ChevronDownIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
 import { FixedBottomArea } from "@/app/components/FixedBottomArea";
+import { PrimaryButton } from "@/app/components/PrimaryButton";
 import type { ProjectCreateRequestGenre } from "@/src/model/projectCreateRequestGenre";
 import type { ProjectCreateRequestProjectType } from "@/src/model/projectCreateRequestProjectType";
 import { COLORS, PROJECT_TYPE_OPTIONS, PROJECT_GENRE_OPTIONS } from "@/lib/constants";
@@ -205,17 +206,9 @@ export function ProjectCreateForm() {
       </main>
 
       <FixedBottomArea>
-        <button
-          onClick={handleSubmit}
-          disabled={!isFormValid || isCreating}
-          className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
-          style={{
-            backgroundColor: isFormValid && !isCreating ? COLORS.text.primary : "rgba(25, 31, 40, 0.3)",
-            color: COLORS.background.primary,
-          }}
-        >
+        <PrimaryButton onClick={handleSubmit} disabled={!isFormValid} loading={isCreating}>
           {isCreating ? "생성중..." : "프로젝트 추가하기"}
-        </button>
+        </PrimaryButton>
       </FixedBottomArea>
     </PageLayout>
   );

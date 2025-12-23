@@ -9,6 +9,7 @@ import { ChevronDownIcon, UploadIcon, XMarkIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
 import { FixedBottomArea } from "@/app/components/FixedBottomArea";
+import { PrimaryButton } from "@/app/components/PrimaryButton";
 import { COLORS, ROLE_TYPE_OPTIONS, GENRE_OPTIONS, REPRESENTATIVE_GENRE_OPTIONS, generateYears } from "@/lib/constants";
 
 interface UploadedFile {
@@ -413,17 +414,9 @@ export function ShowreelEditContent() {
       </main>
 
       <FixedBottomArea>
-        <button
-          onClick={handleAdd}
-          disabled={!isAddEnabled || isCreating}
-          className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
-          style={{
-            backgroundColor: isAddEnabled && !isCreating ? COLORS.text.primary : COLORS.border.default,
-            color: isAddEnabled && !isCreating ? COLORS.background.primary : COLORS.text.disabled,
-          }}
-        >
+        <PrimaryButton onClick={handleAdd} disabled={!isAddEnabled} loading={isCreating}>
           {isCreating ? "추가중..." : "추가하기"}
-        </button>
+        </PrimaryButton>
       </FixedBottomArea>
     </PageLayout>
   );

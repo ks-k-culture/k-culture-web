@@ -8,6 +8,7 @@ import { ChevronDownIcon, XCircleIcon, PlusIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
 import { FixedBottomArea } from "@/app/components/FixedBottomArea";
+import { PrimaryButton } from "@/app/components/PrimaryButton";
 import type { CharacterCreateRequestGender } from "@/src/model/characterCreateRequestGender";
 import type { CharacterCreateRequestRoleType } from "@/src/model/characterCreateRequestRoleType";
 import { COLORS, AGE_RANGE_OPTIONS, GENDER_OPTIONS, ROLE_TYPE_OPTIONS } from "@/lib/constants";
@@ -283,17 +284,9 @@ export function CharacterAddForm() {
       </main>
 
       <FixedBottomArea>
-        <button
-          onClick={handleAddCharacter}
-          disabled={!isFormValid || isCreating}
-          className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
-          style={{
-            backgroundColor: isFormValid && !isCreating ? COLORS.text.primary : COLORS.border.default,
-            color: isFormValid && !isCreating ? COLORS.background.primary : COLORS.text.disabled,
-          }}
-        >
+        <PrimaryButton onClick={handleAddCharacter} disabled={!isFormValid} loading={isCreating}>
           {isCreating ? "추가중..." : "캐릭터 추가하기"}
-        </button>
+        </PrimaryButton>
       </FixedBottomArea>
     </PageLayout>
   );

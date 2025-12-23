@@ -12,6 +12,7 @@ import { PencilIcon, XMarkIcon, XCircleIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
 import { FixedBottomArea } from "@/app/components/FixedBottomArea";
+import { PrimaryButton } from "@/app/components/PrimaryButton";
 import { COLORS } from "@/lib/constants";
 
 function CharactersSkeleton() {
@@ -170,13 +171,7 @@ export function CharactersContent() {
             캐릭터 추가하기
           </Link>
         ) : (
-          <button
-            onClick={handleComplete}
-            className="w-full py-4 rounded-xl font-medium text-white"
-            style={{ backgroundColor: COLORS.text.primary }}
-          >
-            완료
-          </button>
+          <PrimaryButton onClick={handleComplete}>완료</PrimaryButton>
         )}
       </FixedBottomArea>
     </PageLayout>

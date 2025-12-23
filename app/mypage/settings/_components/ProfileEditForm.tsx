@@ -9,6 +9,7 @@ import { ChevronDownIcon, PencilIcon, XCircleIcon } from "@/app/components/Icons
 import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
 import { FixedBottomArea } from "@/app/components/FixedBottomArea";
+import { PrimaryButton } from "@/app/components/PrimaryButton";
 import { COLORS, POSITION_OPTIONS, FEE_OPTIONS } from "@/lib/constants";
 
 function FormSkeleton() {
@@ -345,14 +346,9 @@ export function ProfileEditForm() {
       )}
 
       <FixedBottomArea>
-        <button
-          onClick={handleSave}
-          disabled={isUpdating || isLoading}
-          className="w-full py-4 rounded-xl font-medium disabled:opacity-50"
-          style={{ backgroundColor: COLORS.text.primary, color: COLORS.background.primary }}
-        >
+        <PrimaryButton onClick={handleSave} disabled={isLoading} loading={isUpdating}>
           {isUpdating ? "저장중..." : "프로필 업데이트"}
-        </button>
+        </PrimaryButton>
       </FixedBottomArea>
     </PageLayout>
   );
