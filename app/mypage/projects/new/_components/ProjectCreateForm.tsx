@@ -9,6 +9,7 @@ import { PageLayout } from "@/app/components/PageLayout";
 import { StickyHeader } from "@/app/components/StickyHeader";
 import { FixedBottomArea } from "@/app/components/FixedBottomArea";
 import { PrimaryButton } from "@/app/components/PrimaryButton";
+import { FormSection } from "@/app/components/FormSection";
 import type { ProjectCreateRequestGenre } from "@/src/model/projectCreateRequestGenre";
 import type { ProjectCreateRequestProjectType } from "@/src/model/projectCreateRequestProjectType";
 import { COLORS, PROJECT_TYPE_OPTIONS, PROJECT_GENRE_OPTIONS } from "@/lib/constants";
@@ -66,7 +67,7 @@ export function ProjectCreateForm() {
       <StickyHeader title="새 프로젝트 만들기" />
 
       <main className="flex-1 px-5 pb-32">
-        <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+        <FormSection>
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
             프로젝트명
           </label>
@@ -78,9 +79,9 @@ export function ProjectCreateForm() {
             className="w-full text-base outline-none"
             style={{ color: COLORS.text.primary }}
           />
-        </div>
+        </FormSection>
 
-        <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+        <FormSection>
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
             제작사
           </label>
@@ -92,9 +93,9 @@ export function ProjectCreateForm() {
             className="w-full text-base outline-none"
             style={{ color: COLORS.text.primary }}
           />
-        </div>
+        </FormSection>
 
-        <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
+        <FormSection className="relative">
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
             작품 유형
           </label>
@@ -131,9 +132,9 @@ export function ProjectCreateForm() {
               ))}
             </div>
           )}
-        </div>
+        </FormSection>
 
-        <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
+        <FormSection className="relative">
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
             장르
           </label>
@@ -170,9 +171,9 @@ export function ProjectCreateForm() {
               ))}
             </div>
           )}
-        </div>
+        </FormSection>
 
-        <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+        <FormSection>
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
             촬영 기간
           </label>
@@ -184,7 +185,7 @@ export function ProjectCreateForm() {
             className="w-full text-base outline-none"
             style={{ color: COLORS.text.primary }}
           />
-        </div>
+        </FormSection>
 
         <div className="py-4">
           <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
