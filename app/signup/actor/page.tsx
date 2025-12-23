@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { BackHeader } from "@/app/components/BackHeader";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { PageLayout } from "@/app/components/PageLayout";
 import { Button } from "@/components/ui/button";
 import { ClearButton } from "@/app/components/ClearButton";
@@ -55,7 +55,7 @@ export default function ActorSignupPage() {
 
   return (
     <PageLayout>
-      <BackHeader href="/" title="배우 프로필 등록" showBorder={false} />
+      <StickyHeader href="/" title="배우 프로필 등록" />
       <main className="flex-1 w-full px-5 py-6">
         <div className="space-y-6">
           <div className="relative w-[100px] h-[100px]">

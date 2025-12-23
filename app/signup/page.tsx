@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { EyeIcon, EyeOffIcon } from "@/app/components/Icons";
-import { BackHeader } from "@/app/components/BackHeader";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { PageLayout } from "@/app/components/PageLayout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -92,7 +92,7 @@ function SignupContent() {
 
   return (
     <PageLayout>
-      <BackHeader href="/" title="회원가입" centered />
+      <StickyHeader href="/" title="회원가입" centered />
       <main className="flex-1 w-full px-5 py-6">
         <div className="space-y-6">
           <div className="space-y-2">
