@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCreateProject, getGetProjectsQueryKey } from "@/src/projects/projects";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronDownIcon } from "@/app/components/Icons";
+import { PageLayout } from "@/app/components/PageLayout";
 import type { ProjectCreateRequestGenre } from "@/src/model/projectCreateRequestGenre";
 import type { ProjectCreateRequestProjectType } from "@/src/model/projectCreateRequestProjectType";
 import { COLORS, PROJECT_TYPE_OPTIONS, PROJECT_GENRE_OPTIONS } from "@/lib/constants";
@@ -58,173 +59,171 @@ export function ProjectCreateForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center">
-      <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col border-x border-gray-200">
-        <header className="sticky top-0 z-20 bg-white">
-          <div className="flex items-center gap-3 px-4 py-4">
-            <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-            </button>
-            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-              새 프로젝트 만들기
-            </h1>
-          </div>
-        </header>
-
-        <main className="flex-1 px-5 pb-32">
-          <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
-            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
-              프로젝트명
-            </label>
-            <input
-              type="text"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              placeholder="프로젝트명을 입력해주세요"
-              className="w-full text-base outline-none"
-              style={{ color: COLORS.text.primary }}
-            />
-          </div>
-
-          <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
-            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
-              제작사
-            </label>
-            <input
-              type="text"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              placeholder="제작사를 입력해주세요"
-              className="w-full text-base outline-none"
-              style={{ color: COLORS.text.primary }}
-            />
-          </div>
-
-          <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
-            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
-              작품 유형
-            </label>
-            <button
-              onClick={() => {
-                setShowTypeDropdown(!showTypeDropdown);
-                setShowGenreDropdown(false);
-              }}
-              className="w-full flex items-center justify-between text-base"
-            >
-              <span style={{ color: projectType ? COLORS.text.primary : COLORS.text.muted }}>
-                {projectType || "유형을 선택해주세요"}
-              </span>
-              <ChevronDownIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
-            </button>
-
-            {showTypeDropdown && (
-              <div
-                className="absolute left-0 right-0 top-full bg-white border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
-                style={{ borderColor: COLORS.border.default }}
-              >
-                {projectTypes.map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => {
-                      setProjectType(type);
-                      setShowTypeDropdown(false);
-                    }}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 text-base"
-                    style={{ color: COLORS.text.primary }}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
-            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
-              장르
-            </label>
-            <button
-              onClick={() => {
-                setShowGenreDropdown(!showGenreDropdown);
-                setShowTypeDropdown(false);
-              }}
-              className="w-full flex items-center justify-between text-base"
-            >
-              <span style={{ color: genre ? COLORS.text.primary : COLORS.text.muted }}>
-                {genre || "장르를 선택해주세요"}
-              </span>
-              <ChevronDownIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
-            </button>
-
-            {showGenreDropdown && (
-              <div
-                className="absolute left-0 right-0 top-full bg-white border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
-                style={{ borderColor: COLORS.border.default }}
-              >
-                {genres.map((g) => (
-                  <button
-                    key={g}
-                    onClick={() => {
-                      setGenre(g);
-                      setShowGenreDropdown(false);
-                    }}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 text-base"
-                    style={{ color: COLORS.text.primary }}
-                  >
-                    {g}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
-            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
-              촬영 기간
-            </label>
-            <input
-              type="text"
-              value={shootingPeriod}
-              onChange={(e) => setShootingPeriod(e.target.value)}
-              placeholder="예: 2024.03 ~ 2024.06"
-              className="w-full text-base outline-none"
-              style={{ color: COLORS.text.primary }}
-            />
-          </div>
-
-          <div className="py-4">
-            <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
-              배역 정보
-            </label>
-            <textarea
-              value={roleInfo}
-              onChange={(e) => setRoleInfo(e.target.value)}
-              placeholder="캐스팅 중인 배역의 상세 정보를 입력해주세요. 배역명, 나이대, 성별, 캐릭터 특징 등을 포함해주세요."
-              rows={5}
-              className="w-full text-base outline-none resize-none rounded-lg p-4"
-              style={{
-                color: COLORS.text.primary,
-                backgroundColor: COLORS.background.primary,
-                border: `1px solid ${COLORS.border.default}`,
-              }}
-            />
-          </div>
-        </main>
-
-        <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
-          <button
-            onClick={handleSubmit}
-            disabled={!isFormValid || isCreating}
-            className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
-            style={{
-              backgroundColor: isFormValid && !isCreating ? COLORS.text.primary : "rgba(25, 31, 40, 0.3)",
-              color: COLORS.background.primary,
-            }}
-          >
-            {isCreating ? "생성중..." : "프로젝트 추가하기"}
+    <PageLayout>
+      <header className="sticky top-0 z-20 bg-white">
+        <div className="flex items-center gap-3 px-4 py-4">
+          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
+            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
           </button>
+          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
+            새 프로젝트 만들기
+          </h1>
         </div>
+      </header>
+
+      <main className="flex-1 px-5 pb-32">
+        <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+          <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
+            프로젝트명
+          </label>
+          <input
+            type="text"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            placeholder="프로젝트명을 입력해주세요"
+            className="w-full text-base outline-none"
+            style={{ color: COLORS.text.primary }}
+          />
+        </div>
+
+        <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+          <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
+            제작사
+          </label>
+          <input
+            type="text"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            placeholder="제작사를 입력해주세요"
+            className="w-full text-base outline-none"
+            style={{ color: COLORS.text.primary }}
+          />
+        </div>
+
+        <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
+          <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
+            작품 유형
+          </label>
+          <button
+            onClick={() => {
+              setShowTypeDropdown(!showTypeDropdown);
+              setShowGenreDropdown(false);
+            }}
+            className="w-full flex items-center justify-between text-base"
+          >
+            <span style={{ color: projectType ? COLORS.text.primary : COLORS.text.muted }}>
+              {projectType || "유형을 선택해주세요"}
+            </span>
+            <ChevronDownIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
+          </button>
+
+          {showTypeDropdown && (
+            <div
+              className="absolute left-0 right-0 top-full bg-white border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
+              style={{ borderColor: COLORS.border.default }}
+            >
+              {projectTypes.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    setProjectType(type);
+                    setShowTypeDropdown(false);
+                  }}
+                  className="w-full px-4 py-3 text-left hover:bg-gray-50 text-base"
+                  style={{ color: COLORS.text.primary }}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="py-4 border-b relative" style={{ borderColor: COLORS.border.default }}>
+          <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
+            장르
+          </label>
+          <button
+            onClick={() => {
+              setShowGenreDropdown(!showGenreDropdown);
+              setShowTypeDropdown(false);
+            }}
+            className="w-full flex items-center justify-between text-base"
+          >
+            <span style={{ color: genre ? COLORS.text.primary : COLORS.text.muted }}>
+              {genre || "장르를 선택해주세요"}
+            </span>
+            <ChevronDownIcon className="w-5 h-5" style={{ color: COLORS.text.tertiary }} />
+          </button>
+
+          {showGenreDropdown && (
+            <div
+              className="absolute left-0 right-0 top-full bg-white border rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
+              style={{ borderColor: COLORS.border.default }}
+            >
+              {genres.map((g) => (
+                <button
+                  key={g}
+                  onClick={() => {
+                    setGenre(g);
+                    setShowGenreDropdown(false);
+                  }}
+                  className="w-full px-4 py-3 text-left hover:bg-gray-50 text-base"
+                  style={{ color: COLORS.text.primary }}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="py-4 border-b" style={{ borderColor: COLORS.border.default }}>
+          <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
+            촬영 기간
+          </label>
+          <input
+            type="text"
+            value={shootingPeriod}
+            onChange={(e) => setShootingPeriod(e.target.value)}
+            placeholder="예: 2024.03 ~ 2024.06"
+            className="w-full text-base outline-none"
+            style={{ color: COLORS.text.primary }}
+          />
+        </div>
+
+        <div className="py-4">
+          <label className="block text-sm mb-2" style={{ color: COLORS.text.muted }}>
+            배역 정보
+          </label>
+          <textarea
+            value={roleInfo}
+            onChange={(e) => setRoleInfo(e.target.value)}
+            placeholder="캐스팅 중인 배역의 상세 정보를 입력해주세요. 배역명, 나이대, 성별, 캐릭터 특징 등을 포함해주세요."
+            rows={5}
+            className="w-full text-base outline-none resize-none rounded-lg p-4"
+            style={{
+              color: COLORS.text.primary,
+              backgroundColor: COLORS.background.primary,
+              border: `1px solid ${COLORS.border.default}`,
+            }}
+          />
+        </div>
+      </main>
+
+      <div className="fixed bottom-0 left-0 right-0 bg-white px-5 py-6 max-w-lg mx-auto">
+        <button
+          onClick={handleSubmit}
+          disabled={!isFormValid || isCreating}
+          className="w-full py-4 rounded-xl font-medium transition-colors disabled:cursor-not-allowed"
+          style={{
+            backgroundColor: isFormValid && !isCreating ? COLORS.text.primary : "rgba(25, 31, 40, 0.3)",
+            color: COLORS.background.primary,
+          }}
+        >
+          {isCreating ? "생성중..." : "프로젝트 추가하기"}
+        </button>
       </div>
-    </div>
+    </PageLayout>
   );
 }

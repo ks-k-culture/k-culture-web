@@ -12,6 +12,7 @@ import {
 } from "@/src/users/users";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from "@/app/components/Icons";
+import { PageLayout } from "@/app/components/PageLayout";
 import { COLORS } from "@/lib/constants";
 
 function ToggleSwitch({ enabled, onToggle, disabled }: { enabled: boolean; onToggle: () => void; disabled?: boolean }) {
@@ -116,168 +117,166 @@ export function SettingsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center">
-      <div className="relative w-full max-w-lg bg-white min-h-screen flex flex-col border-x border-gray-200">
-        <header className="sticky top-0 z-20 bg-white">
-          <div className="flex items-center gap-3 px-4 py-4">
-            <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-            </button>
-            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-              설정 페이지
-            </h1>
-          </div>
-        </header>
+    <PageLayout>
+      <header className="sticky top-0 z-20 bg-white">
+        <div className="flex items-center gap-3 px-4 py-4">
+          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
+            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
+          </button>
+          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
+            설정 페이지
+          </h1>
+        </div>
+      </header>
 
-        <main className="flex-1">
-          {isProfileLoading ? (
-            <ProfileSkeleton />
-          ) : (
-            <section className="px-5 py-6 border-b" style={{ borderColor: COLORS.border.default }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
-                      style={{ backgroundColor: COLORS.status.planning.bg, color: COLORS.status.planning.text }}
-                    >
-                      프로필 설정
-                    </span>
-                  </div>
-                  <h2 className="text-xl font-bold mb-1" style={{ color: COLORS.text.primary }}>
-                    {profile?.name ?? "사용자 이름"}
-                  </h2>
-                  <p className="text-sm" style={{ color: COLORS.text.secondary }}>
-                    {profile?.email ?? "user@email.com"}
-                  </p>
-                </div>
-
-                <div className="relative">
-                  <div
-                    className="w-[100px] h-[100px] rounded-full overflow-hidden flex items-center justify-center"
-                    style={{ backgroundColor: COLORS.text.muted }}
+      <main className="flex-1">
+        {isProfileLoading ? (
+          <ProfileSkeleton />
+        ) : (
+          <section className="px-5 py-6 border-b" style={{ borderColor: COLORS.border.default }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span
+                    className="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
+                    style={{ backgroundColor: COLORS.status.planning.bg, color: COLORS.status.planning.text }}
                   >
-                    {profile?.profileImage ? (
-                      <Image
-                        src={profile.profileImage}
-                        alt={profile.name ?? "프로필"}
-                        width={100}
-                        height={100}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-white text-3xl font-bold">{getInitial(profile?.name)}</span>
-                    )}
-                  </div>
-                  <Link
-                    href="/mypage/settings/profile"
-                    className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-white border flex items-center justify-center"
-                    style={{ borderColor: COLORS.border.default }}
-                  >
-                    <PencilIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
-                  </Link>
+                    프로필 설정
+                  </span>
                 </div>
+                <h2 className="text-xl font-bold mb-1" style={{ color: COLORS.text.primary }}>
+                  {profile?.name ?? "사용자 이름"}
+                </h2>
+                <p className="text-sm" style={{ color: COLORS.text.secondary }}>
+                  {profile?.email ?? "user@email.com"}
+                </p>
               </div>
-            </section>
-          )}
 
-          {isNotificationLoading ? (
-            <NotificationSkeleton />
-          ) : (
-            <section className="border-b" style={{ borderColor: COLORS.border.light }}>
-              <div className="px-5 py-4">
-                <h3 className="text-sm font-medium mb-4" style={{ color: COLORS.text.secondary }}>
-                  알림 설정
-                </h3>
-
-                <div className="flex items-center justify-between py-3">
-                  <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                    새로운 캐스팅 제안
-                  </span>
-                  <ToggleSwitch
-                    enabled={castingNotification}
-                    onToggle={() => handleNotificationToggle("casting")}
-                    disabled={isUpdating}
-                  />
+              <div className="relative">
+                <div
+                  className="w-[100px] h-[100px] rounded-full overflow-hidden flex items-center justify-center"
+                  style={{ backgroundColor: COLORS.text.muted }}
+                >
+                  {profile?.profileImage ? (
+                    <Image
+                      src={profile.profileImage}
+                      alt={profile.name ?? "프로필"}
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-white text-3xl font-bold">{getInitial(profile?.name)}</span>
+                  )}
                 </div>
-
-                <div className="flex items-center justify-between py-3">
-                  <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                    메시지 알림
-                  </span>
-                  <ToggleSwitch
-                    enabled={messageNotification}
-                    onToggle={() => handleNotificationToggle("message")}
-                    disabled={isUpdating}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between py-3">
-                  <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                    마케팅 알림
-                  </span>
-                  <ToggleSwitch
-                    enabled={marketingNotification}
-                    onToggle={() => handleNotificationToggle("marketing")}
-                    disabled={isUpdating}
-                  />
-                </div>
+                <Link
+                  href="/mypage/settings/profile"
+                  className="absolute -bottom-1 -right-1 w-10 h-10 rounded-full bg-white border flex items-center justify-center"
+                  style={{ borderColor: COLORS.border.default }}
+                >
+                  <PencilIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
+                </Link>
               </div>
-            </section>
-          )}
+            </div>
+          </section>
+        )}
 
+        {isNotificationLoading ? (
+          <NotificationSkeleton />
+        ) : (
           <section className="border-b" style={{ borderColor: COLORS.border.light }}>
             <div className="px-5 py-4">
               <h3 className="text-sm font-medium mb-4" style={{ color: COLORS.text.secondary }}>
-                계정 관리
+                알림 설정
               </h3>
-
-              <button className="flex items-center justify-between w-full py-3">
-                <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                  로그아웃
-                </span>
-                <ChevronRightIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
-              </button>
-
-              <button className="flex items-center justify-between w-full py-3">
-                <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                  계정 삭제
-                </span>
-                <ChevronRightIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
-              </button>
 
               <div className="flex items-center justify-between py-3">
                 <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                  앱 정보
+                  새로운 캐스팅 제안
                 </span>
-                <span className="text-sm" style={{ color: COLORS.text.muted }}>
-                  v1.0.2
+                <ToggleSwitch
+                  enabled={castingNotification}
+                  onToggle={() => handleNotificationToggle("casting")}
+                  disabled={isUpdating}
+                />
+              </div>
+
+              <div className="flex items-center justify-between py-3">
+                <span className="text-base" style={{ color: COLORS.text.secondary }}>
+                  메시지 알림
                 </span>
+                <ToggleSwitch
+                  enabled={messageNotification}
+                  onToggle={() => handleNotificationToggle("message")}
+                  disabled={isUpdating}
+                />
+              </div>
+
+              <div className="flex items-center justify-between py-3">
+                <span className="text-base" style={{ color: COLORS.text.secondary }}>
+                  마케팅 알림
+                </span>
+                <ToggleSwitch
+                  enabled={marketingNotification}
+                  onToggle={() => handleNotificationToggle("marketing")}
+                  disabled={isUpdating}
+                />
               </div>
             </div>
           </section>
+        )}
 
-          <section className="border-b" style={{ borderColor: COLORS.border.light }}>
-            <div className="px-5 py-4">
-              <button className="flex items-center justify-between w-full py-3">
-                <span className="text-base" style={{ color: COLORS.text.secondary }}>
-                  이용약관 및 개인정보 처리방침
-                </span>
-                <ChevronRightIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
-              </button>
+        <section className="border-b" style={{ borderColor: COLORS.border.light }}>
+          <div className="px-5 py-4">
+            <h3 className="text-sm font-medium mb-4" style={{ color: COLORS.text.secondary }}>
+              계정 관리
+            </h3>
+
+            <button className="flex items-center justify-between w-full py-3">
+              <span className="text-base" style={{ color: COLORS.text.secondary }}>
+                로그아웃
+              </span>
+              <ChevronRightIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
+            </button>
+
+            <button className="flex items-center justify-between w-full py-3">
+              <span className="text-base" style={{ color: COLORS.text.secondary }}>
+                계정 삭제
+              </span>
+              <ChevronRightIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
+            </button>
+
+            <div className="flex items-center justify-between py-3">
+              <span className="text-base" style={{ color: COLORS.text.secondary }}>
+                앱 정보
+              </span>
+              <span className="text-sm" style={{ color: COLORS.text.muted }}>
+                v1.0.2
+              </span>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="px-5 py-8 flex flex-col items-center">
-            <p className="text-sm font-medium mb-2" style={{ color: COLORS.accent.red }}>
-              궁금한 점이 있으신가요?
-            </p>
-            <p className="text-sm" style={{ color: COLORS.text.muted }}>
-              고객센터 문의하기
-            </p>
-          </section>
-        </main>
-      </div>
-    </div>
+        <section className="border-b" style={{ borderColor: COLORS.border.light }}>
+          <div className="px-5 py-4">
+            <button className="flex items-center justify-between w-full py-3">
+              <span className="text-base" style={{ color: COLORS.text.secondary }}>
+                이용약관 및 개인정보 처리방침
+              </span>
+              <ChevronRightIcon className="w-5 h-5" style={{ color: COLORS.text.muted }} />
+            </button>
+          </div>
+        </section>
+
+        <section className="px-5 py-8 flex flex-col items-center">
+          <p className="text-sm font-medium mb-2" style={{ color: COLORS.accent.red }}>
+            궁금한 점이 있으신가요?
+          </p>
+          <p className="text-sm" style={{ color: COLORS.text.muted }}>
+            고객센터 문의하기
+          </p>
+        </section>
+      </main>
+    </PageLayout>
   );
 }
