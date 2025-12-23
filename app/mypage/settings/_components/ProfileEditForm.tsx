@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useGetMyProfile, useUpdateMyProfile, getGetMyProfileQueryKey } from "@/src/users/users";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeftIcon, ChevronDownIcon, PencilIcon, XCircleIcon } from "@/app/components/Icons";
+import { ChevronDownIcon, PencilIcon, XCircleIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { COLORS, POSITION_OPTIONS, FEE_OPTIONS } from "@/lib/constants";
 
 function FormSkeleton() {
@@ -90,16 +91,7 @@ export function ProfileEditForm() {
 
   return (
     <PageLayout>
-      <header className="sticky top-0 z-20 bg-white">
-        <div className="flex items-center gap-3 px-4 py-4">
-          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-          </button>
-          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-            프로필 편집 페이지
-          </h1>
-        </div>
-      </header>
+      <StickyHeader title="프로필 편집 페이지" />
 
       {isLoading ? (
         <FormSkeleton />

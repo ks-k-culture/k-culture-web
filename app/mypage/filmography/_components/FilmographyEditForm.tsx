@@ -9,8 +9,9 @@ import {
 } from "@/src/filmography/filmography";
 import { useGetMyProfile } from "@/src/users/users";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeftIcon, ChevronDownIcon, XCircleIcon } from "@/app/components/Icons";
+import { ChevronDownIcon, XCircleIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { FilmographyItemType } from "@/src/model/filmographyItemType";
 import { FilmographyItemRoleType } from "@/src/model/filmographyItemRoleType";
 import { COLORS, generateYears } from "@/lib/constants";
@@ -98,16 +99,7 @@ export function FilmographyEditForm({ filmographyId }: FilmographyEditFormProps)
 
   return (
     <PageLayout>
-      <header className="sticky top-0 z-20 bg-white">
-        <div className="flex items-center gap-3 px-4 py-4">
-          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-          </button>
-          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-            필모그래피 작품 편집
-          </h1>
-        </div>
-      </header>
+      <StickyHeader title="필모그래피 작품 편집" />
 
       <div className="px-5 py-4 border-b" style={{ borderColor: COLORS.border.default }}>
         <p className="text-sm" style={{ color: COLORS.text.secondary }}>

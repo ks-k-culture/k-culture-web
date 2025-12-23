@@ -9,8 +9,9 @@ import {
   getGetActorFilmographyQueryKey,
 } from "@/src/filmography/filmography";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeftIcon, PencilIcon, XMarkIcon } from "@/app/components/Icons";
+import { PencilIcon, XMarkIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import type { FilmographyItem } from "@/src/model";
 import { COLORS } from "@/lib/constants";
 
@@ -91,16 +92,7 @@ export function FilmographyManageContent() {
 
   return (
     <PageLayout>
-      <header className="sticky top-0 z-20 bg-white border-b border-gray-100">
-        <div className="flex items-center gap-3 px-4 py-4">
-          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-          </button>
-          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-            필모그래피 관리
-          </h1>
-        </div>
-      </header>
+      <StickyHeader title="필모그래피 관리" showBorder />
 
       {isLoading ? (
         <FilmographySkeleton />

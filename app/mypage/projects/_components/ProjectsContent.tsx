@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useGetProjects } from "@/src/projects/projects";
-import { ChevronLeftIcon, PlusIcon } from "@/app/components/Icons";
+import { PlusIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { GetProjectsStatus } from "@/src/model/getProjectsStatus";
 import { COLORS } from "@/lib/constants";
 
@@ -71,16 +72,7 @@ export function ProjectsContent() {
 
   return (
     <PageLayout>
-      <header className="sticky top-0 z-20 bg-white">
-        <div className="flex items-center gap-3 px-4 py-4">
-          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-          </button>
-          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-            진행중인 프로젝트
-          </h1>
-        </div>
-      </header>
+      <StickyHeader title="진행중인 프로젝트" />
 
       <div className="px-5">
         <div className="flex rounded-lg overflow-hidden" style={{ backgroundColor: COLORS.background.secondary }}>

@@ -8,8 +8,9 @@ import {
   getGetProjectCharactersQueryKey,
 } from "@/src/characters/characters";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeftIcon, PencilIcon, XMarkIcon, XCircleIcon } from "@/app/components/Icons";
+import { PencilIcon, XMarkIcon, XCircleIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { COLORS } from "@/lib/constants";
 
 function CharactersSkeleton() {
@@ -75,16 +76,7 @@ export function CharactersContent() {
 
   return (
     <PageLayout>
-      <header className="sticky top-0 z-20 bg-white">
-        <div className="flex items-center gap-3 px-4 py-4">
-          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-          </button>
-          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-            새 프로젝트 만들기
-          </h1>
-        </div>
-      </header>
+      <StickyHeader title="새 프로젝트 만들기" />
 
       <main className="flex-1 px-5 pb-32">
         <div className="py-4">

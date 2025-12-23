@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { useGetMyProfile } from "@/src/users/users";
 import { useCreateShowreel, getGetActorShowreelsQueryKey } from "@/src/showreels/showreels";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeftIcon, ChevronDownIcon, UploadIcon, XMarkIcon } from "@/app/components/Icons";
+import { ChevronDownIcon, UploadIcon, XMarkIcon } from "@/app/components/Icons";
 import { PageLayout } from "@/app/components/PageLayout";
+import { StickyHeader } from "@/app/components/StickyHeader";
 import { COLORS, ROLE_TYPE_OPTIONS, GENRE_OPTIONS, REPRESENTATIVE_GENRE_OPTIONS, generateYears } from "@/lib/constants";
 
 interface UploadedFile {
@@ -127,16 +128,7 @@ export function ShowreelEditContent() {
   if (isProfileLoading) {
     return (
       <PageLayout>
-        <header className="sticky top-0 z-20 bg-white">
-          <div className="flex items-center gap-3 px-4 py-4">
-            <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-              <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-            </button>
-            <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-              쇼릴 편집하기
-            </h1>
-          </div>
-        </header>
+        <StickyHeader title="쇼릴 편집하기" />
         <FormSkeleton />
       </PageLayout>
     );
@@ -144,16 +136,7 @@ export function ShowreelEditContent() {
 
   return (
     <PageLayout>
-      <header className="sticky top-0 z-20 bg-white">
-        <div className="flex items-center gap-3 px-4 py-4">
-          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center -ml-2">
-            <ChevronLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
-          </button>
-          <h1 className="text-lg font-semibold" style={{ color: COLORS.text.primary }}>
-            쇼릴 편집하기
-          </h1>
-        </div>
-      </header>
+      <StickyHeader title="쇼릴 편집하기" />
 
       <main className="flex-1 pb-32">
         <section className="px-5 py-6 border-b" style={{ borderColor: COLORS.border.light }}>
