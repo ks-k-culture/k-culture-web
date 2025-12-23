@@ -133,15 +133,22 @@ function NotificationIcon({ type }: { type: "bell" | "heart" | "megaphone" }) {
   );
 }
 
+// 오늘 날짜를 포맷팅하는 함수
+function formatDate(): string {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const weekdays = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+  const weekday = weekdays[today.getDay()];
+  return `${year}.${month}.${day} ${weekday}`;
+}
+
 export default function NotificationsPage() {
   const [activeTab, setActiveTab] = useState<NotificationType>("all");
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [notifications] = useState<Notification[]>(mockNotifications);
 
   const filteredNotifications = activeTab === "all" ? notifications : notifications.filter((n) => n.type === activeTab);
-
-  const handleMarkAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-  };
 
   return (
     <PageLayout>
@@ -156,9 +163,9 @@ export default function NotificationsPage() {
               알림
             </h1>
           </div>
-          <button onClick={handleMarkAllRead} className="text-sm" style={{ color: COLORS.text.secondary }}>
-            모두 읽기
-          </button>
+          <span className="text-sm" style={{ color: COLORS.text.secondary }}>
+            {formatDate()}
+          </span>
         </div>
 
         {/* 탭 */}
@@ -191,7 +198,13 @@ export default function NotificationsPage() {
               className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
               style={{ backgroundColor: "#D1D6DB" }}
             >
-              <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <svg
+                className="w-10 h-10 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
@@ -206,7 +219,7 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 className="flex items-start gap-3 px-5 py-4"
-                style={{ backgroundColor: notification.isRead ? "white" : "#F8FAFC" }}
+                style={{ opacity: notification.isRead ? 0.5 : 1 }}
               >
                 <NotificationIcon type={notification.icon} />
                 <div className="flex-1 min-w-0">
