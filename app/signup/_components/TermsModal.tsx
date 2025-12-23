@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronRightIcon } from "@/app/components/Icons";
+import { ChevronRightIcon, CheckIcon } from "@/app/components/Icons";
 
 interface TermsModalProps {
   open: boolean;
@@ -15,14 +15,6 @@ interface TermItem {
   title: string;
   required: boolean;
   checked: boolean;
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  );
 }
 
 export default function TermsModal({ open, onOpenChange, onAgree }: TermsModalProps) {

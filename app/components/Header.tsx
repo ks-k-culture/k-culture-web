@@ -1,38 +1,11 @@
 "use client";
 
 import { COLORS } from "@/lib/constants";
+import { ArrowLeftIcon, SearchIcon } from "@/app/components/Icons";
 
 interface HeaderProps {
   title: string;
   highlightedName?: string;
-}
-
-function ArrowLeftIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M5 12H19M5 12L11 18M5 12L11 6"
-        stroke={COLORS.text.primary}
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <path
-        d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-        stroke={COLORS.text.primary}
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
 }
 
 export default function Header({ title, highlightedName }: HeaderProps) {
@@ -44,7 +17,7 @@ export default function Header({ title, highlightedName }: HeaderProps) {
       >
         <div className="flex items-center gap-3" style={{ width: "24px" }}>
           <button className="w-6 h-6 flex items-center justify-center" aria-label="뒤로가기">
-            <ArrowLeftIcon className="w-6 h-6" />
+            <ArrowLeftIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
           </button>
         </div>
         <h1
@@ -65,7 +38,7 @@ export default function Header({ title, highlightedName }: HeaderProps) {
         </h1>
         <div className="flex items-center justify-end gap-3" style={{ width: "24px" }}>
           <button className="w-6 h-6 flex items-center justify-center" aria-label="검색">
-            <SearchIcon className="w-6 h-6" />
+            <SearchIcon className="w-6 h-6" style={{ color: COLORS.text.primary }} />
           </button>
         </div>
       </div>
