@@ -88,6 +88,10 @@ export default function ActorOnboardingStep3() {
           introduction: data.introduction || "안녕하세요!",
           ageGroup: birthYearToAgeGroup(data.birthYear) as "10대" | "20대" | "30대" | "40대" | "50대" | "60대 이상",
           profileImage: profileImageBlob,
+          skills: data.skills.length > 0 ? data.skills : undefined,
+          birthYear: data.birthYear ? parseInt(data.birthYear) : undefined,
+          height: data.height ? parseInt(data.height) : undefined,
+          weight: data.weight ? parseInt(data.weight) : undefined,
         },
       });
 

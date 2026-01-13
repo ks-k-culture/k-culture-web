@@ -29,11 +29,11 @@ export default function FavoritesPage() {
   );
 
   if (isLoading) {
-    return <DashboardLoadingState userType="agency" />;
+    return <DashboardLoadingState />;
   }
 
   return (
-    <DashboardLayout userType="agency">
+    <DashboardLayout>
       <div className="space-y-8">
         <div>
           <h1 className="text-heading-xl text-ivory">찜 목록</h1>

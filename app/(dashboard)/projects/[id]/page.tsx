@@ -32,7 +32,7 @@ export default function ProjectDetailPage() {
 
   if (projectLoading || !project) {
     return (
-      <DashboardLayout userType="agency">
+      <DashboardLayout>
         <div className="flex h-64 items-center justify-center">
           <Spinner size="md" />
         </div>
@@ -45,7 +45,7 @@ export default function ProjectDetailPage() {
   const progress = totalCharacters > 0 ? Math.round((castingComplete / totalCharacters) * 100) : 0;
 
   return (
-    <DashboardLayout userType="agency">
+    <DashboardLayout>
       <div className="space-y-8">
         <div className="flex items-start justify-between">
           <div>

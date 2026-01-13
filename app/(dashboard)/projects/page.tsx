@@ -18,11 +18,11 @@ export default function ProjectsPage() {
   const projects = projectsData?.data?.projects || [];
 
   if (isLoading) {
-    return <DashboardLoadingState userType="agency" />;
+    return <DashboardLoadingState />;
   }
 
   return (
-    <DashboardLayout userType="agency">
+    <DashboardLayout>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>

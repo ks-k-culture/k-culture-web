@@ -83,10 +83,10 @@ export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TErr
   params: undefined | GetActorsParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof getActors>>, TError, Awaited<ReturnType<typeof getActors>>>,
-        "initialData"
-      >;
+    Pick<
+      DefinedInitialDataOptions<Awaited<ReturnType<typeof getActors>>, TError, Awaited<ReturnType<typeof getActors>>>,
+      "initialData"
+    >;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
@@ -94,14 +94,14 @@ export function useGetActors<TData = Awaited<ReturnType<typeof getActors>>, TErr
   params?: GetActorsParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActors>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getActors>>,
-          TError,
-          Awaited<ReturnType<typeof getActors>>
-        >,
-        "initialData"
-      >;
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getActors>>,
+        TError,
+        Awaited<ReturnType<typeof getActors>>
+      >,
+      "initialData"
+    >;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
@@ -173,14 +173,14 @@ export function useGetActorDetail<
   actorId: string,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getActorDetail>>,
-          TError,
-          Awaited<ReturnType<typeof getActorDetail>>
-        >,
-        "initialData"
-      >;
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getActorDetail>>,
+        TError,
+        Awaited<ReturnType<typeof getActorDetail>>
+      >,
+      "initialData"
+    >;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
@@ -191,14 +191,14 @@ export function useGetActorDetail<
   actorId: string,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorDetail>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getActorDetail>>,
-          TError,
-          Awaited<ReturnType<typeof getActorDetail>>
-        >,
-        "initialData"
-      >;
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getActorDetail>>,
+        TError,
+        Awaited<ReturnType<typeof getActorDetail>>
+      >,
+      "initialData"
+    >;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
@@ -321,11 +321,27 @@ export const createActorProfile = (createActorProfileBody: BodyType<CreateActorP
   if (createActorProfileBody.profileImage !== undefined) {
     formData.append(`profileImage`, createActorProfileBody.profileImage);
   }
+  // skills 배열 추가
+  if (createActorProfileBody.skills && createActorProfileBody.skills.length > 0) {
+    createActorProfileBody.skills.forEach((skill) => {
+      formData.append(`skills`, skill);
+    });
+  }
+  // birthYear 추가
+  if (createActorProfileBody.birthYear !== undefined) {
+    formData.append(`birthYear`, createActorProfileBody.birthYear.toString());
+  }
+  // height, weight 추가
+  if (createActorProfileBody.height !== undefined) {
+    formData.append(`height`, createActorProfileBody.height.toString());
+  }
+  if (createActorProfileBody.weight !== undefined) {
+    formData.append(`weight`, createActorProfileBody.weight.toString());
+  }
 
   return customFetch<CreateActorProfile201>({
     url: `/api/actors/profile`,
     method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
     data: formData,
     signal,
   });
@@ -436,14 +452,14 @@ export function useDownloadActorPortfolio<
   actorId: string,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof downloadActorPortfolio>>,
-          TError,
-          Awaited<ReturnType<typeof downloadActorPortfolio>>
-        >,
-        "initialData"
-      >;
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof downloadActorPortfolio>>,
+        TError,
+        Awaited<ReturnType<typeof downloadActorPortfolio>>
+      >,
+      "initialData"
+    >;
   },
   queryClient?: QueryClient
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
@@ -454,14 +470,14 @@ export function useDownloadActorPortfolio<
   actorId: string,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadActorPortfolio>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof downloadActorPortfolio>>,
-          TError,
-          Awaited<ReturnType<typeof downloadActorPortfolio>>
-        >,
-        "initialData"
-      >;
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof downloadActorPortfolio>>,
+        TError,
+        Awaited<ReturnType<typeof downloadActorPortfolio>>
+      >,
+      "initialData"
+    >;
   },
   queryClient?: QueryClient
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };

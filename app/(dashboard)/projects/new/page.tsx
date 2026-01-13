@@ -58,7 +58,7 @@ export default function NewProjectPage() {
   };
 
   return (
-    <DashboardLayout userType="agency">
+    <DashboardLayout>
       <div className="mx-auto max-w-2xl space-y-8">
         <div>
           <h1 className="text-ivory text-2xl font-bold">새 프로젝트</h1>

@@ -89,7 +89,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <DashboardLayout userType={userType}>
+      <DashboardLayout>
         <div className="flex h-64 items-center justify-center">
           <Spinner size="md" />
         </div>
@@ -98,7 +98,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <DashboardLayout userType={userType}>
+    <DashboardLayout>
       <div className="mx-auto max-w-2xl space-y-8">
         <div>
           <h1 className="text-heading-xl text-ivory">설정</h1>

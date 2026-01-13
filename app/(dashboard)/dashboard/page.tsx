@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <DashboardLayout userType="actor">
+      <DashboardLayout>
         <div className="flex h-64 items-center justify-center">
           <Spinner size="lg" />
         </div>
@@ -27,7 +27,7 @@ export default function DashboardPage() {
   const Dashboard = userType === "actor" ? ActorDashboard : AgencyDashboard;
 
   return (
-    <DashboardLayout userType={userType}>
+    <DashboardLayout>
       <Dashboard />
     </DashboardLayout>
   );

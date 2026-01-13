@@ -114,7 +114,7 @@ export default function ProfileEditPage() {
 
   if (isLoading) {
     return (
-      <DashboardLayout userType={userType}>
+      <DashboardLayout>
         <div className="flex h-64 items-center justify-center">
           <Spinner size="lg" />
         </div>
@@ -124,7 +124,7 @@ export default function ProfileEditPage() {
 
   if (isError) {
     return (
-      <DashboardLayout userType={userType}>
+      <DashboardLayout>
         <div className="flex h-64 items-center justify-center">
           <Spinner size="lg" />
         </div>
@@ -133,7 +133,7 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <DashboardLayout userType={userType}>
+    <DashboardLayout>
       <form onSubmit={onSubmit} className="w-full">
         <div className="max-w-4xl space-y-8">
           <PageHeader />

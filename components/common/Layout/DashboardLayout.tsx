@@ -13,13 +13,16 @@ import { DashboardSidebar } from "./DashboardSidebar";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  userType?: "actor" | "agency";
 }
 
-export function DashboardLayout({ children, userType = "actor" }: DashboardLayoutProps) {
+export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useAuthStore((state) => state.logout);
+  const storeUserType = useAuthStore((state) => state.userType);
+
+  // useAuthStore에서 userType 가져오기 (기본값 actor)
+  const userType = storeUserType ?? "actor";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = useCallback(() => {

@@ -16,7 +16,7 @@ export default function ProfilePage() {
 
   if (isLoading || !profile) {
     return (
-      <DashboardLayout userType="actor">
+      <DashboardLayout>
         <div className="flex h-64 items-center justify-center">
           <Spinner size="md" />
         </div>
@@ -25,7 +25,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <DashboardLayout userType="actor">
+    <DashboardLayout>
       <div className="max-w-4xl space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-heading-xl text-ivory">내 프로필</h1>
