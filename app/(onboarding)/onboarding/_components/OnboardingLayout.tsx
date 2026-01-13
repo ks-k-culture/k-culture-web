@@ -16,12 +16,22 @@ interface OnboardingLayoutProps {
   totalSteps: number;
   title: string;
   subtitle?: string;
+  customPreview?: React.ReactNode;
+  customCompletionPercentage?: number;
 }
 
-export function OnboardingLayout({ children, currentStep, totalSteps, title, subtitle }: OnboardingLayoutProps) {
+export function OnboardingLayout({
+  children,
+  currentStep,
+  totalSteps,
+  title,
+  subtitle,
+  customPreview,
+  customCompletionPercentage,
+}: OnboardingLayoutProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const { getCompletionPercentage } = useOnboardingStore();
-  const completionPercentage = getCompletionPercentage();
+  const completionPercentage = customCompletionPercentage ?? getCompletionPercentage();
   const stepProgress = (currentStep / totalSteps) * 100;
 
   return (
@@ -98,7 +108,7 @@ export function OnboardingLayout({ children, currentStep, totalSteps, title, sub
                   <h2 className="text-heading-md text-ivory mb-1">실시간 미리보기</h2>
                   <p className="text-caption text-muted-gray">입력하면 바로 반영됩니다</p>
                 </div>
-                <ProfilePreview />
+                {customPreview ?? <ProfilePreview />}
               </div>
             </div>
           </div>

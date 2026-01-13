@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,19 +13,24 @@ import { Button } from "@/components/ui";
 
 import { DarkInput, DarkSelect } from "@/components/common";
 
+import { AgencyProfilePreview } from "@/components/features/profile";
+
 import { AGENCY_SPECIALTY_OPTIONS, FOUNDED_YEAR_OPTIONS } from "@/lib/constants";
 import { type AgencyOnboardingData, agencyOnboardingSchema } from "@/lib/validations";
 
+import { useAgencyOnboardingStore } from "@/stores/useAgencyOnboardingStore";
+
 export default function AgencyOnboardingStep1() {
   const router = useRouter();
+  const { data: storeData, updateData, getCompletionPercentage } = useAgencyOnboardingStore();
 
   const form = useForm<AgencyOnboardingData>({
     resolver: zodResolver(agencyOnboardingSchema),
     defaultValues: {
-      agencyName: "",
-      representativeName: "",
-      foundedYear: "",
-      specialty: "",
+      agencyName: storeData.agencyName || "",
+      representativeName: storeData.representativeName || "",
+      foundedYear: storeData.foundedYear || "",
+      specialty: storeData.specialty || "",
     },
   });
 
@@ -31,10 +38,30 @@ export default function AgencyOnboardingStep1() {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
   } = form;
 
+  // 폼 값 변경 시 스토어 업데이트
+  const watchedValues = watch();
+
+  useEffect(() => {
+    updateData({
+      agencyName: watchedValues.agencyName,
+      representativeName: watchedValues.representativeName,
+      foundedYear: watchedValues.foundedYear,
+      specialty: watchedValues.specialty,
+    });
+  }, [
+    watchedValues.agencyName,
+    watchedValues.representativeName,
+    watchedValues.foundedYear,
+    watchedValues.specialty,
+    updateData,
+  ]);
+
   const onSubmit = handleSubmit((data) => {
+    updateData(data);
     router.push("/onboarding/agency/complete");
   });
 
@@ -44,6 +71,8 @@ export default function AgencyOnboardingStep1() {
       totalSteps={1}
       title="회사 정보를 입력해주세요"
       subtitle="캐스팅 진행 시 배우에게 보여질 정보입니다"
+      customPreview={<AgencyProfilePreview />}
+      customCompletionPercentage={getCompletionPercentage()}
     >
       <form onSubmit={onSubmit}>
         <div className="space-y-6">
