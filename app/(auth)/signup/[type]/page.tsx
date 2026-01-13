@@ -91,9 +91,9 @@ export default function SignupPage() {
             {
               onSuccess: (response) => {
                 if (response.data) {
-                  const { accessToken, refreshToken, user } = response.data;
-                  if (accessToken && refreshToken && user) {
-                    login(accessToken, refreshToken, user.type);
+                  const { accessToken, user } = response.data;
+                  if (accessToken && user) {
+                    login(accessToken, user.type);
                   }
                 }
                 toast.success("회원가입이 완료되었습니다");

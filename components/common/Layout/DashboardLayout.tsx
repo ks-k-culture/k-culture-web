@@ -55,7 +55,7 @@ export function DashboardLayout({ children, userType = "actor" }: DashboardLayou
           </button>
           <DoDreamLogo size="sm" />
         </div>
-        <div className="w-full p-4 md:p-8">{children}</div>
+        <div className="mx-auto w-full max-w-5xl p-4 md:p-8">{children}</div>
       </main>
     </div>
   );

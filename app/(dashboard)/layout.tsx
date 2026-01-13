@@ -14,15 +14,15 @@ interface DashboardGroupLayoutProps {
 
 export default function DashboardGroupLayout({ children }: DashboardGroupLayoutProps) {
   const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isHydrated } = useAuthStore();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isHydrated && !isAuthenticated) {
       router.replace("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isHydrated, router]);
 
-  if (!isAuthenticated) {
+  if (!isHydrated || !isAuthenticated) {
     return (
       <div className="bg-luxury-black flex min-h-screen items-center justify-center">
         <Spinner size="lg" />

@@ -1,9 +1,12 @@
 /**
  * Orval용 커스텀 fetch mutator
  * - 자동 토큰 주입
+ * - 401 시 자동 토큰 갱신
  * - JSON 직렬화/역직렬화
  * - 에러 핸들링
  */
+
+import Cookies from "js-cookie";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -17,34 +20,82 @@ interface CustomFetchConfig {
   responseType?: "json" | "blob" | "text";
 }
 
-// zustand persist 스토리지에서 토큰 가져오기
 const getAccessToken = (): string | null => {
   if (typeof window === "undefined") return null;
-
-  try {
-    const authStorage = localStorage.getItem("auth-storage");
-    if (!authStorage) return null;
-
-    const parsed = JSON.parse(authStorage);
-    return parsed?.state?.accessToken || null;
-  } catch {
-    return null;
-  }
+  return Cookies.get("accessToken") || null;
 };
 
-export const customFetch = async <T>({
-  url,
-  method,
-  params,
-  data,
-  headers,
-  signal,
-  responseType = "json",
-}: CustomFetchConfig): Promise<T> => {
-  // 토큰 가져오기 (zustand persist에서)
-  const token = getAccessToken();
+const setAccessToken = (token: string): void => {
+  if (typeof window === "undefined") return;
+  Cookies.set("accessToken", token, {
+    expires: 1,
+    path: "/",
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+};
 
-  // URL에 쿼리 파라미터 추가
+const clearAccessToken = (): void => {
+  if (typeof window === "undefined") return;
+  Cookies.remove("accessToken", { path: "/" });
+};
+
+let isRefreshing = false;
+let refreshPromise: Promise<string | null> | null = null;
+
+const refreshAccessToken = async (): Promise<string | null> => {
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
+  }
+
+  isRefreshing = true;
+  refreshPromise = (async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        clearAccessToken();
+        Cookies.remove("userType", { path: "/" });
+
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return null;
+      }
+
+      const data = await response.json();
+      const newAccessToken = data.accessToken || data.data?.accessToken;
+
+      if (newAccessToken) {
+        setAccessToken(newAccessToken);
+        return newAccessToken;
+      }
+
+      return null;
+    } catch {
+      clearAccessToken();
+      return null;
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+};
+
+const executeFetch = async (
+  config: CustomFetchConfig,
+  token: string | null
+): Promise<Response> => {
+  const { url, method, params, data, headers, signal } = config;
+
   const queryString = params
     ? "?" +
     new URLSearchParams(
@@ -69,9 +120,10 @@ export const customFetch = async <T>({
   }
 
   if (headers) {
-    const headersObj = headers instanceof Headers
-      ? Object.fromEntries(headers.entries())
-      : (headers as Record<string, string>);
+    const headersObj =
+      headers instanceof Headers
+        ? Object.fromEntries(headers.entries())
+        : (headers as Record<string, string>);
 
     for (const [key, value] of Object.entries(headersObj)) {
       if (isFormData && key.toLowerCase() === "content-type") {
@@ -81,20 +133,60 @@ export const customFetch = async <T>({
     }
   }
 
-  const response = await fetch(fullUrl, {
+  return fetch(fullUrl, {
     method,
     body: isFormData ? data : data ? JSON.stringify(data) : undefined,
     signal,
     headers: requestHeaders,
+    credentials: "include",
   });
+};
 
-  // 에러 응답 처리
+export const customFetch = async <T>({
+  url,
+  method,
+  params,
+  data,
+  headers,
+  signal,
+  responseType = "json",
+}: CustomFetchConfig): Promise<T> => {
+  const token = getAccessToken();
+
+  let response = await executeFetch(
+    { url, method, params, data, headers, signal, responseType },
+    token
+  );
+
+  if (response.status === 401) {
+    if (!url.includes("/auth/refresh") && !url.includes("/auth/login")) {
+      const newToken = await refreshAccessToken();
+
+      if (newToken) {
+        response = await executeFetch(
+          { url, method, params, data, headers, signal, responseType },
+          newToken
+        );
+      } else {
+        const error = new Error("인증이 만료되었습니다. 다시 로그인해주세요.") as Error & {
+          status: number;
+          code: string;
+        };
+        error.status = 401;
+        error.code = "TOKEN_EXPIRED";
+        throw error;
+      }
+    }
+  }
+
   if (!response.ok) {
     const errorBody = await response.json().catch(() => ({
       error: { message: `HTTP Error: ${response.status}` },
     }));
 
-    const error = new Error(errorBody?.error?.message || `HTTP Error: ${response.status}`) as Error & {
+    const error = new Error(
+      errorBody?.error?.message || errorBody?.message || `HTTP Error: ${response.status}`
+    ) as Error & {
       status: number;
       code: string;
     };
@@ -103,12 +195,10 @@ export const customFetch = async <T>({
     throw error;
   }
 
-  // 204 No Content 처리
   if (response.status === 204) {
     return {} as T;
   }
 
-  // responseType에 따른 응답 처리
   if (responseType === "blob") {
     return response.blob() as Promise<T>;
   }
@@ -122,6 +212,5 @@ export const customFetch = async <T>({
 
 export default customFetch;
 
-// 타입 export (orval에서 필요)
 export type ErrorType<T> = T;
 export type BodyType<T> = T;

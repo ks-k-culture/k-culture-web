@@ -43,9 +43,9 @@ export default function LoginPage() {
       {
         onSuccess: (response) => {
           if (response.data) {
-            const { accessToken, refreshToken, user } = response.data;
-            if (accessToken && refreshToken && user) {
-              login(accessToken, refreshToken, user.type);
+            const { accessToken, user } = response.data;
+            if (accessToken && user) {
+              login(accessToken, user.type);
             }
           }
           toast.success("로그인 성공!");
@@ -87,7 +87,7 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <Button type="submit" variant="gold" fullWidth disabled={!isValid} loading={loginMutation.isPending}>
+        <Button type="submit" variant="gold" fullWidth loading={loginMutation.isPending}>
           로그인
         </Button>
 
