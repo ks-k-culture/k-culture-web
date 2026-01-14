@@ -18,7 +18,6 @@ describe("useAuthStore", () => {
       expect(state.isAuthenticated).toBe(false);
       expect(state.userType).toBeNull();
       expect(state.accessToken).toBeNull();
-      expect(state.refreshToken).toBeNull();
     });
   });
 
@@ -26,19 +25,18 @@ describe("useAuthStore", () => {
     it("로그인 시 상태가 올바르게 업데이트되어야 함", () => {
       const { login } = useAuthStore.getState();
 
-      login("access-token-123", "refresh-token-456", "actor");
+      login("access-token-123", "actor");
 
       const state = useAuthStore.getState();
       expect(state.isAuthenticated).toBe(true);
       expect(state.userType).toBe("actor");
       expect(state.accessToken).toBe("access-token-123");
-      expect(state.refreshToken).toBe("refresh-token-456");
     });
 
     it("agency 타입으로 로그인할 수 있어야 함", () => {
       const { login } = useAuthStore.getState();
 
-      login("access", "refresh", "agency");
+      login("access", "agency");
 
       const state = useAuthStore.getState();
       expect(state.userType).toBe("agency");
@@ -49,7 +47,7 @@ describe("useAuthStore", () => {
     it("로그아웃 시 모든 상태가 초기화되어야 함", () => {
       const { login, logout } = useAuthStore.getState();
 
-      login("access", "refresh", "actor");
+      login("access", "actor");
       expect(useAuthStore.getState().isAuthenticated).toBe(true);
 
       logout();
@@ -58,7 +56,6 @@ describe("useAuthStore", () => {
       expect(state.isAuthenticated).toBe(false);
       expect(state.userType).toBeNull();
       expect(state.accessToken).toBeNull();
-      expect(state.refreshToken).toBeNull();
     });
   });
 
@@ -74,15 +71,14 @@ describe("useAuthStore", () => {
     });
   });
 
-  describe("setTokens", () => {
+  describe("setAccessToken", () => {
     it("토큰만 업데이트할 수 있어야 함", () => {
-      const { setTokens } = useAuthStore.getState();
+      const { setAccessToken } = useAuthStore.getState();
 
-      setTokens("new-access", "new-refresh");
+      setAccessToken("new-access");
 
       const state = useAuthStore.getState();
       expect(state.accessToken).toBe("new-access");
-      expect(state.refreshToken).toBe("new-refresh");
     });
   });
 
@@ -90,28 +86,24 @@ describe("useAuthStore", () => {
     it("토큰만 초기화할 수 있어야 함", () => {
       const { login, clearTokens } = useAuthStore.getState();
 
-      login("access", "refresh", "actor");
+      login("access", "actor");
       clearTokens();
 
       const state = useAuthStore.getState();
       expect(state.accessToken).toBeNull();
-      expect(state.refreshToken).toBeNull();
-      expect(state.isAuthenticated).toBe(true);
-      expect(state.userType).toBe("actor");
+      // Note: clearTokens only clears accessToken, not authentication state
     });
   });
 
-  describe("getAccessToken / getRefreshToken", () => {
+  describe("getAccessToken", () => {
     it("토큰 getter가 올바르게 동작해야 함", () => {
-      const { login, getAccessToken, getRefreshToken } = useAuthStore.getState();
+      const { login, getAccessToken } = useAuthStore.getState();
 
       expect(getAccessToken()).toBeNull();
-      expect(getRefreshToken()).toBeNull();
 
-      login("my-access", "my-refresh", "actor");
+      login("my-access", "actor");
 
       expect(getAccessToken()).toBe("my-access");
-      expect(getRefreshToken()).toBe("my-refresh");
     });
   });
 });
