@@ -16,6 +16,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from './activityResponse';
 export * from './actorDashboardStats';
 export * from './actorDetail';
 export * from './actorRecommendation';

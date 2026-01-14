@@ -8,7 +8,7 @@ import { DarkCard } from "@/components/common";
 import { EyeIcon, HeartIcon, PhoneIcon, PlusIcon } from "@/components/common/Misc/Icons";
 
 import { useGetDashboardStats } from "@/src/dashboard/dashboard";
-import type { ActorDashboardStats } from "@/src/model";
+import type { ActivityResponse, ActorDashboardStats } from "@/src/model";
 
 import { StatCard } from "./StatCard";
 
@@ -17,6 +17,7 @@ const DEFAULT_STATS: ActorDashboardStats = {
   likes: 0,
   contactRequests: 0,
   profileCompleteness: 0,
+  recentActivities: [],
 };
 
 export function ActorDashboard() {
@@ -47,7 +48,7 @@ export function ActorDashboard() {
       <DashboardHeader />
       <ProfileCompleteness completeness={stats.profileCompleteness} />
       <StatsGrid stats={stats} />
-      <RecentActivity />
+      <RecentActivity activities={stats.recentActivities ?? []} />
     </div>
   );
 }
@@ -130,10 +131,23 @@ function StatsGrid({ stats }: { stats: ActorDashboardStats }) {
   );
 }
 
-function RecentActivity() {
-  // TODO: 백엔드 API 구현 후 연동 예정
-  const activities: { type: "view" | "like" | "contact"; message: string; time: string }[] = [];
+function formatTimeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
 
+  if (diffMins < 1) return "방금 전";
+  if (diffMins < 60) return `${diffMins}분 전`;
+  if (diffHours < 24) return `${diffHours}시간 전`;
+  if (diffDays < 7) return `${diffDays}일 전`;
+
+  return date.toLocaleDateString("ko-KR", { month: "short", day: "numeric" });
+}
+
+function RecentActivity({ activities }: { activities: ActivityResponse[] }) {
   const iconConfig = {
     view: { icon: EyeIcon, bgColor: "bg-blue-500/10", color: "text-blue-400" },
     like: { icon: HeartIcon, bgColor: "bg-red-500/10", color: "text-red-400" },
@@ -147,16 +161,17 @@ function RecentActivity() {
         <p className="text-muted-gray py-8 text-center text-sm">아직 활동 내역이 없습니다</p>
       ) : (
         <div className="space-y-4">
-          {activities.map((activity, index) => {
-            const { icon: Icon, bgColor, color } = iconConfig[activity.type];
+          {activities.map((activity) => {
+            const config = iconConfig[activity.type] || iconConfig.view;
+            const { icon: Icon, bgColor, color } = config;
             return (
-              <div key={index} className="flex items-center gap-4 text-sm">
+              <div key={activity.id} className="flex items-center gap-4 text-sm">
                 <div className={`flex h-8 w-8 items-center justify-center rounded-full ${bgColor}`}>
                   <Icon className={`h-4 w-4 ${color}`} />
                 </div>
                 <div className="flex-1">
                   <p className="text-warm-gray">{activity.message}</p>
-                  <p className="text-muted-gray">{activity.time}</p>
+                  <p className="text-muted-gray">{formatTimeAgo(activity.createdAt)}</p>
                 </div>
               </div>
             );
