@@ -6,4 +6,5 @@ export { default as ActorCarousel } from "./ActorCarousel";
 export { default as FilterBar } from "./FilterBar";
 export { default as FilterModal } from "./FilterModal";
 export { Modal } from "./Modal";
+export { ConfirmDialog, useConfirmDialog, type ConfirmDialogProps } from "./ConfirmDialog";
 export { MSWProvider } from "./MSWProvider";

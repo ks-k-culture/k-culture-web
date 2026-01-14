@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Button, Spinner } from "@/components/ui";
 
 import { DarkCard, DashboardLayout, EmptyState, PageHeader } from "@/components/common";
+import { useConfirmDialog } from "@/components/common/Misc";
 import { PencilIcon, PlayIcon, PlusIcon, TrashIcon } from "@/components/common/Misc/Icons";
 
 import { type ShowreelResponse, useDeleteShowreel, useGetMyShowreels } from "@/lib/showreel-api";
@@ -20,6 +21,7 @@ export default function ShowreelsPage() {
   const [editingItem, setEditingItem] = useState<ShowreelResponse | null>(null);
   const [playingVideo, setPlayingVideo] = useState<{ url: string; title?: string } | null>(null);
   const [, startTransition] = useTransition();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const { data: showreelsData, isLoading, refetch } = useGetMyShowreels();
   const showreels = showreelsData?.data || [];
@@ -41,7 +43,16 @@ export default function ShowreelsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("정말 이 쇼릴을 삭제하시겠습니까?")) return;
+    const confirmed = await confirm({
+      title: "쇼릴 삭제",
+      description: "정말 이 쇼릴을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmText: "삭제",
+      cancelText: "취소",
+      variant: "danger",
+      icon: <TrashIcon className="h-6 w-6" />,
+    });
+
+    if (!confirmed) return;
 
     startTransition(() => {
       removeOptimistic(id);
@@ -200,6 +211,8 @@ export default function ShowreelsPage() {
           title={playingVideo.title}
         />
       )}
+
+      {ConfirmDialog}
     </DashboardLayout>
   );
 }

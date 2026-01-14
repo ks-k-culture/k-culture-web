@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { PageLayout } from "@/components/common";
+import { FormInput, FormTextarea } from "@/components/common/Form";
 
 import { useAuthStore } from "@/stores/useAuthStore";
 
@@ -30,7 +31,7 @@ function ActorDetailSkeleton() {
           <div className="bg-luxury-secondary h-4 w-32 rounded" />
           <div className="bg-luxury-secondary h-24 w-full rounded" />
         </div>
-        <div className="bg-luxury-secondary aspect-[3/4] flex-1 lg:aspect-auto lg:h-[600px]" />
+        <div className="bg-luxury-secondary aspect-3/4 flex-1 lg:aspect-auto lg:h-[600px]" />
       </div>
     </PageLayout>
   );
@@ -245,7 +246,7 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
           </svg>
         </button>
-        <button className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 text-white transition-transform hover:scale-110">
+        <button className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-purple-600 via-pink-500 to-orange-400 text-white transition-transform hover:scale-110">
           <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
           </svg>
@@ -281,7 +282,7 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         {profilePhotos.length > 0 ? (
           <div className="grid grid-cols-3 gap-3">
             {profilePhotos.map((photo, i) => (
-              <div key={i} className="relative aspect-[3/4] overflow-hidden rounded-lg">
+              <div key={i} className="relative aspect-3/4 overflow-hidden rounded-lg">
                 <Image
                   src={photo}
                   alt={`프로필 사진 ${i + 1}`}
@@ -322,30 +323,14 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
             handleCastingRequest(message);
           }}
         >
-          <input
-            name="company"
-            type="text"
-            placeholder="소속을 입력해 주세요."
-            className="bg-luxury-tertiary text-ivory placeholder:text-muted-gray border-border focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors outline-none"
-          />
-          <input
-            name="manager"
-            type="text"
-            placeholder="담당자님 성함을 입력해 주세요."
-            className="bg-luxury-tertiary text-ivory placeholder:text-muted-gray border-border focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors outline-none"
-          />
-          <textarea
+          <FormInput name="company" placeholder="소속을 입력해 주세요." />
+          <FormInput name="manager" placeholder="담당자님 성함을 입력해 주세요." />
+          <FormTextarea
             name="message"
             rows={4}
             placeholder="전달하고 싶은 메시지를 입력해 주세요. 작품제목과 출연날짜 등 구체적으로 작성 부탁드립니다."
-            className="bg-luxury-tertiary text-ivory placeholder:text-muted-gray border-border focus:border-gold w-full resize-none rounded-lg border px-4 py-3 transition-colors outline-none"
           />
-          <input
-            name="contact"
-            type="text"
-            placeholder="답장을 받으실 연락처(전화번호 또는 이메일)를 입력해 주세요."
-            className="bg-luxury-tertiary text-ivory placeholder:text-muted-gray border-border focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors outline-none"
-          />
+          <FormInput name="contact" placeholder="답장을 받으실 연락처(전화번호 또는 이메일)를 입력해 주세요." />
           <button
             type="submit"
             disabled={isContacting}

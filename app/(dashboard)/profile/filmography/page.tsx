@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Button, Spinner } from "@/components/ui";
 
 import { DarkCard, DashboardLayout, EmptyState, PageHeader } from "@/components/common";
+import { useConfirmDialog } from "@/components/common/Misc";
 import { PencilIcon, PlusIcon, TrashIcon } from "@/components/common/Misc/Icons";
 
 import {
@@ -40,6 +41,7 @@ export default function FilmographyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<FilmographyItem | null>(null);
   const [, startTransition] = useTransition();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const { data: profileData } = useGetMyProfile();
   const userId = profileData?.data?.id;
@@ -84,8 +86,17 @@ export default function FilmographyPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    if (!confirm("정말 이 필모그래피를 삭제하시겠습니까?")) return;
+  const handleDelete = async (id: string) => {
+    const confirmed = await confirm({
+      title: "필모그래피 삭제",
+      description: "정말 이 필모그래피를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmText: "삭제",
+      cancelText: "취소",
+      variant: "danger",
+      icon: <TrashIcon className="h-6 w-6" />,
+    });
+
+    if (!confirmed) return;
 
     startTransition(() => {
       removeOptimistic(id);
@@ -204,6 +215,8 @@ export default function FilmographyPage() {
         onSuccess={handleModalSuccess}
         editingItem={editingItem}
       />
+
+      {ConfirmDialog}
     </DashboardLayout>
   );
 }
