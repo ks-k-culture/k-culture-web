@@ -3,14 +3,13 @@
 import { useOptimistic, useState, useTransition } from "react";
 
 import Image from "next/image";
-import Link from "next/link";
 
 import { toast } from "sonner";
 
 import { Button, Spinner } from "@/components/ui";
 
-import { DarkCard, DashboardLayout } from "@/components/common";
-import { ChevronLeftIcon, PencilIcon, PlayIcon, PlusIcon, TrashIcon } from "@/components/common/Misc/Icons";
+import { DarkCard, DashboardLayout, EmptyState, PageHeader } from "@/components/common";
+import { PencilIcon, PlayIcon, PlusIcon, TrashIcon } from "@/components/common/Misc/Icons";
 
 import { type ShowreelResponse, useDeleteShowreel, useGetMyShowreels } from "@/lib/showreel-api";
 
@@ -74,40 +73,31 @@ export default function ShowreelsPage() {
   return (
     <DashboardLayout>
       <div className="max-w-4xl space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/profile">
-              <Button variant="ghost" size="sm" className="text-muted-gray hover:text-ivory">
-                <ChevronLeftIcon className="h-5 w-5" />
-              </Button>
-            </Link>
-            <h1 className="text-heading-xl text-ivory">쇼릴 관리</h1>
-          </div>
-          <Button variant="gold" size="sm" onClick={handleAdd}>
-            <PlusIcon className="mr-1 h-4 w-4" /> 추가
-          </Button>
-        </div>
-
-        <p className="text-muted-gray text-sm">
-          쇼릴은 배우님의 연기 하이라이트를 보여주는 영상입니다. YouTube나 Vimeo 링크를 등록해주세요.
-        </p>
+        <PageHeader
+          title="쇼릴 관리"
+          backHref="/profile"
+          description="쇼릴은 배우님의 연기 하이라이트를 보여주는 영상입니다. YouTube나 Vimeo 링크를 등록해주세요."
+          action={
+            <Button variant="gold" size="sm" onClick={handleAdd}>
+              <PlusIcon className="mr-1 h-4 w-4" /> 추가
+            </Button>
+          }
+        />
 
         {isLoading ? (
           <div className="flex h-64 items-center justify-center">
             <Spinner size="md" />
           </div>
         ) : showreels.length === 0 ? (
-          <DarkCard>
-            <div className="py-16 text-center">
-              <div className="bg-gold/20 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-                <PlayIcon className="text-gold h-8 w-8" />
-              </div>
-              <p className="text-muted-gray mb-4">아직 등록된 쇼릴이 없습니다.</p>
+          <EmptyState
+            icon={<PlayIcon className="text-gold h-8 w-8" />}
+            description="아직 등록된 쇼릴이 없습니다."
+            action={
               <Button variant="gold-outline" onClick={handleAdd}>
                 <PlusIcon className="mr-1 h-4 w-4" /> 첫 쇼릴 추가
               </Button>
-            </div>
-          </DarkCard>
+            }
+          />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {optimisticShowreels.map((item) => (

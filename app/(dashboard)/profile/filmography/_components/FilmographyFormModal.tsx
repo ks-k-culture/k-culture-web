@@ -9,7 +9,8 @@ import { z } from "zod";
 
 import { Button, Spinner } from "@/components/ui";
 
-import { Modal } from "@/components/common";
+import { FormInput, FormSelect } from "@/components/common/Form";
+import { Modal } from "@/components/common/Misc";
 
 import { useCreateFilmography, useUpdateFilmography } from "@/src/filmography/filmography";
 import type { FilmographyItem } from "@/src/model";
@@ -39,6 +40,9 @@ interface FilmographyFormModalProps {
   onSuccess: () => void;
   editingItem: FilmographyItem | null;
 }
+
+const TYPE_OPTIONS = Object.values(FilmographyItemType).map((type) => ({ value: type, label: type }));
+const ROLE_TYPE_OPTIONS = Object.values(FilmographyItemRoleType).map((type) => ({ value: type, label: type }));
 
 export function FilmographyFormModal({ isOpen, onClose, onSuccess, editingItem }: FilmographyFormModalProps) {
   const isEditing = !!editingItem;
@@ -130,91 +134,51 @@ export function FilmographyFormModal({ isOpen, onClose, onSuccess, editingItem }
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={isEditing ? "필모그래피 수정" : "필모그래피 추가"}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <div>
-          <label className="text-ivory mb-2 block text-sm font-medium">
-            작품 제목 <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            {...register("title")}
-            className="border-luxury-tertiary bg-luxury-secondary text-ivory focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors focus:outline-none"
-            placeholder="작품 제목을 입력하세요"
+        <FormInput
+          label="작품 제목"
+          required
+          placeholder="작품 제목을 입력하세요"
+          error={errors.title?.message}
+          {...register("title")}
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormInput
+            type="number"
+            label="출연 연도"
+            required
+            placeholder="2024"
+            error={errors.year?.message}
+            {...register("year")}
           />
-          {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>}
+
+          <FormSelect
+            label="작품 유형"
+            required
+            options={TYPE_OPTIONS}
+            error={errors.type?.message}
+            {...register("type")}
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-ivory mb-2 block text-sm font-medium">
-              출연 연도 <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              {...register("year")}
-              className="border-luxury-tertiary bg-luxury-secondary text-ivory focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors focus:outline-none"
-              placeholder="2024"
-            />
-            {errors.year && <p className="mt-1 text-sm text-red-500">{errors.year.message}</p>}
-          </div>
+          <FormInput label="배역명" placeholder="예: 김철수 역" error={errors.role?.message} {...register("role")} />
 
-          <div>
-            <label className="text-ivory mb-2 block text-sm font-medium">
-              작품 유형 <span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register("type")}
-              className="border-luxury-tertiary bg-luxury-secondary text-ivory focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors focus:outline-none"
-            >
-              {Object.values(FilmographyItemType).map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-            {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-ivory mb-2 block text-sm font-medium">배역명</label>
-            <input
-              type="text"
-              {...register("role")}
-              className="border-luxury-tertiary bg-luxury-secondary text-ivory focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors focus:outline-none"
-              placeholder="예: 김철수 역"
-            />
-            {errors.role && <p className="mt-1 text-sm text-red-500">{errors.role.message}</p>}
-          </div>
-
-          <div>
-            <label className="text-ivory mb-2 block text-sm font-medium">
-              역할 유형 <span className="text-red-500">*</span>
-            </label>
-            <select
-              {...register("roleType")}
-              className="border-luxury-tertiary bg-luxury-secondary text-ivory focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors focus:outline-none"
-            >
-              {Object.values(FilmographyItemRoleType).map((roleType) => (
-                <option key={roleType} value={roleType}>
-                  {roleType}
-                </option>
-              ))}
-            </select>
-            {errors.roleType && <p className="mt-1 text-sm text-red-500">{errors.roleType.message}</p>}
-          </div>
-        </div>
-
-        <div>
-          <label className="text-ivory mb-2 block text-sm font-medium">썸네일 URL</label>
-          <input
-            type="text"
-            {...register("thumbnail")}
-            className="border-luxury-tertiary bg-luxury-secondary text-ivory focus:border-gold w-full rounded-lg border px-4 py-3 transition-colors focus:outline-none"
-            placeholder="https://example.com/image.jpg"
+          <FormSelect
+            label="역할 유형"
+            required
+            options={ROLE_TYPE_OPTIONS}
+            error={errors.roleType?.message}
+            {...register("roleType")}
           />
-          {errors.thumbnail && <p className="mt-1 text-sm text-red-500">{errors.thumbnail.message}</p>}
         </div>
+
+        <FormInput
+          label="썸네일 URL"
+          placeholder="https://example.com/image.jpg"
+          error={errors.thumbnail?.message}
+          {...register("thumbnail")}
+        />
 
         <div className="flex justify-end gap-3 pt-4">
           <Button type="button" variant="ghost" onClick={handleClose} disabled={isPending}>

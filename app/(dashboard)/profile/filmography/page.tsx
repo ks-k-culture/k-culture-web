@@ -3,7 +3,6 @@
 import { useOptimistic, useState, useTransition } from "react";
 
 import Image from "next/image";
-import Link from "next/link";
 
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -11,8 +10,8 @@ import { toast } from "sonner";
 
 import { Button, Spinner } from "@/components/ui";
 
-import { DarkCard, DashboardLayout } from "@/components/common";
-import { ChevronLeftIcon, PencilIcon, PlusIcon, TrashIcon } from "@/components/common/Misc/Icons";
+import { DarkCard, DashboardLayout, EmptyState, PageHeader } from "@/components/common";
+import { PencilIcon, PlusIcon, TrashIcon } from "@/components/common/Misc/Icons";
 
 import {
   getGetActorFilmographyQueryKey,
@@ -85,10 +84,9 @@ export default function FilmographyPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (!confirm("정말 이 필모그래피를 삭제하시겠습니까?")) return;
 
-    // React 19 낙관적 업데이트 - 즉시 UI에서 제거
     startTransition(() => {
       removeOptimistic(id);
     });
@@ -111,33 +109,29 @@ export default function FilmographyPage() {
   return (
     <DashboardLayout>
       <div className="max-w-4xl space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/profile">
-              <Button variant="ghost" size="sm" className="text-muted-gray hover:text-ivory">
-                <ChevronLeftIcon className="h-5 w-5" />
-              </Button>
-            </Link>
-            <h1 className="text-heading-xl text-ivory">필모그래피 관리</h1>
-          </div>
-          <Button variant="gold" size="sm" onClick={handleAdd}>
-            <PlusIcon className="mr-1 h-4 w-4" /> 추가
-          </Button>
-        </div>
+        <PageHeader
+          title="필모그래피 관리"
+          backHref="/profile"
+          action={
+            <Button variant="gold" size="sm" onClick={handleAdd}>
+              <PlusIcon className="mr-1 h-4 w-4" /> 추가
+            </Button>
+          }
+        />
 
         {isLoading ? (
           <div className="flex h-64 items-center justify-center">
             <Spinner size="md" />
           </div>
         ) : filmography.length === 0 ? (
-          <DarkCard>
-            <div className="py-16 text-center">
-              <p className="text-muted-gray mb-4">아직 등록된 필모그래피가 없습니다.</p>
+          <EmptyState
+            description="아직 등록된 필모그래피가 없습니다."
+            action={
               <Button variant="gold-outline" onClick={handleAdd}>
                 <PlusIcon className="mr-1 h-4 w-4" /> 첫 필모그래피 추가
               </Button>
-            </div>
-          </DarkCard>
+            }
+          />
         ) : (
           <div className="space-y-8">
             {groupedFilmography.map(({ year, items }) => (
