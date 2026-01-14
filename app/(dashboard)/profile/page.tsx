@@ -6,9 +6,10 @@ import Link from "next/link";
 import { Button, Spinner } from "@/components/ui";
 
 import { DarkCard, DashboardLayout } from "@/components/common";
-import { PencilIcon } from "@/components/common/Misc/Icons";
+import { PencilIcon, PlayIcon } from "@/components/common/Misc/Icons";
 
 import { useActorProfile } from "@/lib/hooks/use-actor-profile";
+import { useGetMyShowreels } from "@/lib/showreel-api";
 
 import { useGetActorFilmography } from "@/src/filmography/filmography";
 import type { FilmographyItem } from "@/src/model";
@@ -21,6 +22,9 @@ export default function ProfilePage() {
     query: { enabled: !!profile?.id },
   });
   const filmography = (filmographyData?.data as FilmographyItem[] | undefined) || [];
+
+  const { data: showreelsData } = useGetMyShowreels();
+  const showreels = showreelsData?.data || [];
 
   if (isLoading || !profile) {
     return (
@@ -161,14 +165,47 @@ export default function ProfilePage() {
 
         <DarkCard>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-ivory text-lg font-semibold">쇼릴</h2>
-            <Link href="/profile/showreel">
+            <h2 className="text-ivory text-lg font-semibold">
+              쇼릴 {showreels.length > 0 && <span className="text-gold">({showreels.length})</span>}
+            </h2>
+            <Link href="/profile/showreels">
               <Button variant="gold-ghost" size="sm">
                 관리
               </Button>
             </Link>
           </div>
-          <p className="text-muted-gray py-8 text-center">쇼릴을 추가해보세요</p>
+          {showreels.length === 0 ? (
+            <p className="text-muted-gray py-8 text-center">쇼릴을 추가해보세요</p>
+          ) : (
+            <div className="space-y-3">
+              {showreels.slice(0, 3).map((item) => (
+                <div key={item.id} className="bg-luxury-tertiary flex items-center gap-4 rounded-lg p-3">
+                  <div className="bg-luxury-secondary relative flex h-16 w-24 shrink-0 items-center justify-center overflow-hidden rounded">
+                    {item.thumbnailUrl ? (
+                      <Image src={item.thumbnailUrl} alt={item.title} fill className="object-cover" unoptimized />
+                    ) : (
+                      <PlayIcon className="text-muted-gray h-6 w-6" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-ivory truncate font-medium">{item.title}</p>
+                    <p className="text-muted-gray text-sm">
+                      {item.workTitle && `${item.workTitle} · `}
+                      {item.durationFormatted || ""}
+                    </p>
+                  </div>
+                  {item.genre && (
+                    <span className="bg-gold/20 text-gold shrink-0 rounded px-2 py-0.5 text-xs">{item.genre}</span>
+                  )}
+                </div>
+              ))}
+              {showreels.length > 3 && (
+                <Link href="/profile/showreels" className="text-gold block pt-2 text-center text-sm hover:underline">
+                  +{showreels.length - 3}개 더 보기
+                </Link>
+              )}
+            </div>
+          )}
         </DarkCard>
       </div>
     </DashboardLayout>
