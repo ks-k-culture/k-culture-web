@@ -6,9 +6,10 @@ import { UserIcon } from "@/components/common/Misc/Icons";
 interface AccountInfoSectionProps {
   userEmail: string;
   userType: "actor" | "agency";
+  onChangePassword: () => void;
 }
 
-export function AccountInfoSection({ userEmail, userType }: AccountInfoSectionProps) {
+export function AccountInfoSection({ userEmail, userType, onChangePassword }: AccountInfoSectionProps) {
   return (
     <DarkCard>
       <div className="mb-6 flex items-center gap-4">
@@ -34,7 +35,7 @@ export function AccountInfoSection({ userEmail, userType }: AccountInfoSectionPr
             <p className="text-ivory">비밀번호</p>
             <p className="text-muted-gray text-sm">••••••••</p>
           </div>
-          <Button variant="gold-ghost" size="sm">
+          <Button variant="gold-ghost" size="sm" onClick={onChangePassword}>
             변경
           </Button>
         </div>

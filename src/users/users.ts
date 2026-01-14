@@ -35,6 +35,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ChangePassword200,
+  ChangePasswordRequest,
+  ErrorResponse,
   GetMyProfile200,
   GetNotificationSettings200,
   NotificationSettings,
@@ -383,6 +386,69 @@ export const useUpdateNotificationSettings = <TError = ErrorType<UnauthorizedErr
       > => {
 
       const mutationOptions = getUpdateNotificationSettingsMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
+ * @summary 비밀번호 변경
+ */
+export const changePassword = (
+    changePasswordRequest: BodyType<ChangePasswordRequest>,
+ ) => {
+      
+      
+      return customFetch<ChangePassword200>(
+      {url: `/api/users/password`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: changePasswordRequest
+    },
+      );
+    }
+  
+
+
+export const getChangePasswordMutationOptions = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: BodyType<ChangePasswordRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: BodyType<ChangePasswordRequest>}, TContext> => {
+
+const mutationKey = ['changePassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changePassword>>, {data: BodyType<ChangePasswordRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  changePassword(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof changePassword>>>
+    export type ChangePasswordMutationBody = BodyType<ChangePasswordRequest>
+    export type ChangePasswordMutationError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>
+
+    /**
+ * @summary 비밀번호 변경
+ */
+export const useChangePassword = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: BodyType<ChangePasswordRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof changePassword>>,
+        TError,
+        {data: BodyType<ChangePasswordRequest>},
+        TContext
+      > => {
+
+      const mutationOptions = getChangePasswordMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

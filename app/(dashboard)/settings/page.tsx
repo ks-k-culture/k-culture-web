@@ -15,7 +15,12 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useDeleteAccount, useLogout } from "@/src/auth/auth";
 import { useGetMyProfile, useGetNotificationSettings, useUpdateNotificationSettings } from "@/src/users/users";
 
-import { AccountInfoSection, AccountManagementSection, NotificationSettingsSection } from "./_components";
+import {
+  AccountInfoSection,
+  AccountManagementSection,
+  ChangePasswordModal,
+  NotificationSettingsSection,
+} from "./_components";
 
 export default function SettingsPage() {
   const queryClient = useQueryClient();
@@ -28,6 +33,7 @@ export default function SettingsPage() {
   const [marketingNotification, setMarketingNotification] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   const updateSettingsMutation = useUpdateNotificationSettings();
   const logoutMutation = useLogout();
@@ -110,7 +116,11 @@ export default function SettingsPage() {
           <p className="text-muted-gray mt-1">계정 및 알림 설정을 관리하세요</p>
         </div>
 
-        <AccountInfoSection userEmail={userEmail} userType={userType} />
+        <AccountInfoSection
+          userEmail={userEmail}
+          userType={userType}
+          onChangePassword={() => setChangePasswordOpen(true)}
+        />
 
         <NotificationSettingsSection
           castingNotification={castingNotification}
@@ -151,6 +161,8 @@ export default function SettingsPage() {
         variant="danger"
         loading={deleteAccountMutation.isPending}
       />
+
+      <ChangePasswordModal isOpen={changePasswordOpen} onClose={() => setChangePasswordOpen(false)} />
     </DashboardLayout>
   );
 }

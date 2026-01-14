@@ -32,6 +32,7 @@ import {
   UserType
 } from '.././model';
 import type {
+  ChangePassword200,
   GetMyProfile200,
   GetNotificationSettings200,
   UpdateMyProfile200,
@@ -46,6 +47,8 @@ export const getUpdateMyProfileResponseMock = (overrideResponse: Partial< Update
 export const getGetNotificationSettingsResponseMock = (overrideResponse: Partial< GetNotificationSettings200 > = {}): GetNotificationSettings200 => ({success: true, data: {castingNotification: faker.datatype.boolean(), messageNotification: faker.datatype.boolean(), marketingNotification: faker.datatype.boolean()}, ...overrideResponse})
 
 export const getUpdateNotificationSettingsResponseMock = (overrideResponse: Partial< UpdateNotificationSettings200 > = {}): UpdateNotificationSettings200 => ({success: true, data: {castingNotification: faker.datatype.boolean(), messageNotification: faker.datatype.boolean(), marketingNotification: faker.datatype.boolean()}, ...overrideResponse})
+
+export const getChangePasswordResponseMock = (overrideResponse: Partial< ChangePassword200 > = {}): ChangePassword200 => ({success: true, ...overrideResponse})
 
 
 export const getGetMyProfileMockHandler = (overrideResponse?: GetMyProfile200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetMyProfile200> | GetMyProfile200), options?: RequestHandlerOptions) => {
@@ -95,9 +98,22 @@ export const getUpdateNotificationSettingsMockHandler = (overrideResponse?: Upda
       })
   }, options)
 }
+
+export const getChangePasswordMockHandler = (overrideResponse?: ChangePassword200 | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ChangePassword200> | ChangePassword200), options?: RequestHandlerOptions) => {
+  return http.put('*/api/users/password', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getChangePasswordResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  }, options)
+}
 export const getUsersMock = () => [
   getGetMyProfileMockHandler(),
   getUpdateMyProfileMockHandler(),
   getGetNotificationSettingsMockHandler(),
-  getUpdateNotificationSettingsMockHandler()
+  getUpdateNotificationSettingsMockHandler(),
+  getChangePasswordMockHandler()
 ]

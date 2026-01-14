@@ -28,6 +28,8 @@ export * from './agencyCreateRequest';
 export * from './agencyDashboardStats';
 export * from './agencyProfile';
 export * from './authTokens';
+export * from './changePassword200';
+export * from './changePasswordRequest';
 export * from './characterCreateRequest';
 export * from './characterCreateRequestGender';
 export * from './characterCreateRequestRoleType';
