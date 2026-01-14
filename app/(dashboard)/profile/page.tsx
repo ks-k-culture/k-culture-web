@@ -10,9 +10,17 @@ import { PencilIcon } from "@/components/common/Misc/Icons";
 
 import { useActorProfile } from "@/lib/hooks/use-actor-profile";
 
+import { useGetActorFilmography } from "@/src/filmography/filmography";
+import type { FilmographyItem } from "@/src/model";
+
 export default function ProfilePage() {
   const { data: profileData, isLoading } = useActorProfile();
   const profile = profileData?.data;
+
+  const { data: filmographyData } = useGetActorFilmography(profile?.id || "", undefined, {
+    query: { enabled: !!profile?.id },
+  });
+  const filmography = (filmographyData?.data as FilmographyItem[] | undefined) || [];
 
   if (isLoading || !profile) {
     return (
@@ -118,14 +126,37 @@ export default function ProfilePage() {
 
         <DarkCard>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-ivory text-lg font-semibold">필모그래피</h2>
+            <h2 className="text-ivory text-lg font-semibold">
+              필모그래피 {filmography.length > 0 && <span className="text-gold">({filmography.length})</span>}
+            </h2>
             <Link href="/profile/filmography">
               <Button variant="gold-ghost" size="sm">
                 관리
               </Button>
             </Link>
           </div>
-          <p className="text-muted-gray py-8 text-center">필모그래피를 추가해보세요</p>
+          {filmography.length === 0 ? (
+            <p className="text-muted-gray py-8 text-center">필모그래피를 추가해보세요</p>
+          ) : (
+            <div className="space-y-3">
+              {filmography.slice(0, 3).map((item) => (
+                <div key={item.id} className="bg-luxury-tertiary flex items-center justify-between rounded-lg p-3">
+                  <div>
+                    <p className="text-ivory font-medium">{item.title}</p>
+                    <p className="text-muted-gray text-sm">
+                      {item.year} · {item.type} · {item.roleType}
+                    </p>
+                  </div>
+                  <span className="bg-gold/20 text-gold rounded px-2 py-0.5 text-xs">{item.role || "역할 미정"}</span>
+                </div>
+              ))}
+              {filmography.length > 3 && (
+                <Link href="/profile/filmography" className="text-gold block pt-2 text-center text-sm hover:underline">
+                  +{filmography.length - 3}개 더 보기
+                </Link>
+              )}
+            </div>
+          )}
         </DarkCard>
 
         <DarkCard>

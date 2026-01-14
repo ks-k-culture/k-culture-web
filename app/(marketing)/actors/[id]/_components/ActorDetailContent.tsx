@@ -15,9 +15,10 @@ import { useAuthStore } from "@/stores/useAuthStore";
 
 import { useContactActor, useGetActorDetail } from "@/src/actors/actors";
 import { getGetFavoritesQueryKey, useAddFavorite, useDeleteFavorite, useGetFavorites } from "@/src/favorites/favorites";
-import { FavoriteType } from "@/src/model";
+import { useGetActorFilmography } from "@/src/filmography/filmography";
+import { FavoriteType, FilmographyItem } from "@/src/model";
 
-import { ActorProfileHeader, CastingRequestModal, ContactInfoModal } from "./";
+import { ActorProfileHeader, CastingRequestModal, ContactInfoModal, FilmographySection } from "./";
 
 function ActorDetailSkeleton() {
   return (
@@ -48,15 +49,17 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
   const [showCastingModal, setShowCastingModal] = useState(false);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  // 배우 상세 정보 조회
   const { data, isLoading } = useGetActorDetail(actorId, {
     query: { enabled: !!actorId },
   });
 
-  // 섭외 요청
+  const { data: filmographyData } = useGetActorFilmography(actorId, undefined, {
+    query: { enabled: !!actorId },
+  });
+  const filmography = (filmographyData?.data as FilmographyItem[] | undefined) || [];
+
   const { mutate: contactActor, isPending: isContacting } = useContactActor();
 
-  // 찜 관련
   const { data: favoritesData } = useGetFavorites(
     isAuthenticated ? { type: "actor" as unknown as FavoriteType } : undefined,
     { query: { enabled: isAuthenticated } }
@@ -66,7 +69,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
 
   const actor = data?.data;
 
-  // 현재 배우가 찜 되어 있는지 확인
   type BackendFavoriteResponse = {
     content: Array<{ id: string; targetId: string }>;
   };
@@ -182,7 +184,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
 
   return (
     <PageLayout className="bg-luxury-black">
-      {/* 프로필 헤더 */}
       <ActorProfileHeader
         name={actorData.stageName || actorData.name}
         englishName={actorData.stageName ? actorData.name : undefined}
@@ -201,7 +202,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         onShareClick={handleShare}
       />
 
-      {/* 분위기/이미지 태그 */}
       <section className="bg-luxury-black px-6 py-6">
         <div className="flex flex-wrap gap-2">
           {MOOD_TAGS.map((tag) => (
@@ -215,7 +215,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </div>
       </section>
 
-      {/* 특기 태그 */}
       {actorData.skills && actorData.skills.length > 0 && (
         <section className="bg-luxury-black px-6 py-4">
           <div className="flex flex-wrap gap-2">
@@ -228,7 +227,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </section>
       )}
 
-      {/* 가능 언어 태그 */}
       {actorData.languages && actorData.languages.length > 0 && (
         <section className="bg-luxury-black px-6 py-4">
           <div className="flex flex-wrap gap-2">
@@ -241,7 +239,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </section>
       )}
 
-      {/* 소셜 미디어 링크 (예시) */}
       <section className="bg-luxury-black flex gap-3 px-6 py-4">
         <button className="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-white transition-transform hover:scale-110">
           <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -255,7 +252,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </button>
       </section>
 
-      {/* 가격 정보 */}
       <section className="bg-luxury-secondary border-border border-y px-6 py-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
@@ -273,7 +269,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </div>
       </section>
 
-      {/* 연기영상 섹션 */}
       <section className="bg-luxury-black px-6 py-8">
         <h2 className="text-heading-md text-ivory border-border mb-6 border-b pb-2">연기영상</h2>
         <div className="text-muted-gray py-12 text-center">
@@ -281,7 +276,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </div>
       </section>
 
-      {/* 프로필 사진 갤러리 */}
       <section className="bg-luxury-black px-6 py-8">
         <h2 className="text-heading-md text-ivory border-border mb-6 border-b pb-2">프로필 사진</h2>
         {profilePhotos.length > 0 ? (
@@ -304,7 +298,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         )}
       </section>
 
-      {/* 출연 이미지 갤러리 */}
       <section className="bg-luxury-black px-6 py-8">
         <h2 className="text-heading-md text-ivory border-border mb-6 border-b pb-2">출연 이미지</h2>
         <div className="text-muted-gray py-12 text-center">
@@ -312,7 +305,8 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </div>
       </section>
 
-      {/* 인라인 섭외 요청 폼 */}
+      <FilmographySection filmography={filmography} />
+
       <section className="bg-luxury-secondary px-6 py-10">
         <h2 className="text-heading-lg text-ivory mb-8 text-center">
           지금 보고 계신 <span className="text-gold">{actorData.stageName || actorData.name}</span> 님을 섭외하고
@@ -368,7 +362,6 @@ export function ActorDetailContent({ actorId }: ActorDetailContentProps) {
         </p>
       </section>
 
-      {/* 모달들 */}
       <ContactInfoModal
         isOpen={showContactModal}
         onClose={() => setShowContactModal(false)}
