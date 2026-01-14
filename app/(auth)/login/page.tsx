@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useForm } from "react-hook-form";
@@ -20,6 +22,7 @@ import { useLogin } from "@/src/auth/auth";
 
 export default function LoginPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const login = useAuthStore((state) => state.login);
   const loginMutation = useLogin();
 
@@ -42,6 +45,8 @@ export default function LoginPage() {
       { data },
       {
         onSuccess: (response) => {
+          queryClient.clear();
+
           if (response.data) {
             const { accessToken, user } = response.data;
             if (accessToken && user) {

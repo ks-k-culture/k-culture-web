@@ -4,6 +4,8 @@ import { useCallback, useState } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { DoDreamLogo } from "@/components/common";
 import { MenuIcon } from "@/components/common/Misc/Icons";
 
@@ -18,17 +20,18 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const logout = useAuthStore((state) => state.logout);
   const storeUserType = useAuthStore((state) => state.userType);
 
-  // useAuthStore에서 userType 가져오기 (기본값 actor)
   const userType = storeUserType ?? "actor";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = useCallback(() => {
+    queryClient.clear();
     logout();
     router.push("/login");
-  }, [logout, router]);
+  }, [queryClient, logout, router]);
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);

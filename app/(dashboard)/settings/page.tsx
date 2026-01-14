@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { toast } from "sonner";
 
 import { ConfirmDialog, Spinner } from "@/components/ui";
@@ -16,6 +18,7 @@ import { useGetMyProfile, useGetNotificationSettings, useUpdateNotificationSetti
 import { AccountInfoSection, AccountManagementSection, NotificationSettingsSection } from "./_components";
 
 export default function SettingsPage() {
+  const queryClient = useQueryClient();
   const { data: profileData } = useGetMyProfile();
   const { data: settingsData, isLoading } = useGetNotificationSettings();
   const logout = useAuthStore((state) => state.logout);
@@ -61,6 +64,7 @@ export default function SettingsPage() {
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
       onSuccess: () => {
+        queryClient.clear();
         logout();
         window.location.href = "/login";
       },
@@ -74,6 +78,7 @@ export default function SettingsPage() {
   const handleDeleteAccount = () => {
     deleteAccountMutation.mutate(undefined, {
       onSuccess: () => {
+        queryClient.clear();
         logout();
         window.location.href = "/";
       },
