@@ -91,7 +91,6 @@ describe("useAuthStore", () => {
 
       const state = useAuthStore.getState();
       expect(state.accessToken).toBeNull();
-      // Note: clearTokens only clears accessToken, not authentication state
     });
   });
 
