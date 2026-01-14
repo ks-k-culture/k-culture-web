@@ -36,8 +36,24 @@ export function useActorSearch() {
     sortBy: getSortByParam(currentSort),
   });
 
-  const actors = actorsData?.data?.actors || [];
-  const pagination = actorsData?.data?.pagination;
+  // 백엔드 실제 응답: { data: { content: [...], page, limit, total, totalPages }, success }
+  // 타입 정의와 다르므로 타입 캐스팅 사용
+  type BackendResponse = {
+    content: NonNullable<typeof actorsData>["data"]["actors"];
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  const responseData = actorsData?.data as unknown as BackendResponse | undefined;
+
+  const actors = responseData?.content || [];
+  const pagination = responseData ? {
+    page: responseData.page,
+    limit: responseData.limit,
+    total: responseData.total,
+    totalPages: responseData.totalPages,
+  } : undefined;
 
   return {
     actors,
