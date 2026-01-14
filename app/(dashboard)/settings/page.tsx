@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -22,15 +22,20 @@ import {
   NotificationSettingsSection,
 } from "./_components";
 
+interface LocalSettings {
+  castingNotification: boolean;
+  messageNotification: boolean;
+  marketingNotification: boolean;
+}
+
 export default function SettingsPage() {
   const queryClient = useQueryClient();
   const { data: profileData } = useGetMyProfile();
   const { data: settingsData, isLoading } = useGetNotificationSettings();
   const logout = useAuthStore((state) => state.logout);
 
-  const [castingNotification, setCastingNotification] = useState(true);
-  const [messageNotification, setMessageNotification] = useState(true);
-  const [marketingNotification, setMarketingNotification] = useState(false);
+  // 로컬 수정 상태 (사용자가 토글했을 때만 설정됨)
+  const [localSettings, setLocalSettings] = useState<LocalSettings | null>(null);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -39,26 +44,28 @@ export default function SettingsPage() {
   const logoutMutation = useLogout();
   const deleteAccountMutation = useDeleteAccount();
 
-  useEffect(() => {
-    if (settingsData?.data) {
-      setCastingNotification(settingsData.data.castingNotification);
-      setMessageNotification(settingsData.data.messageNotification);
-      setMarketingNotification(settingsData.data.marketingNotification);
-    }
-  }, [settingsData]);
+  // 서버 데이터 또는 로컬 수정 값 사용
+  const currentSettings: LocalSettings = localSettings ?? {
+    castingNotification: settingsData?.data?.castingNotification ?? true,
+    messageNotification: settingsData?.data?.messageNotification ?? true,
+    marketingNotification: settingsData?.data?.marketingNotification ?? false,
+  };
+
+  const handleToggle = (key: keyof LocalSettings) => {
+    setLocalSettings((prev) => ({
+      ...currentSettings,
+      ...prev,
+      [key]: !currentSettings[key],
+    }));
+  };
 
   const handleSave = async () => {
     updateSettingsMutation.mutate(
-      {
-        data: {
-          castingNotification,
-          messageNotification,
-          marketingNotification,
-        },
-      },
+      { data: currentSettings },
       {
         onSuccess: () => {
           toast.success("설정이 저장되었습니다");
+          setLocalSettings(null); // 저장 후 로컬 상태 초기화
         },
         onError: () => {
           toast.error("설정 저장에 실패했습니다");
@@ -123,12 +130,12 @@ export default function SettingsPage() {
         />
 
         <NotificationSettingsSection
-          castingNotification={castingNotification}
-          messageNotification={messageNotification}
-          marketingNotification={marketingNotification}
-          onCastingToggle={() => setCastingNotification(!castingNotification)}
-          onMessageToggle={() => setMessageNotification(!messageNotification)}
-          onMarketingToggle={() => setMarketingNotification(!marketingNotification)}
+          castingNotification={currentSettings.castingNotification}
+          messageNotification={currentSettings.messageNotification}
+          marketingNotification={currentSettings.marketingNotification}
+          onCastingToggle={() => handleToggle("castingNotification")}
+          onMessageToggle={() => handleToggle("messageNotification")}
+          onMarketingToggle={() => handleToggle("marketingNotification")}
           onSave={handleSave}
           isSaving={updateSettingsMutation.isPending}
         />
