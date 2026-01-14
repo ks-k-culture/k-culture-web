@@ -14,12 +14,21 @@ import { getActorImageUrl } from "@/lib/constants/images";
 import { GRADIENT_OVERLAYS } from "@/lib/constants/styles";
 
 import { useDeleteFavorite, useGetFavorites } from "@/src/favorites/favorites";
+import { FavoriteItem } from "@/src/model";
 
 export default function FavoritesPage() {
   const { data: favoritesData, isLoading, refetch } = useGetFavorites({ type: "actor" });
   const deleteFavoriteMutation = useDeleteFavorite();
 
-  const favorites = favoritesData?.data?.favorites || [];
+  type BackendResponse = {
+    content: FavoriteItem[];
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  const responseData = favoritesData?.data as unknown as BackendResponse | undefined;
+  const favorites = responseData?.content || [];
 
   const handleRemove = useCallback(
     (id: string) => {

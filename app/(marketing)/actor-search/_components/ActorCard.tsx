@@ -5,13 +5,19 @@ import { memo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useQueryClient } from "@tanstack/react-query";
+
 import { Badge } from "@/components/ui";
 
-import { CheckIcon, PlusIcon } from "@/components/common/Misc/Icons";
+import { CheckIcon, HeartIcon, PlusIcon } from "@/components/common/Misc/Icons";
 
 import { cn } from "@/lib/utils";
 
+import { useAuthStore } from "@/stores/useAuthStore";
 import { CompareActor, useCompareStore } from "@/stores/useCompareStore";
+
+import { getGetFavoritesQueryKey, useAddFavorite, useDeleteFavorite, useGetFavorites } from "@/src/favorites/favorites";
+import { FavoriteItem, FavoriteType } from "@/src/model";
 
 interface ActorCardProps {
   actor: {
@@ -26,6 +32,9 @@ interface ActorCardProps {
 }
 
 export const ActorCard = memo(function ActorCard({ actor, isBlurred = false }: ActorCardProps) {
+  const queryClient = useQueryClient();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   const addActor = useCompareStore((state) => state.addActor);
   const removeActor = useCompareStore((state) => state.removeActor);
   const isInCompare = useCompareStore((state) => state.isInCompare);
@@ -35,6 +44,49 @@ export const ActorCard = memo(function ActorCard({ actor, isBlurred = false }: A
 
   const isSelected = isInCompare(Number(actor.id));
   const isFull = actorsCount >= maxActors;
+
+  const { data: favoritesData } = useGetFavorites(
+    isAuthenticated ? { type: "actor" as unknown as FavoriteType } : undefined,
+    { query: { enabled: isAuthenticated } }
+  );
+  const addFavoriteMutation = useAddFavorite();
+  const deleteFavoriteMutation = useDeleteFavorite();
+
+  type BackendFavoritesResponse = { content: FavoriteItem[] };
+  const favoritesContent = (favoritesData?.data as unknown as BackendFavoritesResponse | undefined)?.content || [];
+
+  const favoriteItem = favoritesContent.find((fav) => fav.targetId === actor.id);
+  const isFavorited = !!favoriteItem;
+
+  const handleFavoriteClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!isAuthenticated) return;
+
+      if (isFavorited && favoriteItem?.id) {
+        deleteFavoriteMutation.mutate(
+          { favoriteId: favoriteItem.id },
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries({ queryKey: getGetFavoritesQueryKey() });
+            },
+          }
+        );
+      } else {
+        addFavoriteMutation.mutate(
+          { data: { type: FavoriteType.actor, targetId: actor.id } },
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries({ queryKey: getGetFavoritesQueryKey() });
+            },
+          }
+        );
+      }
+    },
+    [isAuthenticated, isFavorited, favoriteItem, actor.id, addFavoriteMutation, deleteFavoriteMutation, queryClient]
+  );
 
   const handleCompareClick = useCallback(
     (e: React.MouseEvent) => {
@@ -76,21 +128,38 @@ export const ActorCard = memo(function ActorCard({ actor, isBlurred = false }: A
         />
 
         {!isBlurred && (
-          <button
-            onClick={handleCompareClick}
-            disabled={!isSelected && isFull}
-            aria-label={isSelected ? "비교에서 제거" : "비교에 추가"}
-            className={cn(
-              "absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200",
-              isSelected
-                ? "bg-gold text-luxury-black hover:bg-gold-light"
-                : isFull
-                  ? "bg-luxury-black/50 text-muted-gray cursor-not-allowed"
-                  : "bg-luxury-black/70 hover:bg-gold hover:text-luxury-black text-white backdrop-blur-sm"
+          <div className="absolute top-2 right-2 z-10 flex flex-col gap-2">
+            {isAuthenticated && (
+              <button
+                onClick={handleFavoriteClick}
+                disabled={addFavoriteMutation.isPending || deleteFavoriteMutation.isPending}
+                aria-label={isFavorited ? "찜 취소" : "찜하기"}
+                className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200",
+                  isFavorited
+                    ? "bg-red-500 text-white hover:bg-red-600"
+                    : "bg-luxury-black/70 text-white backdrop-blur-sm hover:bg-red-500"
+                )}
+              >
+                <HeartIcon className={cn("h-4 w-4", isFavorited && "fill-current")} />
+              </button>
             )}
-          >
-            {isSelected ? <CheckIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />}
-          </button>
+            <button
+              onClick={handleCompareClick}
+              disabled={!isSelected && isFull}
+              aria-label={isSelected ? "비교에서 제거" : "비교에 추가"}
+              className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200",
+                isSelected
+                  ? "bg-gold text-luxury-black hover:bg-gold-light"
+                  : isFull
+                    ? "bg-luxury-black/50 text-muted-gray cursor-not-allowed"
+                    : "bg-luxury-black/70 hover:bg-gold hover:text-luxury-black text-white backdrop-blur-sm"
+              )}
+            >
+              {isSelected ? <CheckIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />}
+            </button>
+          </div>
         )}
 
         {isBlurred && (
