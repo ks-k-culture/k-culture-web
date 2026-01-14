@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,238 +31,239 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   AddFavorite201,
   AddFavoriteBody,
   DeleteFavorite200,
   GetFavorites200,
   GetFavoritesParams,
-  UnauthorizedErrorResponse,
-} from ".././model";
+  UnauthorizedErrorResponse
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * @summary 찜 목록 조회
  */
-export const getFavorites = (params?: GetFavoritesParams, signal?: AbortSignal) => {
-  return customFetch<GetFavorites200>({ url: `/api/favorites`, method: "GET", params, signal });
-};
-
-export const getGetFavoritesQueryKey = (params?: GetFavoritesParams) => {
-  return [`/api/favorites`, ...(params ? [params] : [])] as const;
-};
-
-export const getGetFavoritesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getFavorites>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetFavoritesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> }
+export const getFavorites = (
+    params?: GetFavoritesParams,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetFavorites200>(
+      {url: `/api/favorites`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetFavoritesQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFavorites>>> = ({ signal }) => getFavorites(params, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getFavorites>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetFavoritesQueryKey = (params?: GetFavoritesParams,) => {
+    return [
+    `/api/favorites`, ...(params ? [params]: [])
+    ] as const;
+    }
 
-export type GetFavoritesQueryResult = NonNullable<Awaited<ReturnType<typeof getFavorites>>>;
-export type GetFavoritesQueryError = ErrorType<UnauthorizedErrorResponse>;
+    
+export const getGetFavoritesQueryOptions = <TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, }
+) => {
 
-export function useGetFavorites<
-  TData = Awaited<ReturnType<typeof getFavorites>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params: undefined | GetFavoritesParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFavoritesQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFavorites>>> = ({ signal }) => getFavorites(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetFavoritesQueryResult = NonNullable<Awaited<ReturnType<typeof getFavorites>>>
+export type GetFavoritesQueryError = ErrorType<UnauthorizedErrorResponse>
+
+
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params: undefined |  GetFavoritesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFavorites>>,
           TError,
           Awaited<ReturnType<typeof getFavorites>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetFavorites<
-  TData = Awaited<ReturnType<typeof getFavorites>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetFavoritesParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFavorites>>,
           TError,
           Awaited<ReturnType<typeof getFavorites>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetFavorites<
-  TData = Awaited<ReturnType<typeof getFavorites>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetFavoritesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 찜 목록 조회
  */
 
-export function useGetFavorites<
-  TData = Awaited<ReturnType<typeof getFavorites>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetFavoritesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetFavoritesQueryOptions(params, options);
+export function useGetFavorites<TData = Awaited<ReturnType<typeof getFavorites>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetFavoritesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFavorites>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetFavoritesQueryOptions(params,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
 
-/**
- * @summary 찜 추가
- */
-export const addFavorite = (addFavoriteBody: BodyType<AddFavoriteBody>, signal?: AbortSignal) => {
-  return customFetch<AddFavorite201>({
-    url: `/api/favorites`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: addFavoriteBody,
-    signal,
-  });
-};
 
-export const getAddFavoriteMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addFavorite>>,
-    TError,
-    { data: BodyType<AddFavoriteBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addFavorite>>,
-  TError,
-  { data: BodyType<AddFavoriteBody> },
-  TContext
-> => {
-  const mutationKey = ["addFavorite"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFavorite>>, { data: BodyType<AddFavoriteBody> }> = (
-    props
-  ) => {
-    const { data } = props ?? {};
-
-    return addFavorite(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AddFavoriteMutationResult = NonNullable<Awaited<ReturnType<typeof addFavorite>>>;
-export type AddFavoriteMutationBody = BodyType<AddFavoriteBody>;
-export type AddFavoriteMutationError = ErrorType<UnauthorizedErrorResponse>;
 
 /**
  * @summary 찜 추가
  */
-export const useAddFavorite = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof addFavorite>>,
-      TError,
-      { data: BodyType<AddFavoriteBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof addFavorite>>,
-  TError,
-  { data: BodyType<AddFavoriteBody> },
-  TContext
-> => {
-  const mutationOptions = getAddFavoriteMutationOptions(options);
+export const addFavorite = (
+    addFavoriteBody: BodyType<AddFavoriteBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<AddFavorite201>(
+      {url: `/api/favorites`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: addFavoriteBody, signal
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+
+export const getAddFavoriteMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: BodyType<AddFavoriteBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: BodyType<AddFavoriteBody>}, TContext> => {
+
+const mutationKey = ['addFavorite'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFavorite>>, {data: BodyType<AddFavoriteBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  addFavorite(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddFavoriteMutationResult = NonNullable<Awaited<ReturnType<typeof addFavorite>>>
+    export type AddFavoriteMutationBody = BodyType<AddFavoriteBody>
+    export type AddFavoriteMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
+ * @summary 찜 추가
+ */
+export const useAddFavorite = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addFavorite>>, TError,{data: BodyType<AddFavoriteBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof addFavorite>>,
+        TError,
+        {data: BodyType<AddFavoriteBody>},
+        TContext
+      > => {
+
+      const mutationOptions = getAddFavoriteMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 찜 삭제
  */
-export const deleteFavorite = (favoriteId: string) => {
-  return customFetch<DeleteFavorite200>({ url: `/api/favorites/${favoriteId}`, method: "DELETE" });
-};
+export const deleteFavorite = (
+    favoriteId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteFavorite200>(
+      {url: `/api/favorites/${favoriteId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteFavoriteMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError, { favoriteId: string }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError, { favoriteId: string }, TContext> => {
-  const mutationKey = ["deleteFavorite"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFavorite>>, { favoriteId: string }> = (props) => {
-    const { favoriteId } = props ?? {};
+export const getDeleteFavoriteMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext> => {
 
-    return deleteFavorite(favoriteId);
-  };
+const mutationKey = ['deleteFavorite'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteFavoriteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFavorite>>>;
 
-export type DeleteFavoriteMutationError = ErrorType<UnauthorizedErrorResponse>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFavorite>>, {favoriteId: string}> = (props) => {
+          const {favoriteId} = props ?? {};
 
-/**
+          return  deleteFavorite(favoriteId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteFavoriteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFavorite>>>
+    
+    export type DeleteFavoriteMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 찜 삭제
  */
-export const useDeleteFavorite = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError, { favoriteId: string }, TContext>;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof deleteFavorite>>, TError, { favoriteId: string }, TContext> => {
-  const mutationOptions = getDeleteFavoriteMutationOptions(options);
+export const useDeleteFavorite = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFavorite>>, TError,{favoriteId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteFavorite>>,
+        TError,
+        {favoriteId: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getDeleteFavoriteMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

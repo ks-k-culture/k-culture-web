@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,239 +31,239 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { ErrorType } from "../../lib/fetcher";
 import type {
   GetNotifications200,
   GetNotificationsParams,
   MarkAllNotificationsAsRead200,
   MarkNotificationAsRead200,
   NotFoundErrorResponse,
-  UnauthorizedErrorResponse,
-} from ".././model";
+  UnauthorizedErrorResponse
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType } from '../../lib/fetcher';
+
+
+
 
 /**
  * 사용자의 알림 목록 조회
  * @summary 알림 목록 조회
  */
-export const getNotifications = (params?: GetNotificationsParams, signal?: AbortSignal) => {
-  return customFetch<GetNotifications200>({ url: `/api/notifications`, method: "GET", params, signal });
-};
-
-export const getGetNotificationsQueryKey = (params?: GetNotificationsParams) => {
-  return [`/api/notifications`, ...(params ? [params] : [])] as const;
-};
-
-export const getGetNotificationsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getNotifications>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetNotificationsParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> }
+export const getNotifications = (
+    params?: GetNotificationsParams,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetNotifications200>(
+      {url: `/api/notifications`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetNotificationsQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotifications>>> = ({ signal }) =>
-    getNotifications(params, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getNotifications>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetNotificationsQueryKey = (params?: GetNotificationsParams,) => {
+    return [
+    `/api/notifications`, ...(params ? [params]: [])
+    ] as const;
+    }
 
-export type GetNotificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotifications>>>;
-export type GetNotificationsQueryError = ErrorType<UnauthorizedErrorResponse>;
+    
+export const getGetNotificationsQueryOptions = <TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<UnauthorizedErrorResponse>>(params?: GetNotificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>, }
+) => {
 
-export function useGetNotifications<
-  TData = Awaited<ReturnType<typeof getNotifications>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params: undefined | GetNotificationsParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNotificationsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotifications>>> = ({ signal }) => getNotifications(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetNotificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotifications>>>
+export type GetNotificationsQueryError = ErrorType<UnauthorizedErrorResponse>
+
+
+export function useGetNotifications<TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params: undefined |  GetNotificationsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotifications>>,
           TError,
           Awaited<ReturnType<typeof getNotifications>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetNotifications<
-  TData = Awaited<ReturnType<typeof getNotifications>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetNotificationsParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetNotifications<TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetNotificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotifications>>,
           TError,
           Awaited<ReturnType<typeof getNotifications>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetNotifications<
-  TData = Awaited<ReturnType<typeof getNotifications>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetNotificationsParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetNotifications<TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetNotificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 알림 목록 조회
  */
 
-export function useGetNotifications<
-  TData = Awaited<ReturnType<typeof getNotifications>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  params?: GetNotificationsParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetNotificationsQueryOptions(params, options);
+export function useGetNotifications<TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ params?: GetNotificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetNotificationsQueryOptions(params,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * 특정 알림을 읽음 상태로 변경
  * @summary 알림 읽음 처리
  */
-export const markNotificationAsRead = (notificationId: string) => {
-  return customFetch<MarkNotificationAsRead200>({ url: `/api/notifications/${notificationId}/read`, method: "PUT" });
-};
+export const markNotificationAsRead = (
+    notificationId: string,
+ ) => {
+      
+      
+      return customFetch<MarkNotificationAsRead200>(
+      {url: `/api/notifications/${notificationId}/read`, method: 'PUT'
+    },
+      );
+    }
+  
 
-export const getMarkNotificationAsReadMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof markNotificationAsRead>>,
-    TError,
-    { notificationId: string },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof markNotificationAsRead>>,
-  TError,
-  { notificationId: string },
-  TContext
-> => {
-  const mutationKey = ["markNotificationAsRead"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof markNotificationAsRead>>, { notificationId: string }> = (
-    props
-  ) => {
-    const { notificationId } = props ?? {};
+export const getMarkNotificationAsReadMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markNotificationAsRead>>, TError,{notificationId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof markNotificationAsRead>>, TError,{notificationId: string}, TContext> => {
 
-    return markNotificationAsRead(notificationId);
-  };
+const mutationKey = ['markNotificationAsRead'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type MarkNotificationAsReadMutationResult = NonNullable<Awaited<ReturnType<typeof markNotificationAsRead>>>;
 
-export type MarkNotificationAsReadMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof markNotificationAsRead>>, {notificationId: string}> = (props) => {
+          const {notificationId} = props ?? {};
 
-/**
+          return  markNotificationAsRead(notificationId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MarkNotificationAsReadMutationResult = NonNullable<Awaited<ReturnType<typeof markNotificationAsRead>>>
+    
+    export type MarkNotificationAsReadMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>
+
+    /**
  * @summary 알림 읽음 처리
  */
-export const useMarkNotificationAsRead = <
-  TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof markNotificationAsRead>>,
-      TError,
-      { notificationId: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof markNotificationAsRead>>,
-  TError,
-  { notificationId: string },
-  TContext
-> => {
-  const mutationOptions = getMarkNotificationAsReadMutationOptions(options);
+export const useMarkNotificationAsRead = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markNotificationAsRead>>, TError,{notificationId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof markNotificationAsRead>>,
+        TError,
+        {notificationId: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getMarkNotificationAsReadMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 사용자의 모든 알림을 읽음 상태로 변경
  * @summary 모든 알림 읽음 처리
  */
-export const markAllNotificationsAsRead = () => {
-  return customFetch<MarkAllNotificationsAsRead200>({ url: `/api/notifications/read-all`, method: "PUT" });
-};
+export const markAllNotificationsAsRead = (
+    
+ ) => {
+      
+      
+      return customFetch<MarkAllNotificationsAsRead200>(
+      {url: `/api/notifications/read-all`, method: 'PUT'
+    },
+      );
+    }
+  
 
-export const getMarkAllNotificationsAsReadMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError, void, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError, void, TContext> => {
-  const mutationKey = ["markAllNotificationsAsRead"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, void> = () => {
-    return markAllNotificationsAsRead();
-  };
+export const getMarkAllNotificationsAsReadMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError,void, TContext> => {
 
-  return { mutationFn, ...mutationOptions };
-};
+const mutationKey = ['markAllNotificationsAsRead'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-export type MarkAllNotificationsAsReadMutationResult = NonNullable<
-  Awaited<ReturnType<typeof markAllNotificationsAsRead>>
->;
+      
 
-export type MarkAllNotificationsAsReadMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, void> = () => {
+          
+
+          return  markAllNotificationsAsRead()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MarkAllNotificationsAsReadMutationResult = NonNullable<Awaited<ReturnType<typeof markAllNotificationsAsRead>>>
+    
+    export type MarkAllNotificationsAsReadMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 모든 알림 읽음 처리
  */
-export const useMarkAllNotificationsAsRead = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError, void, TContext>;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError, void, TContext> => {
-  const mutationOptions = getMarkAllNotificationsAsReadMutationOptions(options);
+export const useMarkAllNotificationsAsRead = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markAllNotificationsAsRead>>, TError,void, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof markAllNotificationsAsRead>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getMarkAllNotificationsAsReadMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

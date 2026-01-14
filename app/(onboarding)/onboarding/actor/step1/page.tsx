@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { OnboardingLayout } from "@/app/(onboarding)/onboarding/_components";
 
-import { Button } from "@/components/ui";
+import { Button, Spinner } from "@/components/ui";
 
 import { DarkInput, DarkSelect } from "@/components/common";
 
@@ -14,7 +14,7 @@ import { BIRTH_YEAR_OPTIONS, GENDER_SELECT_OPTIONS } from "@/lib/constants";
 
 import { type OnboardingData, useOnboardingStore } from "@/stores/useOnboardingStore";
 
-export default function ActorOnboardingStep1() {
+function ActorOnboardingStep1Content() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data, updateData, resetData } = useOnboardingStore();
@@ -96,5 +96,19 @@ export default function ActorOnboardingStep1() {
         </div>
       </form>
     </OnboardingLayout>
+  );
+}
+
+export default function ActorOnboardingStep1() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center">
+          <Spinner size="lg" />
+        </div>
+      }
+    >
+      <ActorOnboardingStep1Content />
+    </Suspense>
   );
 }

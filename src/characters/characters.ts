@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,325 +31,303 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   CharacterCreateRequest,
   CreateCharacter201,
   DeleteCharacter200,
   GetProjectCharacters200,
   UnauthorizedErrorResponse,
-  UpdateCharacter200,
-} from ".././model";
+  UpdateCharacter200
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * @summary 캐릭터 목록 조회 (프로젝트별)
  */
-export const getProjectCharacters = (projectId: string, signal?: AbortSignal) => {
-  return customFetch<GetProjectCharacters200>({ url: `/api/projects/${projectId}/characters`, method: "GET", signal });
-};
-
-export const getGetProjectCharactersQueryKey = (projectId?: string) => {
-  return [`/api/projects/${projectId}/characters`] as const;
-};
-
-export const getGetProjectCharactersQueryOptions = <
-  TData = Awaited<ReturnType<typeof getProjectCharacters>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  projectId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> }
+export const getProjectCharacters = (
+    projectId: string,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetProjectCharacters200>(
+      {url: `/api/projects/${projectId}/characters`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetProjectCharactersQueryKey(projectId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectCharacters>>> = ({ signal }) =>
-    getProjectCharacters(projectId, signal);
 
-  return { queryKey, queryFn, enabled: !!projectId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getProjectCharacters>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetProjectCharactersQueryKey = (projectId?: string,) => {
+    return [
+    `/api/projects/${projectId}/characters`
+    ] as const;
+    }
 
-export type GetProjectCharactersQueryResult = NonNullable<Awaited<ReturnType<typeof getProjectCharacters>>>;
-export type GetProjectCharactersQueryError = ErrorType<UnauthorizedErrorResponse>;
+    
+export const getGetProjectCharactersQueryOptions = <TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, }
+) => {
 
-export function useGetProjectCharacters<
-  TData = Awaited<ReturnType<typeof getProjectCharacters>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  projectId: string,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProjectCharactersQueryKey(projectId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectCharacters>>> = ({ signal }) => getProjectCharacters(projectId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(projectId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetProjectCharactersQueryResult = NonNullable<Awaited<ReturnType<typeof getProjectCharacters>>>
+export type GetProjectCharactersQueryError = ErrorType<UnauthorizedErrorResponse>
+
+
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ projectId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjectCharacters>>,
           TError,
           Awaited<ReturnType<typeof getProjectCharacters>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetProjectCharacters<
-  TData = Awaited<ReturnType<typeof getProjectCharacters>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  projectId: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProjectCharacters>>,
           TError,
           Awaited<ReturnType<typeof getProjectCharacters>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetProjectCharacters<
-  TData = Awaited<ReturnType<typeof getProjectCharacters>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  projectId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 캐릭터 목록 조회 (프로젝트별)
  */
 
-export function useGetProjectCharacters<
-  TData = Awaited<ReturnType<typeof getProjectCharacters>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  projectId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetProjectCharactersQueryOptions(projectId, options);
+export function useGetProjectCharacters<TData = Awaited<ReturnType<typeof getProjectCharacters>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+ projectId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProjectCharacters>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetProjectCharactersQueryOptions(projectId,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * @summary 캐릭터 생성
  */
 export const createCharacter = (
-  projectId: string,
-  characterCreateRequest: BodyType<CharacterCreateRequest>,
-  signal?: AbortSignal
+    projectId: string,
+    characterCreateRequest: BodyType<CharacterCreateRequest>,
+ signal?: AbortSignal
 ) => {
-  return customFetch<CreateCharacter201>({
-    url: `/api/projects/${projectId}/characters`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: characterCreateRequest,
-    signal,
-  });
-};
+      
+      
+      return customFetch<CreateCharacter201>(
+      {url: `/api/projects/${projectId}/characters`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: characterCreateRequest, signal
+    },
+      );
+    }
+  
 
-export const getCreateCharacterMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createCharacter>>,
-    TError,
-    { projectId: string; data: BodyType<CharacterCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createCharacter>>,
-  TError,
-  { projectId: string; data: BodyType<CharacterCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["createCharacter"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createCharacter>>,
-    { projectId: string; data: BodyType<CharacterCreateRequest> }
-  > = (props) => {
-    const { projectId, data } = props ?? {};
+export const getCreateCharacterMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: BodyType<CharacterCreateRequest>}, TContext> => {
 
-    return createCharacter(projectId, data);
-  };
+const mutationKey = ['createCharacter'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type CreateCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof createCharacter>>>;
-export type CreateCharacterMutationBody = BodyType<CharacterCreateRequest>;
-export type CreateCharacterMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCharacter>>, {projectId: string;data: BodyType<CharacterCreateRequest>}> = (props) => {
+          const {projectId,data} = props ?? {};
+
+          return  createCharacter(projectId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof createCharacter>>>
+    export type CreateCharacterMutationBody = BodyType<CharacterCreateRequest>
+    export type CreateCharacterMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 캐릭터 생성
  */
-export const useCreateCharacter = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createCharacter>>,
-      TError,
-      { projectId: string; data: BodyType<CharacterCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof createCharacter>>,
-  TError,
-  { projectId: string; data: BodyType<CharacterCreateRequest> },
-  TContext
-> => {
-  const mutationOptions = getCreateCharacterMutationOptions(options);
+export const useCreateCharacter = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCharacter>>, TError,{projectId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createCharacter>>,
+        TError,
+        {projectId: string;data: BodyType<CharacterCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getCreateCharacterMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 캐릭터 수정
  */
-export const updateCharacter = (characterId: string, characterCreateRequest: BodyType<CharacterCreateRequest>) => {
-  return customFetch<UpdateCharacter200>({
-    url: `/api/characters/${characterId}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: characterCreateRequest,
-  });
-};
+export const updateCharacter = (
+    characterId: string,
+    characterCreateRequest: BodyType<CharacterCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateCharacter200>(
+      {url: `/api/characters/${characterId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: characterCreateRequest
+    },
+      );
+    }
+  
 
-export const getUpdateCharacterMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateCharacter>>,
-    TError,
-    { characterId: string; data: BodyType<CharacterCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateCharacter>>,
-  TError,
-  { characterId: string; data: BodyType<CharacterCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["updateCharacter"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateCharacter>>,
-    { characterId: string; data: BodyType<CharacterCreateRequest> }
-  > = (props) => {
-    const { characterId, data } = props ?? {};
+export const getUpdateCharacterMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: BodyType<CharacterCreateRequest>}, TContext> => {
 
-    return updateCharacter(characterId, data);
-  };
+const mutationKey = ['updateCharacter'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type UpdateCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof updateCharacter>>>;
-export type UpdateCharacterMutationBody = BodyType<CharacterCreateRequest>;
-export type UpdateCharacterMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCharacter>>, {characterId: string;data: BodyType<CharacterCreateRequest>}> = (props) => {
+          const {characterId,data} = props ?? {};
+
+          return  updateCharacter(characterId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof updateCharacter>>>
+    export type UpdateCharacterMutationBody = BodyType<CharacterCreateRequest>
+    export type UpdateCharacterMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 캐릭터 수정
  */
-export const useUpdateCharacter = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateCharacter>>,
-      TError,
-      { characterId: string; data: BodyType<CharacterCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateCharacter>>,
-  TError,
-  { characterId: string; data: BodyType<CharacterCreateRequest> },
-  TContext
-> => {
-  const mutationOptions = getUpdateCharacterMutationOptions(options);
+export const useUpdateCharacter = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCharacter>>, TError,{characterId: string;data: BodyType<CharacterCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateCharacter>>,
+        TError,
+        {characterId: string;data: BodyType<CharacterCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUpdateCharacterMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 캐릭터 삭제
  */
-export const deleteCharacter = (characterId: string) => {
-  return customFetch<DeleteCharacter200>({ url: `/api/characters/${characterId}`, method: "DELETE" });
-};
+export const deleteCharacter = (
+    characterId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteCharacter200>(
+      {url: `/api/characters/${characterId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteCharacterMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError, { characterId: string }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError, { characterId: string }, TContext> => {
-  const mutationKey = ["deleteCharacter"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCharacter>>, { characterId: string }> = (
-    props
-  ) => {
-    const { characterId } = props ?? {};
+export const getDeleteCharacterMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext> => {
 
-    return deleteCharacter(characterId);
-  };
+const mutationKey = ['deleteCharacter'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCharacter>>>;
 
-export type DeleteCharacterMutationError = ErrorType<UnauthorizedErrorResponse>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCharacter>>, {characterId: string}> = (props) => {
+          const {characterId} = props ?? {};
 
-/**
+          return  deleteCharacter(characterId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteCharacterMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCharacter>>>
+    
+    export type DeleteCharacterMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 캐릭터 삭제
  */
-export const useDeleteCharacter = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteCharacter>>,
-      TError,
-      { characterId: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof deleteCharacter>>, TError, { characterId: string }, TContext> => {
-  const mutationOptions = getDeleteCharacterMutationOptions(options);
+export const useDeleteCharacter = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteCharacter>>, TError,{characterId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteCharacter>>,
+        TError,
+        {characterId: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getDeleteCharacterMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

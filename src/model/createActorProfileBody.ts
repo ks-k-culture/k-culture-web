@@ -24,12 +24,4 @@ export type CreateActorProfileBody = {
   introduction: string;
   ageGroup: CreateActorProfileBodyAgeGroup;
   profileImage?: Blob;
-  /** 특기 목록 */
-  skills?: string[];
-  /** 출생년도 */
-  birthYear?: number;
-  /** 키 (cm) */
-  height?: number;
-  /** 몸무게 (kg) */
-  weight?: number;
 };

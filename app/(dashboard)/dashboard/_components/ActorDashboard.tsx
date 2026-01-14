@@ -17,7 +17,6 @@ const DEFAULT_STATS: ActorDashboardStats = {
   likes: 0,
   contactRequests: 0,
   profileCompleteness: 0,
-  recentActivities: [],
 };
 
 export function ActorDashboard() {
@@ -48,7 +47,7 @@ export function ActorDashboard() {
       <DashboardHeader />
       <ProfileCompleteness completeness={stats.profileCompleteness} />
       <StatsGrid stats={stats} />
-      <RecentActivity activities={stats.recentActivities ?? []} />
+      <RecentActivity activities={[]} />
     </div>
   );
 }

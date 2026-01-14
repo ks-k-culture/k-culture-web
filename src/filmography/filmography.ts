@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,11 +31,9 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   CreateFilmography201,
   DeleteFilmography200,
@@ -42,441 +43,394 @@ import type {
   GetFilmographyDetail200,
   NotFoundErrorResponse,
   UnauthorizedErrorResponse,
-  UpdateFilmography200,
-} from ".././model";
+  UpdateFilmography200
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * 특정 배우의 필모그래피 목록 조회
  * @summary 필모그래피 목록 조회
  */
-export const getActorFilmography = (actorId: string, params?: GetActorFilmographyParams, signal?: AbortSignal) => {
-  return customFetch<GetActorFilmography200>({
-    url: `/api/actors/${actorId}/filmography`,
-    method: "GET",
-    params,
-    signal,
-  });
-};
-
-export const getGetActorFilmographyQueryKey = (actorId?: string, params?: GetActorFilmographyParams) => {
-  return [`/api/actors/${actorId}/filmography`, ...(params ? [params] : [])] as const;
-};
-
-export const getGetActorFilmographyQueryOptions = <
-  TData = Awaited<ReturnType<typeof getActorFilmography>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  params?: GetActorFilmographyParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> }
+export const getActorFilmography = (
+    actorId: string,
+    params?: GetActorFilmographyParams,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetActorFilmography200>(
+      {url: `/api/actors/${actorId}/filmography`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetActorFilmographyQueryKey(actorId, params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorFilmography>>> = ({ signal }) =>
-    getActorFilmography(actorId, params, signal);
 
-  return { queryKey, queryFn, enabled: !!actorId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getActorFilmography>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetActorFilmographyQueryKey = (actorId?: string,
+    params?: GetActorFilmographyParams,) => {
+    return [
+    `/api/actors/${actorId}/filmography`, ...(params ? [params]: [])
+    ] as const;
+    }
 
-export type GetActorFilmographyQueryResult = NonNullable<Awaited<ReturnType<typeof getActorFilmography>>>;
-export type GetActorFilmographyQueryError = ErrorType<unknown>;
+    
+export const getGetActorFilmographyQueryOptions = <TData = Awaited<ReturnType<typeof getActorFilmography>>, TError = ErrorType<unknown>>(actorId: string,
+    params?: GetActorFilmographyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>>, }
+) => {
 
-export function useGetActorFilmography<
-  TData = Awaited<ReturnType<typeof getActorFilmography>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  params: undefined | GetActorFilmographyParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetActorFilmographyQueryKey(actorId,params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorFilmography>>> = ({ signal }) => getActorFilmography(actorId,params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(actorId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetActorFilmographyQueryResult = NonNullable<Awaited<ReturnType<typeof getActorFilmography>>>
+export type GetActorFilmographyQueryError = ErrorType<unknown>
+
+
+export function useGetActorFilmography<TData = Awaited<ReturnType<typeof getActorFilmography>>, TError = ErrorType<unknown>>(
+ actorId: string,
+    params: undefined |  GetActorFilmographyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorFilmography>>,
           TError,
           Awaited<ReturnType<typeof getActorFilmography>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetActorFilmography<
-  TData = Awaited<ReturnType<typeof getActorFilmography>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  params?: GetActorFilmographyParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActorFilmography<TData = Awaited<ReturnType<typeof getActorFilmography>>, TError = ErrorType<unknown>>(
+ actorId: string,
+    params?: GetActorFilmographyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorFilmography>>,
           TError,
           Awaited<ReturnType<typeof getActorFilmography>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetActorFilmography<
-  TData = Awaited<ReturnType<typeof getActorFilmography>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  params?: GetActorFilmographyParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActorFilmography<TData = Awaited<ReturnType<typeof getActorFilmography>>, TError = ErrorType<unknown>>(
+ actorId: string,
+    params?: GetActorFilmographyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 필모그래피 목록 조회
  */
 
-export function useGetActorFilmography<
-  TData = Awaited<ReturnType<typeof getActorFilmography>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  params?: GetActorFilmographyParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetActorFilmographyQueryOptions(actorId, params, options);
+export function useGetActorFilmography<TData = Awaited<ReturnType<typeof getActorFilmography>>, TError = ErrorType<unknown>>(
+ actorId: string,
+    params?: GetActorFilmographyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorFilmography>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetActorFilmographyQueryOptions(actorId,params,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * 새 필모그래피 항목 추가
  * @summary 필모그래피 생성
  */
 export const createFilmography = (
-  filmographyCreateRequest: BodyType<FilmographyCreateRequest>,
-  signal?: AbortSignal
+    filmographyCreateRequest: BodyType<FilmographyCreateRequest>,
+ signal?: AbortSignal
 ) => {
-  return customFetch<CreateFilmography201>({
-    url: `/api/filmography`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: filmographyCreateRequest,
-    signal,
-  });
-};
+      
+      
+      return customFetch<CreateFilmography201>(
+      {url: `/api/filmography`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filmographyCreateRequest, signal
+    },
+      );
+    }
+  
 
-export const getCreateFilmographyMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createFilmography>>,
-    TError,
-    { data: BodyType<FilmographyCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createFilmography>>,
-  TError,
-  { data: BodyType<FilmographyCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["createFilmography"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createFilmography>>,
-    { data: BodyType<FilmographyCreateRequest> }
-  > = (props) => {
-    const { data } = props ?? {};
+export const getCreateFilmographyMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createFilmography>>, TError,{data: BodyType<FilmographyCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createFilmography>>, TError,{data: BodyType<FilmographyCreateRequest>}, TContext> => {
 
-    return createFilmography(data);
-  };
+const mutationKey = ['createFilmography'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type CreateFilmographyMutationResult = NonNullable<Awaited<ReturnType<typeof createFilmography>>>;
-export type CreateFilmographyMutationBody = BodyType<FilmographyCreateRequest>;
-export type CreateFilmographyMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createFilmography>>, {data: BodyType<FilmographyCreateRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createFilmography(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateFilmographyMutationResult = NonNullable<Awaited<ReturnType<typeof createFilmography>>>
+    export type CreateFilmographyMutationBody = BodyType<FilmographyCreateRequest>
+    export type CreateFilmographyMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 필모그래피 생성
  */
-export const useCreateFilmography = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createFilmography>>,
-      TError,
-      { data: BodyType<FilmographyCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof createFilmography>>,
-  TError,
-  { data: BodyType<FilmographyCreateRequest> },
-  TContext
-> => {
-  const mutationOptions = getCreateFilmographyMutationOptions(options);
+export const useCreateFilmography = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createFilmography>>, TError,{data: BodyType<FilmographyCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createFilmography>>,
+        TError,
+        {data: BodyType<FilmographyCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getCreateFilmographyMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 필모그래피 상세 조회
  */
-export const getFilmographyDetail = (filmographyId: string, signal?: AbortSignal) => {
-  return customFetch<GetFilmographyDetail200>({ url: `/api/filmography/${filmographyId}`, method: "GET", signal });
-};
-
-export const getGetFilmographyDetailQueryKey = (filmographyId?: string) => {
-  return [`/api/filmography/${filmographyId}`] as const;
-};
-
-export const getGetFilmographyDetailQueryOptions = <
-  TData = Awaited<ReturnType<typeof getFilmographyDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  filmographyId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> }
+export const getFilmographyDetail = (
+    filmographyId: string,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetFilmographyDetail200>(
+      {url: `/api/filmography/${filmographyId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetFilmographyDetailQueryKey(filmographyId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getFilmographyDetail>>> = ({ signal }) =>
-    getFilmographyDetail(filmographyId, signal);
 
-  return { queryKey, queryFn, enabled: !!filmographyId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getFilmographyDetail>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetFilmographyDetailQueryKey = (filmographyId?: string,) => {
+    return [
+    `/api/filmography/${filmographyId}`
+    ] as const;
+    }
 
-export type GetFilmographyDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getFilmographyDetail>>>;
-export type GetFilmographyDetailQueryError = ErrorType<NotFoundErrorResponse>;
+    
+export const getGetFilmographyDetailQueryOptions = <TData = Awaited<ReturnType<typeof getFilmographyDetail>>, TError = ErrorType<NotFoundErrorResponse>>(filmographyId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>>, }
+) => {
 
-export function useGetFilmographyDetail<
-  TData = Awaited<ReturnType<typeof getFilmographyDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  filmographyId: string,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFilmographyDetailQueryKey(filmographyId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFilmographyDetail>>> = ({ signal }) => getFilmographyDetail(filmographyId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(filmographyId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetFilmographyDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getFilmographyDetail>>>
+export type GetFilmographyDetailQueryError = ErrorType<NotFoundErrorResponse>
+
+
+export function useGetFilmographyDetail<TData = Awaited<ReturnType<typeof getFilmographyDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ filmographyId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFilmographyDetail>>,
           TError,
           Awaited<ReturnType<typeof getFilmographyDetail>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetFilmographyDetail<
-  TData = Awaited<ReturnType<typeof getFilmographyDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  filmographyId: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFilmographyDetail<TData = Awaited<ReturnType<typeof getFilmographyDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ filmographyId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFilmographyDetail>>,
           TError,
           Awaited<ReturnType<typeof getFilmographyDetail>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetFilmographyDetail<
-  TData = Awaited<ReturnType<typeof getFilmographyDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  filmographyId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFilmographyDetail<TData = Awaited<ReturnType<typeof getFilmographyDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ filmographyId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 필모그래피 상세 조회
  */
 
-export function useGetFilmographyDetail<
-  TData = Awaited<ReturnType<typeof getFilmographyDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  filmographyId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetFilmographyDetailQueryOptions(filmographyId, options);
+export function useGetFilmographyDetail<TData = Awaited<ReturnType<typeof getFilmographyDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ filmographyId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFilmographyDetail>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetFilmographyDetailQueryOptions(filmographyId,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * @summary 필모그래피 수정
  */
 export const updateFilmography = (
-  filmographyId: string,
-  filmographyCreateRequest: BodyType<FilmographyCreateRequest>
-) => {
-  return customFetch<UpdateFilmography200>({
-    url: `/api/filmography/${filmographyId}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: filmographyCreateRequest,
-  });
-};
+    filmographyId: string,
+    filmographyCreateRequest: BodyType<FilmographyCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateFilmography200>(
+      {url: `/api/filmography/${filmographyId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: filmographyCreateRequest
+    },
+      );
+    }
+  
 
-export const getUpdateFilmographyMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateFilmography>>,
-    TError,
-    { filmographyId: string; data: BodyType<FilmographyCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateFilmography>>,
-  TError,
-  { filmographyId: string; data: BodyType<FilmographyCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["updateFilmography"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateFilmography>>,
-    { filmographyId: string; data: BodyType<FilmographyCreateRequest> }
-  > = (props) => {
-    const { filmographyId, data } = props ?? {};
+export const getUpdateFilmographyMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateFilmography>>, TError,{filmographyId: string;data: BodyType<FilmographyCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateFilmography>>, TError,{filmographyId: string;data: BodyType<FilmographyCreateRequest>}, TContext> => {
 
-    return updateFilmography(filmographyId, data);
-  };
+const mutationKey = ['updateFilmography'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type UpdateFilmographyMutationResult = NonNullable<Awaited<ReturnType<typeof updateFilmography>>>;
-export type UpdateFilmographyMutationBody = BodyType<FilmographyCreateRequest>;
-export type UpdateFilmographyMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateFilmography>>, {filmographyId: string;data: BodyType<FilmographyCreateRequest>}> = (props) => {
+          const {filmographyId,data} = props ?? {};
+
+          return  updateFilmography(filmographyId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateFilmographyMutationResult = NonNullable<Awaited<ReturnType<typeof updateFilmography>>>
+    export type UpdateFilmographyMutationBody = BodyType<FilmographyCreateRequest>
+    export type UpdateFilmographyMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>
+
+    /**
  * @summary 필모그래피 수정
  */
-export const useUpdateFilmography = <
-  TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateFilmography>>,
-      TError,
-      { filmographyId: string; data: BodyType<FilmographyCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateFilmography>>,
-  TError,
-  { filmographyId: string; data: BodyType<FilmographyCreateRequest> },
-  TContext
-> => {
-  const mutationOptions = getUpdateFilmographyMutationOptions(options);
+export const useUpdateFilmography = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateFilmography>>, TError,{filmographyId: string;data: BodyType<FilmographyCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateFilmography>>,
+        TError,
+        {filmographyId: string;data: BodyType<FilmographyCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUpdateFilmographyMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 필모그래피 삭제
  */
-export const deleteFilmography = (filmographyId: string) => {
-  return customFetch<DeleteFilmography200>({ url: `/api/filmography/${filmographyId}`, method: "DELETE" });
-};
+export const deleteFilmography = (
+    filmographyId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteFilmography200>(
+      {url: `/api/filmography/${filmographyId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteFilmographyMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteFilmography>>,
-    TError,
-    { filmographyId: string },
-    TContext
-  >;
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteFilmography>>, TError, { filmographyId: string }, TContext> => {
-  const mutationKey = ["deleteFilmography"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFilmography>>, { filmographyId: string }> = (
-    props
-  ) => {
-    const { filmographyId } = props ?? {};
+export const getDeleteFilmographyMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFilmography>>, TError,{filmographyId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteFilmography>>, TError,{filmographyId: string}, TContext> => {
 
-    return deleteFilmography(filmographyId);
-  };
+const mutationKey = ['deleteFilmography'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteFilmographyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFilmography>>>;
 
-export type DeleteFilmographyMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFilmography>>, {filmographyId: string}> = (props) => {
+          const {filmographyId} = props ?? {};
 
-/**
+          return  deleteFilmography(filmographyId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteFilmographyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFilmography>>>
+    
+    export type DeleteFilmographyMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>
+
+    /**
  * @summary 필모그래피 삭제
  */
-export const useDeleteFilmography = <
-  TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteFilmography>>,
-      TError,
-      { filmographyId: string },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof deleteFilmography>>, TError, { filmographyId: string }, TContext> => {
-  const mutationOptions = getDeleteFilmographyMutationOptions(options);
+export const useDeleteFilmography = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFilmography>>, TError,{filmographyId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteFilmography>>,
+        TError,
+        {filmographyId: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getDeleteFilmographyMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

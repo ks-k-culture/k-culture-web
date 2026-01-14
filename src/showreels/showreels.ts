@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,11 +31,9 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   CreateShowreel201,
   CreateShowreelBody,
@@ -40,325 +41,314 @@ import type {
   GetActorShowreels200,
   ShowreelCreateRequest,
   UnauthorizedErrorResponse,
-  UpdateShowreel200,
-} from ".././model";
+  UpdateShowreel200
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * @summary 쇼릴 목록 조회
  */
-export const getActorShowreels = (actorId: string, signal?: AbortSignal) => {
-  return customFetch<GetActorShowreels200>({ url: `/api/actors/${actorId}/showreels`, method: "GET", signal });
-};
-
-export const getGetActorShowreelsQueryKey = (actorId?: string) => {
-  return [`/api/actors/${actorId}/showreels`] as const;
-};
-
-export const getGetActorShowreelsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getActorShowreels>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> }
+export const getActorShowreels = (
+    actorId: string,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetActorShowreels200>(
+      {url: `/api/actors/${actorId}/showreels`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetActorShowreelsQueryKey(actorId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorShowreels>>> = ({ signal }) =>
-    getActorShowreels(actorId, signal);
 
-  return { queryKey, queryFn, enabled: !!actorId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getActorShowreels>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetActorShowreelsQueryKey = (actorId?: string,) => {
+    return [
+    `/api/actors/${actorId}/showreels`
+    ] as const;
+    }
 
-export type GetActorShowreelsQueryResult = NonNullable<Awaited<ReturnType<typeof getActorShowreels>>>;
-export type GetActorShowreelsQueryError = ErrorType<unknown>;
+    
+export const getGetActorShowreelsQueryOptions = <TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, }
+) => {
 
-export function useGetActorShowreels<
-  TData = Awaited<ReturnType<typeof getActorShowreels>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetActorShowreelsQueryKey(actorId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActorShowreels>>> = ({ signal }) => getActorShowreels(actorId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(actorId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetActorShowreelsQueryResult = NonNullable<Awaited<ReturnType<typeof getActorShowreels>>>
+export type GetActorShowreelsQueryError = ErrorType<unknown>
+
+
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
+ actorId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorShowreels>>,
           TError,
           Awaited<ReturnType<typeof getActorShowreels>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetActorShowreels<
-  TData = Awaited<ReturnType<typeof getActorShowreels>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getActorShowreels>>,
           TError,
           Awaited<ReturnType<typeof getActorShowreels>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetActorShowreels<
-  TData = Awaited<ReturnType<typeof getActorShowreels>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 쇼릴 목록 조회
  */
 
-export function useGetActorShowreels<
-  TData = Awaited<ReturnType<typeof getActorShowreels>>,
-  TError = ErrorType<unknown>,
->(
-  actorId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetActorShowreelsQueryOptions(actorId, options);
+export function useGetActorShowreels<TData = Awaited<ReturnType<typeof getActorShowreels>>, TError = ErrorType<unknown>>(
+ actorId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActorShowreels>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetActorShowreelsQueryOptions(actorId,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
 
-/**
- * @summary 쇼릴 생성
- */
-export const createShowreel = (createShowreelBody: BodyType<CreateShowreelBody>, signal?: AbortSignal) => {
-  const formData = new FormData();
-  if (createShowreelBody.videos !== undefined) {
-    createShowreelBody.videos.forEach((value) => formData.append(`videos`, value));
-  }
-  formData.append(`roleType`, createShowreelBody.roleType);
-  formData.append(`workTitle`, createShowreelBody.workTitle);
-  if (createShowreelBody.year !== undefined) {
-    formData.append(`year`, createShowreelBody.year.toString());
-  }
-  if (createShowreelBody.genre !== undefined) {
-    formData.append(`genre`, createShowreelBody.genre);
-  }
-  if (createShowreelBody.role !== undefined) {
-    formData.append(`role`, createShowreelBody.role);
-  }
-  if (createShowreelBody.representativeGenre !== undefined) {
-    formData.append(`representativeGenre`, createShowreelBody.representativeGenre);
-  }
-  if (createShowreelBody.tags !== undefined) {
-    createShowreelBody.tags.forEach((value) => formData.append(`tags`, value));
-  }
 
-  return customFetch<CreateShowreel201>({
-    url: `/api/showreels`,
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
-    signal,
-  });
-};
-
-export const getCreateShowreelMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createShowreel>>,
-    TError,
-    { data: BodyType<CreateShowreelBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createShowreel>>,
-  TError,
-  { data: BodyType<CreateShowreelBody> },
-  TContext
-> => {
-  const mutationKey = ["createShowreel"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createShowreel>>,
-    { data: BodyType<CreateShowreelBody> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return createShowreel(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type CreateShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof createShowreel>>>;
-export type CreateShowreelMutationBody = BodyType<CreateShowreelBody>;
-export type CreateShowreelMutationError = ErrorType<UnauthorizedErrorResponse>;
 
 /**
  * @summary 쇼릴 생성
  */
-export const useCreateShowreel = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createShowreel>>,
-      TError,
-      { data: BodyType<CreateShowreelBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof createShowreel>>,
-  TError,
-  { data: BodyType<CreateShowreelBody> },
-  TContext
-> => {
-  const mutationOptions = getCreateShowreelMutationOptions(options);
+export const createShowreel = (
+    createShowreelBody: BodyType<CreateShowreelBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
+if(createShowreelBody.videos !== undefined) {
+ createShowreelBody.videos.forEach(value => formData.append(`videos`, value));
+ }
+formData.append(`roleType`, createShowreelBody.roleType)
+formData.append(`workTitle`, createShowreelBody.workTitle)
+if(createShowreelBody.year !== undefined) {
+ formData.append(`year`, createShowreelBody.year.toString())
+ }
+if(createShowreelBody.genre !== undefined) {
+ formData.append(`genre`, createShowreelBody.genre)
+ }
+if(createShowreelBody.role !== undefined) {
+ formData.append(`role`, createShowreelBody.role)
+ }
+if(createShowreelBody.representativeGenre !== undefined) {
+ formData.append(`representativeGenre`, createShowreelBody.representativeGenre)
+ }
+if(createShowreelBody.tags !== undefined) {
+ createShowreelBody.tags.forEach(value => formData.append(`tags`, value));
+ }
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      return customFetch<CreateShowreel201>(
+      {url: `/api/showreels`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
+
+
+export const getCreateShowreelMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: BodyType<CreateShowreelBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: BodyType<CreateShowreelBody>}, TContext> => {
+
+const mutationKey = ['createShowreel'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createShowreel>>, {data: BodyType<CreateShowreelBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createShowreel(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof createShowreel>>>
+    export type CreateShowreelMutationBody = BodyType<CreateShowreelBody>
+    export type CreateShowreelMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
+ * @summary 쇼릴 생성
+ */
+export const useCreateShowreel = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createShowreel>>, TError,{data: BodyType<CreateShowreelBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createShowreel>>,
+        TError,
+        {data: BodyType<CreateShowreelBody>},
+        TContext
+      > => {
+
+      const mutationOptions = getCreateShowreelMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 쇼릴 수정
  */
-export const updateShowreel = (showreelId: string, showreelCreateRequest: BodyType<ShowreelCreateRequest>) => {
-  return customFetch<UpdateShowreel200>({
-    url: `/api/showreels/${showreelId}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: showreelCreateRequest,
-  });
-};
+export const updateShowreel = (
+    showreelId: string,
+    showreelCreateRequest: BodyType<ShowreelCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateShowreel200>(
+      {url: `/api/showreels/${showreelId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: showreelCreateRequest
+    },
+      );
+    }
+  
 
-export const getUpdateShowreelMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateShowreel>>,
-    TError,
-    { showreelId: string; data: BodyType<ShowreelCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateShowreel>>,
-  TError,
-  { showreelId: string; data: BodyType<ShowreelCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["updateShowreel"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateShowreel>>,
-    { showreelId: string; data: BodyType<ShowreelCreateRequest> }
-  > = (props) => {
-    const { showreelId, data } = props ?? {};
+export const getUpdateShowreelMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: BodyType<ShowreelCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: BodyType<ShowreelCreateRequest>}, TContext> => {
 
-    return updateShowreel(showreelId, data);
-  };
+const mutationKey = ['updateShowreel'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type UpdateShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof updateShowreel>>>;
-export type UpdateShowreelMutationBody = BodyType<ShowreelCreateRequest>;
-export type UpdateShowreelMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateShowreel>>, {showreelId: string;data: BodyType<ShowreelCreateRequest>}> = (props) => {
+          const {showreelId,data} = props ?? {};
+
+          return  updateShowreel(showreelId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof updateShowreel>>>
+    export type UpdateShowreelMutationBody = BodyType<ShowreelCreateRequest>
+    export type UpdateShowreelMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 쇼릴 수정
  */
-export const useUpdateShowreel = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateShowreel>>,
-      TError,
-      { showreelId: string; data: BodyType<ShowreelCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateShowreel>>,
-  TError,
-  { showreelId: string; data: BodyType<ShowreelCreateRequest> },
-  TContext
-> => {
-  const mutationOptions = getUpdateShowreelMutationOptions(options);
+export const useUpdateShowreel = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateShowreel>>, TError,{showreelId: string;data: BodyType<ShowreelCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateShowreel>>,
+        TError,
+        {showreelId: string;data: BodyType<ShowreelCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUpdateShowreelMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 쇼릴 삭제
  */
-export const deleteShowreel = (showreelId: string) => {
-  return customFetch<DeleteShowreel200>({ url: `/api/showreels/${showreelId}`, method: "DELETE" });
-};
+export const deleteShowreel = (
+    showreelId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteShowreel200>(
+      {url: `/api/showreels/${showreelId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteShowreelMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError, { showreelId: string }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError, { showreelId: string }, TContext> => {
-  const mutationKey = ["deleteShowreel"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteShowreel>>, { showreelId: string }> = (props) => {
-    const { showreelId } = props ?? {};
+export const getDeleteShowreelMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext> => {
 
-    return deleteShowreel(showreelId);
-  };
+const mutationKey = ['deleteShowreel'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof deleteShowreel>>>;
 
-export type DeleteShowreelMutationError = ErrorType<UnauthorizedErrorResponse>;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteShowreel>>, {showreelId: string}> = (props) => {
+          const {showreelId} = props ?? {};
 
-/**
+          return  deleteShowreel(showreelId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteShowreelMutationResult = NonNullable<Awaited<ReturnType<typeof deleteShowreel>>>
+    
+    export type DeleteShowreelMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 쇼릴 삭제
  */
-export const useDeleteShowreel = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError, { showreelId: string }, TContext>;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof deleteShowreel>>, TError, { showreelId: string }, TContext> => {
-  const mutationOptions = getDeleteShowreelMutationOptions(options);
+export const useDeleteShowreel = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteShowreel>>, TError,{showreelId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteShowreel>>,
+        TError,
+        {showreelId: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getDeleteShowreelMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

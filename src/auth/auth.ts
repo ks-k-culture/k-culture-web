@@ -15,11 +15,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation } from "@tanstack/react-query";
-import type { MutationFunction, QueryClient, UseMutationOptions, UseMutationResult } from "@tanstack/react-query";
+import {
+  useMutation
+} from '@tanstack/react-query';
+import type {
+  MutationFunction,
+  QueryClient,
+  UseMutationOptions,
+  UseMutationResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   DeleteAccount200,
   ErrorResponse,
@@ -35,413 +40,463 @@ import type {
   Signup201,
   SignupBody,
   UnauthorizedErrorResponse,
-  ValidationErrorResponse,
-} from ".././model";
+  ValidationErrorResponse
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * 이메일/비밀번호로 로그인하여 JWT 토큰 발급
  * @summary 로그인
  */
-export const login = (loginBody: BodyType<LoginBody>, signal?: AbortSignal) => {
-  return customFetch<Login200>({
-    url: `/api/auth/login`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: loginBody,
-    signal,
-  });
-};
+export const login = (
+    loginBody: BodyType<LoginBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Login200>(
+      {url: `/api/auth/login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginBody, signal
+    },
+      );
+    }
+  
 
-export const getLoginMutationOptions = <
-  TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginBody> }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginBody> }, TContext> => {
-  const mutationKey = ["login"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, { data: BodyType<LoginBody> }> = (props) => {
-    const { data } = props ?? {};
+export const getLoginMutationOptions = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginBody>}, TContext> => {
 
-    return login(data);
-  };
+const mutationKey = ['login'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>;
-export type LoginMutationBody = BodyType<LoginBody>;
-export type LoginMutationError = ErrorType<ValidationErrorResponse | ErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: BodyType<LoginBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  login(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
+    export type LoginMutationBody = BodyType<LoginBody>
+    export type LoginMutationError = ErrorType<ValidationErrorResponse | ErrorResponse>
+
+    /**
  * @summary 로그인
  */
-export const useLogin = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginBody> }, TContext>;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof login>>, TError, { data: BodyType<LoginBody> }, TContext> => {
-  const mutationOptions = getLoginMutationOptions(options);
+export const useLogin = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof login>>,
+        TError,
+        {data: BodyType<LoginBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getLoginMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 이메일/비밀번호로 회원가입 (약관 동의 필수)
  * @summary 회원가입
  */
-export const signup = (signupBody: BodyType<SignupBody>, signal?: AbortSignal) => {
-  return customFetch<Signup201>({
-    url: `/api/auth/signup`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: signupBody,
-    signal,
-  });
-};
+export const signup = (
+    signupBody: BodyType<SignupBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Signup201>(
+      {url: `/api/auth/signup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: signupBody, signal
+    },
+      );
+    }
+  
 
-export const getSignupMutationOptions = <
-  TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError, { data: BodyType<SignupBody> }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError, { data: BodyType<SignupBody> }, TContext> => {
-  const mutationKey = ["signup"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof signup>>, { data: BodyType<SignupBody> }> = (props) => {
-    const { data } = props ?? {};
+export const getSignupMutationOptions = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: BodyType<SignupBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: BodyType<SignupBody>}, TContext> => {
 
-    return signup(data);
-  };
+const mutationKey = ['signup'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type SignupMutationResult = NonNullable<Awaited<ReturnType<typeof signup>>>;
-export type SignupMutationBody = BodyType<SignupBody>;
-export type SignupMutationError = ErrorType<ValidationErrorResponse | ErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof signup>>, {data: BodyType<SignupBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  signup(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SignupMutationResult = NonNullable<Awaited<ReturnType<typeof signup>>>
+    export type SignupMutationBody = BodyType<SignupBody>
+    export type SignupMutationError = ErrorType<ValidationErrorResponse | ErrorResponse>
+
+    /**
  * @summary 회원가입
  */
-export const useSignup = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError, { data: BodyType<SignupBody> }, TContext>;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof signup>>, TError, { data: BodyType<SignupBody> }, TContext> => {
-  const mutationOptions = getSignupMutationOptions(options);
+export const useSignup = <TError = ErrorType<ValidationErrorResponse | ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signup>>, TError,{data: BodyType<SignupBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof signup>>,
+        TError,
+        {data: BodyType<SignupBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getSignupMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 비밀번호 재설정 이메일 발송
  * @summary 비밀번호 찾기
  */
-export const forgotPassword = (forgotPasswordBody: BodyType<ForgotPasswordBody>, signal?: AbortSignal) => {
-  return customFetch<ForgotPassword200>({
-    url: `/api/auth/forgot-password`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: forgotPasswordBody,
-    signal,
-  });
-};
+export const forgotPassword = (
+    forgotPasswordBody: BodyType<ForgotPasswordBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ForgotPassword200>(
+      {url: `/api/auth/forgot-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: forgotPasswordBody, signal
+    },
+      );
+    }
+  
 
-export const getForgotPasswordMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof forgotPassword>>,
-    TError,
-    { data: BodyType<ForgotPasswordBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof forgotPassword>>,
-  TError,
-  { data: BodyType<ForgotPasswordBody> },
-  TContext
-> => {
-  const mutationKey = ["forgotPassword"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof forgotPassword>>,
-    { data: BodyType<ForgotPasswordBody> }
-  > = (props) => {
-    const { data } = props ?? {};
+export const getForgotPasswordMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: BodyType<ForgotPasswordBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: BodyType<ForgotPasswordBody>}, TContext> => {
 
-    return forgotPassword(data);
-  };
+const mutationKey = ['forgotPassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type ForgotPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof forgotPassword>>>;
-export type ForgotPasswordMutationBody = BodyType<ForgotPasswordBody>;
-export type ForgotPasswordMutationError = ErrorType<unknown>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof forgotPassword>>, {data: BodyType<ForgotPasswordBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  forgotPassword(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ForgotPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof forgotPassword>>>
+    export type ForgotPasswordMutationBody = BodyType<ForgotPasswordBody>
+    export type ForgotPasswordMutationError = ErrorType<unknown>
+
+    /**
  * @summary 비밀번호 찾기
  */
-export const useForgotPassword = <TError = ErrorType<unknown>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof forgotPassword>>,
-      TError,
-      { data: BodyType<ForgotPasswordBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof forgotPassword>>,
-  TError,
-  { data: BodyType<ForgotPasswordBody> },
-  TContext
-> => {
-  const mutationOptions = getForgotPasswordMutationOptions(options);
+export const useForgotPassword = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword>>, TError,{data: BodyType<ForgotPasswordBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof forgotPassword>>,
+        TError,
+        {data: BodyType<ForgotPasswordBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getForgotPasswordMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 이메일로 받은 토큰으로 새 비밀번호 설정
  * @summary 비밀번호 재설정
  */
-export const resetPassword = (resetPasswordBody: BodyType<ResetPasswordBody>, signal?: AbortSignal) => {
-  return customFetch<ResetPassword200>({
-    url: `/api/auth/reset-password`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: resetPasswordBody,
-    signal,
-  });
-};
+export const resetPassword = (
+    resetPasswordBody: BodyType<ResetPasswordBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ResetPassword200>(
+      {url: `/api/auth/reset-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: resetPasswordBody, signal
+    },
+      );
+    }
+  
 
-export const getResetPasswordMutationOptions = <TError = ErrorType<ErrorResponse>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resetPassword>>,
-    TError,
-    { data: BodyType<ResetPasswordBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof resetPassword>>,
-  TError,
-  { data: BodyType<ResetPasswordBody> },
-  TContext
-> => {
-  const mutationKey = ["resetPassword"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof resetPassword>>,
-    { data: BodyType<ResetPasswordBody> }
-  > = (props) => {
-    const { data } = props ?? {};
+export const getResetPasswordMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordBody>}, TContext> => {
 
-    return resetPassword(data);
-  };
+const mutationKey = ['resetPassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>;
-export type ResetPasswordMutationBody = BodyType<ResetPasswordBody>;
-export type ResetPasswordMutationError = ErrorType<ErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword>>, {data: BodyType<ResetPasswordBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  resetPassword(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>
+    export type ResetPasswordMutationBody = BodyType<ResetPasswordBody>
+    export type ResetPasswordMutationError = ErrorType<ErrorResponse>
+
+    /**
  * @summary 비밀번호 재설정
  */
-export const useResetPassword = <TError = ErrorType<ErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof resetPassword>>,
-      TError,
-      { data: BodyType<ResetPasswordBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof resetPassword>>,
-  TError,
-  { data: BodyType<ResetPasswordBody> },
-  TContext
-> => {
-  const mutationOptions = getResetPasswordMutationOptions(options);
+export const useResetPassword = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof resetPassword>>,
+        TError,
+        {data: BodyType<ResetPasswordBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getResetPasswordMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 현재 세션 로그아웃 (토큰 무효화)
  * @summary 로그아웃
  */
-export const logout = (signal?: AbortSignal) => {
-  return customFetch<Logout200>({ url: `/api/auth/logout`, method: "POST", signal });
-};
+export const logout = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<Logout200>(
+      {url: `/api/auth/logout`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-export const getLogoutMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext> => {
-  const mutationKey = ["logout"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof logout>>, void> = () => {
-    return logout();
-  };
+export const getLogoutMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext> => {
 
-  return { mutationFn, ...mutationOptions };
-};
+const mutationKey = ['logout'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>;
+      
 
-export type LogoutMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof logout>>, void> = () => {
+          
+
+          return  logout()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>
+    
+    export type LogoutMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 로그아웃
  */
-export const useLogout = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError, void, TContext> },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof logout>>, TError, void, TContext> => {
-  const mutationOptions = getLogoutMutationOptions(options);
+export const useLogout = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof logout>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getLogoutMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 계정 영구 삭제 (복구 불가)
  * @summary 계정 삭제
  */
-export const deleteAccount = () => {
-  return customFetch<DeleteAccount200>({ url: `/api/auth/account`, method: "DELETE" });
-};
+export const deleteAccount = (
+    
+ ) => {
+      
+      
+      return customFetch<DeleteAccount200>(
+      {url: `/api/auth/account`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteAccountMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError, void, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError, void, TContext> => {
-  const mutationKey = ["deleteAccount"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAccount>>, void> = () => {
-    return deleteAccount();
-  };
+export const getDeleteAccountMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext> => {
 
-  return { mutationFn, ...mutationOptions };
-};
+const mutationKey = ['deleteAccount'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-export type DeleteAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAccount>>>;
+      
 
-export type DeleteAccountMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAccount>>, void> = () => {
+          
+
+          return  deleteAccount()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAccount>>>
+    
+    export type DeleteAccountMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 계정 삭제
  */
-export const useDeleteAccount = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: { mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError, void, TContext> },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof deleteAccount>>, TError, void, TContext> => {
-  const mutationOptions = getDeleteAccountMutationOptions(options);
+export const useDeleteAccount = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,void, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAccount>>,
+        TError,
+        void,
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getDeleteAccountMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * Refresh Token으로 새 Access Token 발급
  * @summary 토큰 갱신
  */
-export const refreshToken = (refreshTokenBody: BodyType<RefreshTokenBody>, signal?: AbortSignal) => {
-  return customFetch<RefreshToken200>({
-    url: `/api/auth/refresh`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: refreshTokenBody,
-    signal,
-  });
-};
+export const refreshToken = (
+    refreshTokenBody: BodyType<RefreshTokenBody>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<RefreshToken200>(
+      {url: `/api/auth/refresh`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: refreshTokenBody, signal
+    },
+      );
+    }
+  
 
-export const getRefreshTokenMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof refreshToken>>,
-    TError,
-    { data: BodyType<RefreshTokenBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof refreshToken>>,
-  TError,
-  { data: BodyType<RefreshTokenBody> },
-  TContext
-> => {
-  const mutationKey = ["refreshToken"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshToken>>, { data: BodyType<RefreshTokenBody> }> = (
-    props
-  ) => {
-    const { data } = props ?? {};
+export const getRefreshTokenMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: BodyType<RefreshTokenBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: BodyType<RefreshTokenBody>}, TContext> => {
 
-    return refreshToken(data);
-  };
+const mutationKey = ['refreshToken'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type RefreshTokenMutationResult = NonNullable<Awaited<ReturnType<typeof refreshToken>>>;
-export type RefreshTokenMutationBody = BodyType<RefreshTokenBody>;
-export type RefreshTokenMutationError = ErrorType<unknown>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshToken>>, {data: BodyType<RefreshTokenBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  refreshToken(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RefreshTokenMutationResult = NonNullable<Awaited<ReturnType<typeof refreshToken>>>
+    export type RefreshTokenMutationBody = BodyType<RefreshTokenBody>
+    export type RefreshTokenMutationError = ErrorType<unknown>
+
+    /**
  * @summary 토큰 갱신
  */
-export const useRefreshToken = <TError = ErrorType<unknown>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof refreshToken>>,
-      TError,
-      { data: BodyType<RefreshTokenBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof refreshToken>>,
-  TError,
-  { data: BodyType<RefreshTokenBody> },
-  TContext
-> => {
-  const mutationOptions = getRefreshTokenMutationOptions(options);
+export const useRefreshToken = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken>>, TError,{data: BodyType<RefreshTokenBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof refreshToken>>,
+        TError,
+        {data: BodyType<RefreshTokenBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getRefreshTokenMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

@@ -15,173 +15,163 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation } from "@tanstack/react-query";
-import type { MutationFunction, QueryClient, UseMutationOptions, UseMutationResult } from "@tanstack/react-query";
+import {
+  useMutation
+} from '@tanstack/react-query';
+import type {
+  MutationFunction,
+  QueryClient,
+  UseMutationOptions,
+  UseMutationResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   ErrorResponse,
   UnauthorizedErrorResponse,
   UploadImage200,
   UploadImageBody,
   UploadVideo200,
-  UploadVideoBody,
-} from ".././model";
+  UploadVideoBody
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * @summary 이미지 업로드
  */
-export const uploadImage = (uploadImageBody: BodyType<UploadImageBody>, signal?: AbortSignal) => {
-  const formData = new FormData();
-  formData.append(`file`, uploadImageBody.file);
-  formData.append(`type`, uploadImageBody.type);
+export const uploadImage = (
+    uploadImageBody: BodyType<UploadImageBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
+formData.append(`file`, uploadImageBody.file)
+formData.append(`type`, uploadImageBody.type)
 
-  return customFetch<UploadImage200>({
-    url: `/api/upload/image`,
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
-    signal,
-  });
-};
+      return customFetch<UploadImage200>(
+      {url: `/api/upload/image`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
-export const getUploadImageMutationOptions = <
-  TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof uploadImage>>,
-    TError,
-    { data: BodyType<UploadImageBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof uploadImage>>,
-  TError,
-  { data: BodyType<UploadImageBody> },
-  TContext
-> => {
-  const mutationKey = ["uploadImage"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadImage>>, { data: BodyType<UploadImageBody> }> = (
-    props
-  ) => {
-    const { data } = props ?? {};
+export const getUploadImageMutationOptions = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: BodyType<UploadImageBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: BodyType<UploadImageBody>}, TContext> => {
 
-    return uploadImage(data);
-  };
+const mutationKey = ['uploadImage'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type UploadImageMutationResult = NonNullable<Awaited<ReturnType<typeof uploadImage>>>;
-export type UploadImageMutationBody = BodyType<UploadImageBody>;
-export type UploadImageMutationError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadImage>>, {data: BodyType<UploadImageBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  uploadImage(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadImageMutationResult = NonNullable<Awaited<ReturnType<typeof uploadImage>>>
+    export type UploadImageMutationBody = BodyType<UploadImageBody>
+    export type UploadImageMutationError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>
+
+    /**
  * @summary 이미지 업로드
  */
-export const useUploadImage = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof uploadImage>>,
-      TError,
-      { data: BodyType<UploadImageBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof uploadImage>>,
-  TError,
-  { data: BodyType<UploadImageBody> },
-  TContext
-> => {
-  const mutationOptions = getUploadImageMutationOptions(options);
+export const useUploadImage = <TError = ErrorType<ErrorResponse | UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadImage>>, TError,{data: BodyType<UploadImageBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof uploadImage>>,
+        TError,
+        {data: BodyType<UploadImageBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUploadImageMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 영상 업로드
  */
-export const uploadVideo = (uploadVideoBody: BodyType<UploadVideoBody>, signal?: AbortSignal) => {
-  const formData = new FormData();
-  formData.append(`file`, uploadVideoBody.file);
-  formData.append(`type`, uploadVideoBody.type);
+export const uploadVideo = (
+    uploadVideoBody: BodyType<UploadVideoBody>,
+ signal?: AbortSignal
+) => {
+      
+      const formData = new FormData();
+formData.append(`file`, uploadVideoBody.file)
+formData.append(`type`, uploadVideoBody.type)
 
-  return customFetch<UploadVideo200>({
-    url: `/api/upload/video`,
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
-    signal,
-  });
-};
+      return customFetch<UploadVideo200>(
+      {url: `/api/upload/video`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
 
-export const getUploadVideoMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof uploadVideo>>,
-    TError,
-    { data: BodyType<UploadVideoBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof uploadVideo>>,
-  TError,
-  { data: BodyType<UploadVideoBody> },
-  TContext
-> => {
-  const mutationKey = ["uploadVideo"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadVideo>>, { data: BodyType<UploadVideoBody> }> = (
-    props
-  ) => {
-    const { data } = props ?? {};
+export const getUploadVideoMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: BodyType<UploadVideoBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: BodyType<UploadVideoBody>}, TContext> => {
 
-    return uploadVideo(data);
-  };
+const mutationKey = ['uploadVideo'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type UploadVideoMutationResult = NonNullable<Awaited<ReturnType<typeof uploadVideo>>>;
-export type UploadVideoMutationBody = BodyType<UploadVideoBody>;
-export type UploadVideoMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadVideo>>, {data: BodyType<UploadVideoBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  uploadVideo(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadVideoMutationResult = NonNullable<Awaited<ReturnType<typeof uploadVideo>>>
+    export type UploadVideoMutationBody = BodyType<UploadVideoBody>
+    export type UploadVideoMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 영상 업로드
  */
-export const useUploadVideo = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof uploadVideo>>,
-      TError,
-      { data: BodyType<UploadVideoBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof uploadVideo>>,
-  TError,
-  { data: BodyType<UploadVideoBody> },
-  TContext
-> => {
-  const mutationOptions = getUploadVideoMutationOptions(options);
+export const useUploadVideo = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadVideo>>, TError,{data: BodyType<UploadVideoBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof uploadVideo>>,
+        TError,
+        {data: BodyType<UploadVideoBody>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getUploadVideoMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

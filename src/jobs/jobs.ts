@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,11 +31,9 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   CreateJob201,
   DeleteJob200,
@@ -43,389 +44,390 @@ import type {
   JobCreateRequest,
   NotFoundErrorResponse,
   UnauthorizedErrorResponse,
-  UpdateJob200,
-} from ".././model";
+  UpdateJob200
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * 필터 조건으로 작품구인 목록 검색
  * @summary 작품구인 목록 조회
  */
-export const getJobs = (params?: GetJobsParams, signal?: AbortSignal) => {
-  return customFetch<GetJobs200>({ url: `/api/jobs`, method: "GET", params, signal });
-};
-
-export const getGetJobsQueryKey = (params?: GetJobsParams) => {
-  return [`/api/jobs`, ...(params ? [params] : [])] as const;
-};
-
-export const getGetJobsQueryOptions = <TData = Awaited<ReturnType<typeof getJobs>>, TError = ErrorType<unknown>>(
-  params?: GetJobsParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> }
+export const getJobs = (
+    params?: GetJobsParams,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetJobs200>(
+      {url: `/api/jobs`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetJobsQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getJobs>>> = ({ signal }) => getJobs(params, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getJobs>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetJobsQueryKey = (params?: GetJobsParams,) => {
+    return [
+    `/api/jobs`, ...(params ? [params]: [])
+    ] as const;
+    }
 
-export type GetJobsQueryResult = NonNullable<Awaited<ReturnType<typeof getJobs>>>;
-export type GetJobsQueryError = ErrorType<unknown>;
+    
+export const getGetJobsQueryOptions = <TData = Awaited<ReturnType<typeof getJobs>>, TError = ErrorType<unknown>>(params?: GetJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetJobsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJobs>>> = ({ signal }) => getJobs(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetJobsQueryResult = NonNullable<Awaited<ReturnType<typeof getJobs>>>
+export type GetJobsQueryError = ErrorType<unknown>
+
 
 export function useGetJobs<TData = Awaited<ReturnType<typeof getJobs>>, TError = ErrorType<unknown>>(
-  params: undefined | GetJobsParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> &
-      Pick<
-        DefinedInitialDataOptions<Awaited<ReturnType<typeof getJobs>>, TError, Awaited<ReturnType<typeof getJobs>>>,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+ params: undefined |  GetJobsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJobs>>,
+          TError,
+          Awaited<ReturnType<typeof getJobs>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetJobs<TData = Awaited<ReturnType<typeof getJobs>>, TError = ErrorType<unknown>>(
-  params?: GetJobsParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> &
-      Pick<
-        UndefinedInitialDataOptions<Awaited<ReturnType<typeof getJobs>>, TError, Awaited<ReturnType<typeof getJobs>>>,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+ params?: GetJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJobs>>,
+          TError,
+          Awaited<ReturnType<typeof getJobs>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetJobs<TData = Awaited<ReturnType<typeof getJobs>>, TError = ErrorType<unknown>>(
-  params?: GetJobsParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+ params?: GetJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 작품구인 목록 조회
  */
 
 export function useGetJobs<TData = Awaited<ReturnType<typeof getJobs>>, TError = ErrorType<unknown>>(
-  params?: GetJobsParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetJobsQueryOptions(params, options);
+ params?: GetJobsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobs>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetJobsQueryOptions(params,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * 새 작품구인 공고 등록
  * @summary 작품구인 등록
  */
-export const createJob = (jobCreateRequest: BodyType<JobCreateRequest>, signal?: AbortSignal) => {
-  return customFetch<CreateJob201>({
-    url: `/api/jobs`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: jobCreateRequest,
-    signal,
-  });
-};
+export const createJob = (
+    jobCreateRequest: BodyType<JobCreateRequest>,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<CreateJob201>(
+      {url: `/api/jobs`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: jobCreateRequest, signal
+    },
+      );
+    }
+  
 
-export const getCreateJobMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createJob>>,
-    TError,
-    { data: BodyType<JobCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createJob>>,
-  TError,
-  { data: BodyType<JobCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["createJob"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof createJob>>, { data: BodyType<JobCreateRequest> }> = (
-    props
-  ) => {
-    const { data } = props ?? {};
+export const getCreateJobMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJob>>, TError,{data: BodyType<JobCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createJob>>, TError,{data: BodyType<JobCreateRequest>}, TContext> => {
 
-    return createJob(data);
-  };
+const mutationKey = ['createJob'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type CreateJobMutationResult = NonNullable<Awaited<ReturnType<typeof createJob>>>;
-export type CreateJobMutationBody = BodyType<JobCreateRequest>;
-export type CreateJobMutationError = ErrorType<UnauthorizedErrorResponse>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createJob>>, {data: BodyType<JobCreateRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createJob(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateJobMutationResult = NonNullable<Awaited<ReturnType<typeof createJob>>>
+    export type CreateJobMutationBody = BodyType<JobCreateRequest>
+    export type CreateJobMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
  * @summary 작품구인 등록
  */
-export const useCreateJob = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createJob>>,
-      TError,
-      { data: BodyType<JobCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof createJob>>, TError, { data: BodyType<JobCreateRequest> }, TContext> => {
-  const mutationOptions = getCreateJobMutationOptions(options);
+export const useCreateJob = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createJob>>, TError,{data: BodyType<JobCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createJob>>,
+        TError,
+        {data: BodyType<JobCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getCreateJobMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 작품구인 공고 상세 정보 조회
  * @summary 작품구인 상세 조회
  */
-export const getJobDetail = (jobId: string, signal?: AbortSignal) => {
-  return customFetch<GetJobDetail200>({ url: `/api/jobs/${jobId}`, method: "GET", signal });
-};
-
-export const getGetJobDetailQueryKey = (jobId?: string) => {
-  return [`/api/jobs/${jobId}`] as const;
-};
-
-export const getGetJobDetailQueryOptions = <
-  TData = Awaited<ReturnType<typeof getJobDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  jobId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> }
+export const getJobDetail = (
+    jobId: string,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetJobDetail200>(
+      {url: `/api/jobs/${jobId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetJobDetailQueryKey(jobId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getJobDetail>>> = ({ signal }) => getJobDetail(jobId, signal);
 
-  return { queryKey, queryFn, enabled: !!jobId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getJobDetail>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetJobDetailQueryKey = (jobId?: string,) => {
+    return [
+    `/api/jobs/${jobId}`
+    ] as const;
+    }
 
-export type GetJobDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getJobDetail>>>;
-export type GetJobDetailQueryError = ErrorType<NotFoundErrorResponse>;
+    
+export const getGetJobDetailQueryOptions = <TData = Awaited<ReturnType<typeof getJobDetail>>, TError = ErrorType<NotFoundErrorResponse>>(jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>>, }
+) => {
 
-export function useGetJobDetail<
-  TData = Awaited<ReturnType<typeof getJobDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  jobId: string,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetJobDetailQueryKey(jobId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJobDetail>>> = ({ signal }) => getJobDetail(jobId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(jobId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetJobDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getJobDetail>>>
+export type GetJobDetailQueryError = ErrorType<NotFoundErrorResponse>
+
+
+export function useGetJobDetail<TData = Awaited<ReturnType<typeof getJobDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ jobId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getJobDetail>>,
           TError,
           Awaited<ReturnType<typeof getJobDetail>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetJobDetail<
-  TData = Awaited<ReturnType<typeof getJobDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  jobId: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJobDetail<TData = Awaited<ReturnType<typeof getJobDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getJobDetail>>,
           TError,
           Awaited<ReturnType<typeof getJobDetail>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetJobDetail<
-  TData = Awaited<ReturnType<typeof getJobDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  jobId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJobDetail<TData = Awaited<ReturnType<typeof getJobDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 작품구인 상세 조회
  */
 
-export function useGetJobDetail<
-  TData = Awaited<ReturnType<typeof getJobDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  jobId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetJobDetailQueryOptions(jobId, options);
+export function useGetJobDetail<TData = Awaited<ReturnType<typeof getJobDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ jobId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJobDetail>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetJobDetailQueryOptions(jobId,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * 작품구인 공고 수정
  * @summary 작품구인 수정
  */
-export const updateJob = (jobId: string, jobCreateRequest: BodyType<JobCreateRequest>) => {
-  return customFetch<UpdateJob200>({
-    url: `/api/jobs/${jobId}`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: jobCreateRequest,
-  });
-};
+export const updateJob = (
+    jobId: string,
+    jobCreateRequest: BodyType<JobCreateRequest>,
+ ) => {
+      
+      
+      return customFetch<UpdateJob200>(
+      {url: `/api/jobs/${jobId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: jobCreateRequest
+    },
+      );
+    }
+  
 
-export const getUpdateJobMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateJob>>,
-    TError,
-    { jobId: string; data: BodyType<JobCreateRequest> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateJob>>,
-  TError,
-  { jobId: string; data: BodyType<JobCreateRequest> },
-  TContext
-> => {
-  const mutationKey = ["updateJob"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateJob>>,
-    { jobId: string; data: BodyType<JobCreateRequest> }
-  > = (props) => {
-    const { jobId, data } = props ?? {};
+export const getUpdateJobMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJob>>, TError,{jobId: string;data: BodyType<JobCreateRequest>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateJob>>, TError,{jobId: string;data: BodyType<JobCreateRequest>}, TContext> => {
 
-    return updateJob(jobId, data);
-  };
+const mutationKey = ['updateJob'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type UpdateJobMutationResult = NonNullable<Awaited<ReturnType<typeof updateJob>>>;
-export type UpdateJobMutationBody = BodyType<JobCreateRequest>;
-export type UpdateJobMutationError = ErrorType<
-  UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse
->;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateJob>>, {jobId: string;data: BodyType<JobCreateRequest>}> = (props) => {
+          const {jobId,data} = props ?? {};
+
+          return  updateJob(jobId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateJobMutationResult = NonNullable<Awaited<ReturnType<typeof updateJob>>>
+    export type UpdateJobMutationBody = BodyType<JobCreateRequest>
+    export type UpdateJobMutationError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>
+
+    /**
  * @summary 작품구인 수정
  */
-export const useUpdateJob = <
-  TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateJob>>,
-      TError,
-      { jobId: string; data: BodyType<JobCreateRequest> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateJob>>,
-  TError,
-  { jobId: string; data: BodyType<JobCreateRequest> },
-  TContext
-> => {
-  const mutationOptions = getUpdateJobMutationOptions(options);
+export const useUpdateJob = <TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateJob>>, TError,{jobId: string;data: BodyType<JobCreateRequest>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateJob>>,
+        TError,
+        {jobId: string;data: BodyType<JobCreateRequest>},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUpdateJobMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * 작품구인 공고 삭제
  * @summary 작품구인 삭제
  */
-export const deleteJob = (jobId: string) => {
-  return customFetch<DeleteJob200>({ url: `/api/jobs/${jobId}`, method: "DELETE" });
-};
+export const deleteJob = (
+    jobId: string,
+ ) => {
+      
+      
+      return customFetch<DeleteJob200>(
+      {url: `/api/jobs/${jobId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getDeleteJobMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteJob>>, TError, { jobId: string }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<typeof deleteJob>>, TError, { jobId: string }, TContext> => {
-  const mutationKey = ["deleteJob"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteJob>>, { jobId: string }> = (props) => {
-    const { jobId } = props ?? {};
+export const getDeleteJobMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJob>>, TError,{jobId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteJob>>, TError,{jobId: string}, TContext> => {
 
-    return deleteJob(jobId);
-  };
+const mutationKey = ['deleteJob'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type DeleteJobMutationResult = NonNullable<Awaited<ReturnType<typeof deleteJob>>>;
 
-export type DeleteJobMutationError = ErrorType<
-  UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse
->;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteJob>>, {jobId: string}> = (props) => {
+          const {jobId} = props ?? {};
 
-/**
+          return  deleteJob(jobId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteJobMutationResult = NonNullable<Awaited<ReturnType<typeof deleteJob>>>
+    
+    export type DeleteJobMutationError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>
+
+    /**
  * @summary 작품구인 삭제
  */
-export const useDeleteJob = <
-  TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteJob>>, TError, { jobId: string }, TContext>;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<typeof deleteJob>>, TError, { jobId: string }, TContext> => {
-  const mutationOptions = getDeleteJobMutationOptions(options);
+export const useDeleteJob = <TError = ErrorType<UnauthorizedErrorResponse | ForbiddenErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJob>>, TError,{jobId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteJob>>,
+        TError,
+        {jobId: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions, queryClient);
-};
+      const mutationOptions = getDeleteJobMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

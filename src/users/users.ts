@@ -15,7 +15,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -28,11 +31,9 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { BodyType, ErrorType } from "../../lib/fetcher";
 import type {
   GetMyProfile200,
   GetNotificationSettings200,
@@ -40,378 +41,349 @@ import type {
   UnauthorizedErrorResponse,
   UpdateMyProfile200,
   UpdateMyProfileBody,
-  UpdateNotificationSettings200,
-} from ".././model";
+  UpdateNotificationSettings200
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType , BodyType } from '../../lib/fetcher';
+
+
+
 
 /**
  * @summary 내 정보 조회
  */
-export const getMyProfile = (signal?: AbortSignal) => {
-  return customFetch<GetMyProfile200>({ url: `/api/users/me`, method: "GET", signal });
-};
+export const getMyProfile = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetMyProfile200>(
+      {url: `/api/users/me`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
 
 export const getGetMyProfileQueryKey = () => {
-  return [`/api/users/me`] as const;
-};
+    return [
+    `/api/users/me`
+    ] as const;
+    }
 
-export const getGetMyProfileQueryOptions = <
-  TData = Awaited<ReturnType<typeof getMyProfile>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const getGetMyProfileQueryOptions = <TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, }
+) => {
 
-  const queryKey = queryOptions?.queryKey ?? getGetMyProfileQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfile>>> = ({ signal }) => getMyProfile(signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetMyProfileQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getMyProfile>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+  
 
-export type GetMyProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getMyProfile>>>;
-export type GetMyProfileQueryError = ErrorType<UnauthorizedErrorResponse>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfile>>> = ({ signal }) => getMyProfile(signal);
 
-export function useGetMyProfile<
-  TData = Awaited<ReturnType<typeof getMyProfile>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> &
-      Pick<
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMyProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getMyProfile>>>
+export type GetMyProfileQueryError = ErrorType<UnauthorizedErrorResponse>
+
+
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyProfile>>,
           TError,
           Awaited<ReturnType<typeof getMyProfile>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetMyProfile<
-  TData = Awaited<ReturnType<typeof getMyProfile>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMyProfile>>,
           TError,
           Awaited<ReturnType<typeof getMyProfile>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetMyProfile<
-  TData = Awaited<ReturnType<typeof getMyProfile>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 내 정보 조회
  */
 
-export function useGetMyProfile<
-  TData = Awaited<ReturnType<typeof getMyProfile>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetMyProfileQueryOptions(options);
+export function useGetMyProfile<TData = Awaited<ReturnType<typeof getMyProfile>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMyProfile>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetMyProfileQueryOptions(options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
 
-/**
- * @summary 프로필 수정
- */
-export const updateMyProfile = (updateMyProfileBody: BodyType<UpdateMyProfileBody>) => {
-  const formData = new FormData();
-  if (updateMyProfileBody.name !== undefined) {
-    formData.append(`name`, updateMyProfileBody.name);
-  }
-  if (updateMyProfileBody.position !== undefined) {
-    formData.append(`position`, updateMyProfileBody.position);
-  }
-  if (updateMyProfileBody.agency !== undefined) {
-    formData.append(`agency`, updateMyProfileBody.agency);
-  }
-  if (updateMyProfileBody.phone !== undefined) {
-    formData.append(`phone`, updateMyProfileBody.phone);
-  }
-  if (updateMyProfileBody.bio !== undefined) {
-    formData.append(`bio`, updateMyProfileBody.bio);
-  }
-  if (updateMyProfileBody.fee !== undefined) {
-    formData.append(`fee`, updateMyProfileBody.fee);
-  }
-  if (updateMyProfileBody.height !== undefined) {
-    formData.append(`height`, updateMyProfileBody.height.toString());
-  }
-  if (updateMyProfileBody.weight !== undefined) {
-    formData.append(`weight`, updateMyProfileBody.weight.toString());
-  }
-  if (updateMyProfileBody.profileImage !== undefined) {
-    formData.append(`profileImage`, updateMyProfileBody.profileImage);
-  }
 
-  return customFetch<UpdateMyProfile200>({
-    url: `/api/users/profile`,
-    method: "PUT",
-    headers: { "Content-Type": "multipart/form-data" },
-    data: formData,
-  });
-};
-
-export const getUpdateMyProfileMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateMyProfile>>,
-    TError,
-    { data: BodyType<UpdateMyProfileBody> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateMyProfile>>,
-  TError,
-  { data: BodyType<UpdateMyProfileBody> },
-  TContext
-> => {
-  const mutationKey = ["updateMyProfile"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateMyProfile>>,
-    { data: BodyType<UpdateMyProfileBody> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return updateMyProfile(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UpdateMyProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyProfile>>>;
-export type UpdateMyProfileMutationBody = BodyType<UpdateMyProfileBody>;
-export type UpdateMyProfileMutationError = ErrorType<UnauthorizedErrorResponse>;
 
 /**
  * @summary 프로필 수정
  */
-export const useUpdateMyProfile = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateMyProfile>>,
-      TError,
-      { data: BodyType<UpdateMyProfileBody> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateMyProfile>>,
-  TError,
-  { data: BodyType<UpdateMyProfileBody> },
-  TContext
-> => {
-  const mutationOptions = getUpdateMyProfileMutationOptions(options);
+export const updateMyProfile = (
+    updateMyProfileBody: BodyType<UpdateMyProfileBody>,
+ ) => {
+      
+      const formData = new FormData();
+if(updateMyProfileBody.name !== undefined) {
+ formData.append(`name`, updateMyProfileBody.name)
+ }
+if(updateMyProfileBody.position !== undefined) {
+ formData.append(`position`, updateMyProfileBody.position)
+ }
+if(updateMyProfileBody.agency !== undefined) {
+ formData.append(`agency`, updateMyProfileBody.agency)
+ }
+if(updateMyProfileBody.phone !== undefined) {
+ formData.append(`phone`, updateMyProfileBody.phone)
+ }
+if(updateMyProfileBody.bio !== undefined) {
+ formData.append(`bio`, updateMyProfileBody.bio)
+ }
+if(updateMyProfileBody.fee !== undefined) {
+ formData.append(`fee`, updateMyProfileBody.fee)
+ }
+if(updateMyProfileBody.height !== undefined) {
+ formData.append(`height`, updateMyProfileBody.height.toString())
+ }
+if(updateMyProfileBody.weight !== undefined) {
+ formData.append(`weight`, updateMyProfileBody.weight.toString())
+ }
+if(updateMyProfileBody.profileImage !== undefined) {
+ formData.append(`profileImage`, updateMyProfileBody.profileImage)
+ }
 
-  return useMutation(mutationOptions, queryClient);
-};
-/**
+      return customFetch<UpdateMyProfile200>(
+      {url: `/api/users/profile`, method: 'PUT',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData
+    },
+      );
+    }
+  
+
+
+export const getUpdateMyProfileMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: BodyType<UpdateMyProfileBody>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: BodyType<UpdateMyProfileBody>}, TContext> => {
+
+const mutationKey = ['updateMyProfile'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMyProfile>>, {data: BodyType<UpdateMyProfileBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateMyProfile(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMyProfileMutationResult = NonNullable<Awaited<ReturnType<typeof updateMyProfile>>>
+    export type UpdateMyProfileMutationBody = BodyType<UpdateMyProfileBody>
+    export type UpdateMyProfileMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
+ * @summary 프로필 수정
+ */
+export const useUpdateMyProfile = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMyProfile>>, TError,{data: BodyType<UpdateMyProfileBody>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateMyProfile>>,
+        TError,
+        {data: BodyType<UpdateMyProfileBody>},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdateMyProfileMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
  * @summary 알림 설정 조회
  */
-export const getNotificationSettings = (signal?: AbortSignal) => {
-  return customFetch<GetNotificationSettings200>({ url: `/api/users/settings/notifications`, method: "GET", signal });
-};
+export const getNotificationSettings = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetNotificationSettings200>(
+      {url: `/api/users/settings/notifications`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
 
 export const getGetNotificationSettingsQueryKey = () => {
-  return [`/api/users/settings/notifications`] as const;
-};
+    return [
+    `/api/users/settings/notifications`
+    ] as const;
+    }
 
-export const getGetNotificationSettingsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getNotificationSettings>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(options?: {
-  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>;
-}) => {
-  const { query: queryOptions } = options ?? {};
+    
+export const getGetNotificationSettingsQueryOptions = <TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, }
+) => {
 
-  const queryKey = queryOptions?.queryKey ?? getGetNotificationSettingsQueryKey();
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotificationSettings>>> = ({ signal }) =>
-    getNotificationSettings(signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetNotificationSettingsQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getNotificationSettings>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+  
 
-export type GetNotificationSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotificationSettings>>>;
-export type GetNotificationSettingsQueryError = ErrorType<UnauthorizedErrorResponse>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotificationSettings>>> = ({ signal }) => getNotificationSettings(signal);
 
-export function useGetNotificationSettings<
-  TData = Awaited<ReturnType<typeof getNotificationSettings>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> &
-      Pick<
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetNotificationSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotificationSettings>>>
+export type GetNotificationSettingsQueryError = ErrorType<UnauthorizedErrorResponse>
+
+
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotificationSettings>>,
           TError,
           Awaited<ReturnType<typeof getNotificationSettings>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetNotificationSettings<
-  TData = Awaited<ReturnType<typeof getNotificationSettings>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotificationSettings>>,
           TError,
           Awaited<ReturnType<typeof getNotificationSettings>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetNotificationSettings<
-  TData = Awaited<ReturnType<typeof getNotificationSettings>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 알림 설정 조회
  */
 
-export function useGetNotificationSettings<
-  TData = Awaited<ReturnType<typeof getNotificationSettings>>,
-  TError = ErrorType<UnauthorizedErrorResponse>,
->(
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetNotificationSettingsQueryOptions(options);
+export function useGetNotificationSettings<TData = Awaited<ReturnType<typeof getNotificationSettings>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotificationSettings>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetNotificationSettingsQueryOptions(options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
 
-/**
- * @summary 알림 설정 수정
- */
-export const updateNotificationSettings = (notificationSettings: BodyType<NotificationSettings>) => {
-  return customFetch<UpdateNotificationSettings200>({
-    url: `/api/users/settings/notifications`,
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    data: notificationSettings,
-  });
-};
 
-export const getUpdateNotificationSettingsMutationOptions = <
-  TError = ErrorType<UnauthorizedErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateNotificationSettings>>,
-    TError,
-    { data: BodyType<NotificationSettings> },
-    TContext
-  >;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateNotificationSettings>>,
-  TError,
-  { data: BodyType<NotificationSettings> },
-  TContext
-> => {
-  const mutationKey = ["updateNotificationSettings"];
-  const { mutation: mutationOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateNotificationSettings>>,
-    { data: BodyType<NotificationSettings> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return updateNotificationSettings(data);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UpdateNotificationSettingsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateNotificationSettings>>
->;
-export type UpdateNotificationSettingsMutationBody = BodyType<NotificationSettings>;
-export type UpdateNotificationSettingsMutationError = ErrorType<UnauthorizedErrorResponse>;
 
 /**
  * @summary 알림 설정 수정
  */
-export const useUpdateNotificationSettings = <TError = ErrorType<UnauthorizedErrorResponse>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateNotificationSettings>>,
-      TError,
-      { data: BodyType<NotificationSettings> },
-      TContext
-    >;
-  },
-  queryClient?: QueryClient
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateNotificationSettings>>,
-  TError,
-  { data: BodyType<NotificationSettings> },
-  TContext
-> => {
-  const mutationOptions = getUpdateNotificationSettingsMutationOptions(options);
+export const updateNotificationSettings = (
+    notificationSettings: BodyType<NotificationSettings>,
+ ) => {
+      
+      
+      return customFetch<UpdateNotificationSettings200>(
+      {url: `/api/users/settings/notifications`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: notificationSettings
+    },
+      );
+    }
+  
 
-  return useMutation(mutationOptions, queryClient);
-};
+
+export const getUpdateNotificationSettingsMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: BodyType<NotificationSettings>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: BodyType<NotificationSettings>}, TContext> => {
+
+const mutationKey = ['updateNotificationSettings'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateNotificationSettings>>, {data: BodyType<NotificationSettings>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateNotificationSettings(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateNotificationSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateNotificationSettings>>>
+    export type UpdateNotificationSettingsMutationBody = BodyType<NotificationSettings>
+    export type UpdateNotificationSettingsMutationError = ErrorType<UnauthorizedErrorResponse>
+
+    /**
+ * @summary 알림 설정 수정
+ */
+export const useUpdateNotificationSettings = <TError = ErrorType<UnauthorizedErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotificationSettings>>, TError,{data: BodyType<NotificationSettings>}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateNotificationSettings>>,
+        TError,
+        {data: BodyType<NotificationSettings>},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdateNotificationSettingsMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

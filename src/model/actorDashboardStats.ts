@@ -16,8 +16,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-import type { ActivityResponse } from './activityResponse';
-
 export interface ActorDashboardStats {
   /** 프로필 조회수 */
   profileViews: number;
@@ -31,6 +29,4 @@ export interface ActorDashboardStats {
    * @maximum 100
    */
   profileCompleteness: number;
-  /** 최근 활동 내역 */
-  recentActivities?: ActivityResponse[];
 }

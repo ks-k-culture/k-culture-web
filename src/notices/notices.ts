@@ -15,7 +15,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -25,199 +27,204 @@ import type {
   QueryKey,
   UndefinedInitialDataOptions,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../../lib/fetcher";
-import type { ErrorType } from "../../lib/fetcher";
-import type { GetNoticeDetail200, GetNotices200, GetNoticesParams, NotFoundErrorResponse } from ".././model";
+import type {
+  GetNoticeDetail200,
+  GetNotices200,
+  GetNoticesParams,
+  NotFoundErrorResponse
+} from '.././model';
+
+import { customFetch } from '../../lib/fetcher';
+import type { ErrorType } from '../../lib/fetcher';
+
+
+
 
 /**
  * 공지사항 목록 조회
  * @summary 공지사항 목록 조회
  */
-export const getNotices = (params?: GetNoticesParams, signal?: AbortSignal) => {
-  return customFetch<GetNotices200>({ url: `/api/notices`, method: "GET", params, signal });
-};
-
-export const getGetNoticesQueryKey = (params?: GetNoticesParams) => {
-  return [`/api/notices`, ...(params ? [params] : [])] as const;
-};
-
-export const getGetNoticesQueryOptions = <TData = Awaited<ReturnType<typeof getNotices>>, TError = ErrorType<unknown>>(
-  params?: GetNoticesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> }
+export const getNotices = (
+    params?: GetNoticesParams,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetNotices200>(
+      {url: `/api/notices`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetNoticesQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotices>>> = ({ signal }) => getNotices(params, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getNotices>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetNoticesQueryKey = (params?: GetNoticesParams,) => {
+    return [
+    `/api/notices`, ...(params ? [params]: [])
+    ] as const;
+    }
 
-export type GetNoticesQueryResult = NonNullable<Awaited<ReturnType<typeof getNotices>>>;
-export type GetNoticesQueryError = ErrorType<unknown>;
+    
+export const getGetNoticesQueryOptions = <TData = Awaited<ReturnType<typeof getNotices>>, TError = ErrorType<unknown>>(params?: GetNoticesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNoticesQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotices>>> = ({ signal }) => getNotices(params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetNoticesQueryResult = NonNullable<Awaited<ReturnType<typeof getNotices>>>
+export type GetNoticesQueryError = ErrorType<unknown>
+
 
 export function useGetNotices<TData = Awaited<ReturnType<typeof getNotices>>, TError = ErrorType<unknown>>(
-  params: undefined | GetNoticesParams,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> &
-      Pick<
+ params: undefined |  GetNoticesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotices>>,
           TError,
           Awaited<ReturnType<typeof getNotices>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetNotices<TData = Awaited<ReturnType<typeof getNotices>>, TError = ErrorType<unknown>>(
-  params?: GetNoticesParams,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> &
-      Pick<
+ params?: GetNoticesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNotices>>,
           TError,
           Awaited<ReturnType<typeof getNotices>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetNotices<TData = Awaited<ReturnType<typeof getNotices>>, TError = ErrorType<unknown>>(
-  params?: GetNoticesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+ params?: GetNoticesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 공지사항 목록 조회
  */
 
 export function useGetNotices<TData = Awaited<ReturnType<typeof getNotices>>, TError = ErrorType<unknown>>(
-  params?: GetNoticesParams,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetNoticesQueryOptions(params, options);
+ params?: GetNoticesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotices>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetNoticesQueryOptions(params,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
 
 /**
  * 공지사항 상세 내용 조회
  * @summary 공지사항 상세 조회
  */
-export const getNoticeDetail = (noticeId: string, signal?: AbortSignal) => {
-  return customFetch<GetNoticeDetail200>({ url: `/api/notices/${noticeId}`, method: "GET", signal });
-};
-
-export const getGetNoticeDetailQueryKey = (noticeId?: string) => {
-  return [`/api/notices/${noticeId}`] as const;
-};
-
-export const getGetNoticeDetailQueryOptions = <
-  TData = Awaited<ReturnType<typeof getNoticeDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  noticeId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> }
+export const getNoticeDetail = (
+    noticeId: string,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {};
+      
+      
+      return customFetch<GetNoticeDetail200>(
+      {url: `/api/notices/${noticeId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = queryOptions?.queryKey ?? getGetNoticeDetailQueryKey(noticeId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNoticeDetail>>> = ({ signal }) =>
-    getNoticeDetail(noticeId, signal);
 
-  return { queryKey, queryFn, enabled: !!noticeId, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getNoticeDetail>>,
-    TError,
-    TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+export const getGetNoticeDetailQueryKey = (noticeId?: string,) => {
+    return [
+    `/api/notices/${noticeId}`
+    ] as const;
+    }
 
-export type GetNoticeDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getNoticeDetail>>>;
-export type GetNoticeDetailQueryError = ErrorType<NotFoundErrorResponse>;
+    
+export const getGetNoticeDetailQueryOptions = <TData = Awaited<ReturnType<typeof getNoticeDetail>>, TError = ErrorType<NotFoundErrorResponse>>(noticeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>>, }
+) => {
 
-export function useGetNoticeDetail<
-  TData = Awaited<ReturnType<typeof getNoticeDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  noticeId: string,
-  options: {
-    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> &
-      Pick<
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNoticeDetailQueryKey(noticeId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNoticeDetail>>> = ({ signal }) => getNoticeDetail(noticeId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(noticeId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetNoticeDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getNoticeDetail>>>
+export type GetNoticeDetailQueryError = ErrorType<NotFoundErrorResponse>
+
+
+export function useGetNoticeDetail<TData = Awaited<ReturnType<typeof getNoticeDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ noticeId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNoticeDetail>>,
           TError,
           Awaited<ReturnType<typeof getNoticeDetail>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetNoticeDetail<
-  TData = Awaited<ReturnType<typeof getNoticeDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  noticeId: string,
-  options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> &
-      Pick<
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetNoticeDetail<TData = Awaited<ReturnType<typeof getNoticeDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ noticeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getNoticeDetail>>,
           TError,
           Awaited<ReturnType<typeof getNoticeDetail>>
-        >,
-        "initialData"
-      >;
-  },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetNoticeDetail<
-  TData = Awaited<ReturnType<typeof getNoticeDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  noticeId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetNoticeDetail<TData = Awaited<ReturnType<typeof getNoticeDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ noticeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary 공지사항 상세 조회
  */
 
-export function useGetNoticeDetail<
-  TData = Awaited<ReturnType<typeof getNoticeDetail>>,
-  TError = ErrorType<NotFoundErrorResponse>,
->(
-  noticeId: string,
-  options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>> },
-  queryClient?: QueryClient
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetNoticeDetailQueryOptions(noticeId, options);
+export function useGetNoticeDetail<TData = Awaited<ReturnType<typeof getNoticeDetail>>, TError = ErrorType<NotFoundErrorResponse>>(
+ noticeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNoticeDetail>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetNoticeDetailQueryOptions(noticeId,options)
 
-  query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
 }
+
+
+
