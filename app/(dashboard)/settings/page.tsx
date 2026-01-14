@@ -104,7 +104,7 @@ export default function SettingsPage() {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-2xl space-y-8">
+      <div className="max-w-4xl space-y-8">
         <div>
           <h1 className="text-heading-xl text-ivory">설정</h1>
           <p className="text-muted-gray mt-1">계정 및 알림 설정을 관리하세요</p>

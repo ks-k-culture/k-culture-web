@@ -43,7 +43,7 @@ export function AgencyDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-4xl space-y-8">
       <DashboardHeader />
       <StatsGrid stats={stats} />
       <ActiveProjects />

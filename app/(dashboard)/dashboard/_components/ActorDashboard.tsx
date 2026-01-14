@@ -44,7 +44,7 @@ export function ActorDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-4xl space-y-8">
       <DashboardHeader />
       <ProfileCompleteness completeness={stats.profileCompleteness} />
       <StatsGrid stats={stats} />
