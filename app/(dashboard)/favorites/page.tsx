@@ -88,11 +88,16 @@ export default function FavoritesPage() {
                 </Link>
 
                 <button
-                  onClick={() => handleRemove(item.id!)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRemove(item.id!);
+                  }}
                   disabled={deleteFavoriteMutation.isPending}
-                  className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-500/80"
+                  className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white transition-all hover:scale-110 hover:bg-red-500"
+                  aria-label="찜 삭제"
                 >
-                  <XMarkIcon className="h-4 w-4 text-white" />
+                  <XMarkIcon className="h-4 w-4" />
                 </button>
 
                 <div className="border-border border-t p-3">
@@ -102,8 +107,16 @@ export default function FavoritesPage() {
                         프로필 보기
                       </Button>
                     </Link>
-                    <Button variant="gold-outline" size="sm">
-                      섭외
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleRemove(item.id!);
+                      }}
+                      disabled={deleteFavoriteMutation.isPending}
+                    >
+                      삭제
                     </Button>
                   </div>
                 </div>
