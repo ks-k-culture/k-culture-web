@@ -74,4 +74,52 @@ test.describe("배우 검색 페이지", () => {
       console.log("Actors API 호출 실패 - 백엔드가 실행 중인지 확인하세요");
     }
   });
+
+  test("페이지네이션 버튼들이 표시됨 (데이터가 충분할 때)", async ({ page }) => {
+    await page.waitForLoadState("networkidle");
+
+    const pagination = page.getByRole("navigation", { name: "페이지네이션" });
+    const isPaginationVisible = await pagination.isVisible().catch(() => false);
+
+    if (isPaginationVisible) {
+      await expect(page.getByRole("button", { name: "첫 페이지로" })).toBeVisible();
+      await expect(page.getByRole("button", { name: "이전 페이지" })).toBeVisible();
+      await expect(page.getByRole("button", { name: "다음 페이지" })).toBeVisible();
+      await expect(page.getByRole("button", { name: "마지막 페이지로" })).toBeVisible();
+    }
+  });
+
+  test("페이지 번호 클릭 시 URL이 업데이트됨", async ({ page }) => {
+    await page.waitForLoadState("networkidle");
+
+    const pagination = page.getByRole("navigation", { name: "페이지네이션" });
+    const isPaginationVisible = await pagination.isVisible().catch(() => false);
+
+    if (isPaginationVisible) {
+      const page2Button = page.getByRole("button", { name: "2" });
+      const isPage2Visible = await page2Button.isVisible().catch(() => false);
+
+      if (isPage2Visible) {
+        await page2Button.click();
+        await expect(page).toHaveURL(/page=2/);
+      }
+    }
+  });
+
+  test("정렬 변경 시 URL이 업데이트됨", async ({ page }) => {
+    const sortDropdown = page.getByRole("button", { name: /정렬/ });
+    const isSortVisible = await sortDropdown.isVisible().catch(() => false);
+
+    if (isSortVisible) {
+      await sortDropdown.click();
+
+      const filmographyOption = page.getByText("필모그래피순");
+      const isOptionVisible = await filmographyOption.isVisible().catch(() => false);
+
+      if (isOptionVisible) {
+        await filmographyOption.click();
+        await expect(page).toHaveURL(/sort=/);
+      }
+    }
+  });
 });

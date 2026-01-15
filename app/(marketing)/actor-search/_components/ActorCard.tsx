@@ -120,12 +120,23 @@ export const ActorCard = memo(function ActorCard({ actor, isBlurred = false }: A
       )}
     >
       <div className="bg-luxury-secondary relative aspect-3/4">
-        <Image
-          src={actor.imageUrl || `https://images.unsplash.com/photo-1507003211169?w=300&h=400&fit=crop&crop=face`}
-          alt={actor.name}
-          fill
-          className={cn("object-cover", isBlurred && "blur-sm")}
-        />
+        {actor.imageUrl ? (
+          <Image
+            src={actor.imageUrl}
+            alt={actor.name}
+            fill
+            className={cn("object-cover", isBlurred && "blur-sm")}
+            unoptimized={actor.imageUrl.includes("localhost")}
+          />
+        ) : (
+          <div
+            className={cn("bg-luxury-tertiary flex h-full w-full items-center justify-center", isBlurred && "blur-sm")}
+          >
+            <svg className="text-muted-gray h-16 w-16" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg>
+          </div>
+        )}
 
         {!isBlurred && (
           <div className="absolute top-2 right-2 z-10 flex flex-col gap-2">

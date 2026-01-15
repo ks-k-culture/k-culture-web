@@ -9,6 +9,7 @@ import {
   FilterBottomSheet,
   FilterFloatingButton,
   FilterSidebar,
+  Pagination,
   SortBottomSheet,
   SortButton,
   SortDropdown,
@@ -19,7 +20,7 @@ import { ActorSearchHeader } from "./ActorSearchHeader";
 import { useActorSearch } from "./useActorSearch";
 
 export function ActorSearchContent() {
-  const { actors, pagination, isLoading, isAuthenticated } = useActorSearch();
+  const { actors, pagination, isLoading, isAuthenticated, currentPage, setPage } = useActorSearch();
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
 
   return (
@@ -43,6 +44,12 @@ export function ActorSearchContent() {
             </div>
 
             <ActorGrid actors={actors} isLoading={isLoading} isAuthenticated={isAuthenticated} />
+
+            {pagination && pagination.totalPages > 1 && (
+              <div className="mt-10">
+                <Pagination currentPage={currentPage} totalPages={pagination.totalPages} onPageChange={setPage} />
+              </div>
+            )}
           </div>
         </div>
       </main>
