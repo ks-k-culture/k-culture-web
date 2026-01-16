@@ -61,7 +61,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </button>
           <DoDreamLogo size="sm" />
         </div>
-        <div className="w-full p-4 md:p-8">{children}</div>
+        <div className="w-full max-w-4xl p-4 md:p-8">{children}</div>
       </main>
     </div>
   );

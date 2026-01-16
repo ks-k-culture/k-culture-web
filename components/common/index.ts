@@ -9,6 +9,7 @@ export { AuthLayout } from "./Layout/AuthLayout";
 export { PageLayout } from "./Layout/PageLayout";
 export { PageHeader, type PageHeaderProps } from "./Layout/PageHeader";
 export { EmptyState, type EmptyStateProps } from "./Layout/EmptyState";
+export { MarketingLayout } from "./Layout/MarketingLayout";
 
 // Misc - EmptyState 제외 (Layout에서 사용)
 export { DoDreamLogo, DoDreamInlineLogo } from "./Misc/DoDreamLogo";

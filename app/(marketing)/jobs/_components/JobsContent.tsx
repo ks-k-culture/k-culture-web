@@ -4,9 +4,11 @@ import Link from "next/link";
 
 import { EmptyState, Input, Select, Spinner } from "@/components/ui";
 
-import { DoDreamLogo } from "@/components/common";
+import { MarketingLayout } from "@/components/common/Layout";
 
 import { useFilters } from "@/lib/hooks";
+
+import { useAuthStore } from "@/stores/useAuthStore";
 
 import { useGetJobs } from "@/src/jobs/jobs";
 import type { GetJobsGender, JobCategory } from "@/src/model";
@@ -43,6 +45,8 @@ const PUMASI_OPTIONS = [
 ];
 
 export function JobsContent() {
+  const { isAuthenticated } = useAuthStore();
+
   const { filters, setFilter } = useFilters<JobFilters>({
     category: "전체",
     gender: "전체",
@@ -56,40 +60,21 @@ export function JobsContent() {
   });
 
   const jobs = jobsData?.data?.jobs || [];
+  const pagination = jobsData?.data?.pagination;
+
+  const postJobLink = isAuthenticated ? "/job-posts/new" : "/login?redirect=/job-posts/new";
 
   return (
-    <div className="bg-luxury-black min-h-screen">
-      {/* 헤더 */}
-      <header className="border-border flex w-full items-center justify-between border-b px-6 py-4">
-        <DoDreamLogo href="/" size="md" className="text-white" />
-        <nav className="hidden items-center gap-8 md:flex">
-          <Link href="/ai-matching" className="text-gold hover:text-gold-light text-sm font-medium transition-colors">
-            AI 매칭추천
-          </Link>
-          <Link href="/actor-search" className="text-warm-gray text-sm transition-colors hover:text-white">
-            배우&모델 찾기
-          </Link>
-          <Link href="/jobs" className="text-sm font-medium text-white">
-            작품구인
-          </Link>
-          <Link href="/notice" className="text-warm-gray text-sm transition-colors hover:text-white">
-            공지사항
-          </Link>
-          <Link
-            href="/signup?type=actor"
-            className="border-muted-gray hover:bg-luxury-secondary rounded-lg border px-4 py-2 text-sm text-white transition-all"
-          >
-            프로필 등록하기
-          </Link>
-        </nav>
-      </header>
-
+    <MarketingLayout>
       <main className="mx-auto max-w-5xl px-6 py-8">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-white md:text-3xl">작품과 배우·모델의 만남</h1>
-          <button className="text-gold hover:bg-gold/10 rounded-lg border border-purple-500 px-4 py-2 text-sm transition-all">
+          <Link
+            href={postJobLink}
+            className="text-gold border-gold/50 hover:bg-gold/10 rounded-lg border px-4 py-2 text-sm transition-all"
+          >
             구인하기
-          </button>
+          </Link>
         </div>
 
         <div className="bg-luxury-black/50 border-border mb-8 rounded-2xl border p-6">
@@ -140,14 +125,14 @@ export function JobsContent() {
           </div>
         )}
 
-        <div className="flex justify-center">
-          <div className="flex items-center gap-2">
-            <button className="bg-gold h-10 w-10 rounded-full font-medium text-white">1</button>
+        {pagination && pagination.totalPages > 0 && (
+          <div className="flex justify-center">
+            <div className="text-muted-gray text-sm">
+              총 {pagination.total}개 ({pagination.page} / {pagination.totalPages} 페이지)
+            </div>
           </div>
-        </div>
+        )}
       </main>
-
-      <div className="from-gold/20 h-32 bg-gradient-to-t to-transparent" />
-    </div>
+    </MarketingLayout>
   );
 }
