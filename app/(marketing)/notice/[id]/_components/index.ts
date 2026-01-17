@@ -1,0 +1,1 @@
+export { NoticeDetailContent } from "./NoticeDetailContent";
