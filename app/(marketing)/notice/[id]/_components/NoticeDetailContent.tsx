@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -28,13 +28,15 @@ export function NoticeDetailContent() {
   const router = useRouter();
   const noticeId = params.id as string;
   const { isAuthenticated } = useAuthStore();
+  const hasMarkedAsRead = useRef(false);
 
   const { data: noticeData, isLoading } = useGetNoticeDetail(noticeId);
   const { mutate: markAsRead } = useMarkNoticeAsRead();
   const notice = noticeData?.data;
 
   useEffect(() => {
-    if (isAuthenticated && noticeId) {
+    if (isAuthenticated && noticeId && !hasMarkedAsRead.current) {
+      hasMarkedAsRead.current = true;
       markAsRead({ noticeId });
     }
   }, [isAuthenticated, noticeId, markAsRead]);

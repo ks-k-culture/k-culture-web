@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
@@ -27,33 +27,35 @@ export default function AdminNoticeEditPage() {
   const { data: noticeData, isLoading } = useGetNoticeDetail(noticeId);
   const { mutate: updateNotice, isPending } = useUpdateNotice();
 
-  const [form, setForm] = useState({
-    type: "일반공지" as NoticeType,
-    title: "",
-    content: "",
-  });
+  const notice = noticeData?.data;
 
-  useEffect(() => {
-    if (noticeData?.data) {
-      setForm({
-        type: noticeData.data.type,
-        title: noticeData.data.title,
-        content: noticeData.data.content,
-      });
-    }
-  }, [noticeData]);
+  const [form, setForm] = useState<{
+    type: NoticeType;
+    title: string;
+    content: string;
+  } | null>(null);
+
+  const currentForm = form ?? {
+    type: notice?.type ?? ("일반공지" as NoticeType),
+    title: notice?.title ?? "",
+    content: notice?.content ?? "",
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     updateNotice(
-      { noticeId, data: form },
+      { noticeId, data: currentForm },
       {
         onSuccess: () => {
           router.push("/admin/notices");
         },
       }
     );
+  };
+
+  const updateForm = (updates: Partial<typeof currentForm>) => {
+    setForm({ ...currentForm, ...updates });
   };
 
   if (isLoading) {
@@ -79,9 +81,9 @@ export default function AdminNoticeEditPage() {
                 <button
                   key={type.value}
                   type="button"
-                  onClick={() => setForm((prev) => ({ ...prev, type: type.value }))}
+                  onClick={() => updateForm({ type: type.value })}
                   className={`rounded-lg border px-4 py-2 text-sm transition-colors ${
-                    form.type === type.value
+                    currentForm.type === type.value
                       ? "border-gold bg-gold/10 text-gold"
                       : "border-border text-muted-gray hover:border-gold/50"
                   }`}
@@ -95,8 +97,8 @@ export default function AdminNoticeEditPage() {
           <div>
             <label className="text-ivory mb-2 block text-sm font-medium">제목</label>
             <Input
-              value={form.title}
-              onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
+              value={currentForm.title}
+              onChange={(e) => updateForm({ title: e.target.value })}
               placeholder="공지사항 제목을 입력하세요"
               required
             />
@@ -105,8 +107,8 @@ export default function AdminNoticeEditPage() {
           <div>
             <label className="text-ivory mb-2 block text-sm font-medium">내용</label>
             <Textarea
-              value={form.content}
-              onChange={(e) => setForm((prev) => ({ ...prev, content: e.target.value }))}
+              value={currentForm.content}
+              onChange={(e) => updateForm({ content: e.target.value })}
               placeholder="공지사항 내용을 입력하세요"
               rows={10}
               required
@@ -117,7 +119,7 @@ export default function AdminNoticeEditPage() {
             <Button type="button" variant="outline" onClick={() => router.back()}>
               취소
             </Button>
-            <Button type="submit" variant="gold" disabled={isPending || !form.title || !form.content}>
+            <Button type="submit" variant="gold" disabled={isPending || !currentForm.title || !currentForm.content}>
               {isPending ? "저장 중..." : "저장하기"}
             </Button>
           </div>
