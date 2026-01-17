@@ -33,13 +33,19 @@ import {
 } from '.././model';
 import type {
   GetNoticeDetail200,
-  GetNotices200
+  GetNotices200,
+  GetReadNoticeIds200,
+  MarkNoticeAsRead200
 } from '.././model';
 
 
 export const getGetNoticesResponseMock = (overrideResponse: Partial< GetNotices200 > = {}): GetNotices200 => ({success: true, data: {notices: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), type: faker.helpers.arrayElement(Object.values(NoticeType)), title: faker.string.alpha({length: {min: 10, max: 20}}), createdAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined])})), pagination: {page: faker.number.int({min: 1, max: undefined}), limit: faker.number.int({min: 1, max: 100}), total: faker.number.int({min: undefined, max: undefined}), totalPages: faker.number.int({min: undefined, max: undefined})}}, ...overrideResponse})
 
 export const getGetNoticeDetailResponseMock = (overrideResponse: Partial< GetNoticeDetail200 > = {}): GetNoticeDetail200 => ({success: true, data: {id: faker.string.uuid(), type: faker.helpers.arrayElement(Object.values(NoticeType)), title: faker.string.alpha({length: {min: 10, max: 20}}), content: faker.string.alpha({length: {min: 10, max: 20}}), views: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), createdAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), updatedAt: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined])}, ...overrideResponse})
+
+export const getMarkNoticeAsReadResponseMock = (overrideResponse: Partial< MarkNoticeAsRead200 > = {}): MarkNoticeAsRead200 => ({success: true, ...overrideResponse})
+
+export const getGetReadNoticeIdsResponseMock = (overrideResponse: Partial< GetReadNoticeIds200 > = {}): GetReadNoticeIds200 => ({success: true, data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.uuid())), ...overrideResponse})
 
 
 export const getGetNoticesMockHandler = (overrideResponse?: GetNotices200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetNotices200> | GetNotices200), options?: RequestHandlerOptions) => {
@@ -65,7 +71,33 @@ export const getGetNoticeDetailMockHandler = (overrideResponse?: GetNoticeDetail
       })
   }, options)
 }
+
+export const getMarkNoticeAsReadMockHandler = (overrideResponse?: MarkNoticeAsRead200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<MarkNoticeAsRead200> | MarkNoticeAsRead200), options?: RequestHandlerOptions) => {
+  return http.post('*/api/notices/:noticeId/read', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getMarkNoticeAsReadResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  }, options)
+}
+
+export const getGetReadNoticeIdsMockHandler = (overrideResponse?: GetReadNoticeIds200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetReadNoticeIds200> | GetReadNoticeIds200), options?: RequestHandlerOptions) => {
+  return http.get('*/api/notices/read', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetReadNoticeIdsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  }, options)
+}
 export const getNoticesMock = () => [
   getGetNoticesMockHandler(),
-  getGetNoticeDetailMockHandler()
+  getGetNoticeDetailMockHandler(),
+  getMarkNoticeAsReadMockHandler(),
+  getGetReadNoticeIdsMockHandler()
 ]

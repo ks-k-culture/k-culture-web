@@ -4133,6 +4133,78 @@ paths:
         "404":
           $ref: "#/components/responses/NotFoundError"
 
+  /api/notices/{noticeId}/read:
+    post:
+      tags:
+        - Notices
+      summary: 공지사항 읽음 표시
+      description: 공지사항을 읽음 처리합니다
+      operationId: markNoticeAsRead
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: noticeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: 읽음 표시 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+
+  /api/notices/read:
+    get:
+      tags:
+        - Notices
+      summary: 읽은 공지사항 목록 조회
+      description: 현재 사용자가 읽은 공지사항 ID 목록을 조회합니다
+      operationId: getReadNoticeIds
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: 읽은 공지사항 ID 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  data:
+                    type: array
+                    items:
+                      type: string
+                      format: uuid
+              examples:
+                success:
+                  value:
+                    success: true
+                    data:
+                      - 550e8400-e29b-41d4-a716-446655440200
+                      - 550e8400-e29b-41d4-a716-446655440201
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
   # ===== 대시보드 API =====
   /api/dashboard/stats:
     get:

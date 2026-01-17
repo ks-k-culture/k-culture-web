@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
@@ -7,7 +9,9 @@ import { Badge, Button, Card, Spinner } from "@/components/ui";
 
 import { ArrowLeftIcon, EyeIcon, MarketingLayout } from "@/components/common";
 
-import { useGetNoticeDetail } from "@/src/notices/notices";
+import { useAuthStore } from "@/stores/useAuthStore";
+
+import { useGetNoticeDetail, useMarkNoticeAsRead } from "@/src/notices/notices";
 
 const getNoticeTypeStyle = (type: string) => {
   const styles: Record<string, string> = {
@@ -23,9 +27,17 @@ export function NoticeDetailContent() {
   const params = useParams();
   const router = useRouter();
   const noticeId = params.id as string;
+  const { isAuthenticated } = useAuthStore();
 
   const { data: noticeData, isLoading } = useGetNoticeDetail(noticeId);
+  const { mutate: markAsRead } = useMarkNoticeAsRead();
   const notice = noticeData?.data;
+
+  useEffect(() => {
+    if (isAuthenticated && noticeId) {
+      markAsRead({ noticeId });
+    }
+  }, [isAuthenticated, noticeId, markAsRead]);
 
   if (isLoading) {
     return (

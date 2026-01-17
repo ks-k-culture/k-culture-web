@@ -16,16 +16,20 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
@@ -34,7 +38,10 @@ import type {
   GetNoticeDetail200,
   GetNotices200,
   GetNoticesParams,
-  NotFoundErrorResponse
+  GetReadNoticeIds200,
+  MarkNoticeAsRead200,
+  NotFoundErrorResponse,
+  UnauthorizedErrorResponse
 } from '.././model';
 
 import { customFetch } from '../../lib/fetcher';
@@ -218,6 +225,161 @@ export function useGetNoticeDetail<TData = Awaited<ReturnType<typeof getNoticeDe
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetNoticeDetailQueryOptions(noticeId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * 공지사항을 읽음 처리합니다
+ * @summary 공지사항 읽음 표시
+ */
+export const markNoticeAsRead = (
+    noticeId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<MarkNoticeAsRead200>(
+      {url: `/api/notices/${noticeId}/read`, method: 'POST', signal
+    },
+      );
+    }
+  
+
+
+export const getMarkNoticeAsReadMutationOptions = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markNoticeAsRead>>, TError,{noticeId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof markNoticeAsRead>>, TError,{noticeId: string}, TContext> => {
+
+const mutationKey = ['markNoticeAsRead'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof markNoticeAsRead>>, {noticeId: string}> = (props) => {
+          const {noticeId} = props ?? {};
+
+          return  markNoticeAsRead(noticeId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MarkNoticeAsReadMutationResult = NonNullable<Awaited<ReturnType<typeof markNoticeAsRead>>>
+    
+    export type MarkNoticeAsReadMutationError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>
+
+    /**
+ * @summary 공지사항 읽음 표시
+ */
+export const useMarkNoticeAsRead = <TError = ErrorType<UnauthorizedErrorResponse | NotFoundErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markNoticeAsRead>>, TError,{noticeId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof markNoticeAsRead>>,
+        TError,
+        {noticeId: string},
+        TContext
+      > => {
+
+      const mutationOptions = getMarkNoticeAsReadMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    /**
+ * 현재 사용자가 읽은 공지사항 ID 목록을 조회합니다
+ * @summary 읽은 공지사항 목록 조회
+ */
+export const getReadNoticeIds = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetReadNoticeIds200>(
+      {url: `/api/notices/read`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+
+
+export const getGetReadNoticeIdsQueryKey = () => {
+    return [
+    `/api/notices/read`
+    ] as const;
+    }
+
+    
+export const getGetReadNoticeIdsQueryOptions = <TData = Awaited<ReturnType<typeof getReadNoticeIds>>, TError = ErrorType<UnauthorizedErrorResponse>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReadNoticeIds>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetReadNoticeIdsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReadNoticeIds>>> = ({ signal }) => getReadNoticeIds(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReadNoticeIds>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetReadNoticeIdsQueryResult = NonNullable<Awaited<ReturnType<typeof getReadNoticeIds>>>
+export type GetReadNoticeIdsQueryError = ErrorType<UnauthorizedErrorResponse>
+
+
+export function useGetReadNoticeIds<TData = Awaited<ReturnType<typeof getReadNoticeIds>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReadNoticeIds>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getReadNoticeIds>>,
+          TError,
+          Awaited<ReturnType<typeof getReadNoticeIds>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetReadNoticeIds<TData = Awaited<ReturnType<typeof getReadNoticeIds>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReadNoticeIds>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getReadNoticeIds>>,
+          TError,
+          Awaited<ReturnType<typeof getReadNoticeIds>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetReadNoticeIds<TData = Awaited<ReturnType<typeof getReadNoticeIds>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReadNoticeIds>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 읽은 공지사항 목록 조회
+ */
+
+export function useGetReadNoticeIds<TData = Awaited<ReturnType<typeof getReadNoticeIds>>, TError = ErrorType<UnauthorizedErrorResponse>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReadNoticeIds>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetReadNoticeIdsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
