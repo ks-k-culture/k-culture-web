@@ -52,6 +52,8 @@ tags:
     description: 대시보드 관련 API (통계)
   - name: Notifications
     description: 알림 관련 API (목록, 읽음 처리)
+  - name: Admin
+    description: 관리자 전용 API (공지사항 관리)
 
 components:
   securitySchemes:
@@ -1064,6 +1066,36 @@ components:
         updatedAt:
           type: string
           format: date-time
+
+    CreateNoticeRequest:
+      type: object
+      required:
+        - type
+        - title
+        - content
+      properties:
+        type:
+          $ref: "#/components/schemas/NoticeType"
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
+
+    UpdateNoticeRequest:
+      type: object
+      required:
+        - type
+        - title
+        - content
+      properties:
+        type:
+          $ref: "#/components/schemas/NoticeType"
+        title:
+          type: string
+          maxLength: 200
+        content:
+          type: string
 
     # ===== 대시보드 스키마 =====
     ActorDashboardStats:
@@ -4424,3 +4456,138 @@ paths:
                       updatedCount: 5
         "401":
           $ref: "#/components/responses/UnauthorizedError"
+
+  # ===== Admin API =====
+  /api/admin/notices:
+    post:
+      tags:
+        - Admin
+      summary: 공지사항 등록
+      description: 새 공지사항을 등록합니다 (관리자 전용)
+      operationId: createNotice
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNoticeRequest"
+      responses:
+        "200":
+          description: 공지사항 등록 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      message:
+                        type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+
+  /api/admin/notices/{noticeId}:
+    put:
+      tags:
+        - Admin
+      summary: 공지사항 수정
+      description: 공지사항을 수정합니다 (관리자 전용)
+      operationId: updateNotice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: noticeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateNoticeRequest"
+      responses:
+        "200":
+          description: 공지사항 수정 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      message:
+                        type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+
+    delete:
+      tags:
+        - Admin
+      summary: 공지사항 삭제
+      description: 공지사항을 삭제합니다 (관리자 전용)
+      operationId: deleteNotice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: noticeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: 공지사항 삭제 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - data
+                properties:
+                  success:
+                    type: boolean
+                    const: true
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
