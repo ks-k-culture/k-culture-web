@@ -12,14 +12,16 @@ const COOKIE_OPTIONS: Cookies.CookieAttributes = {
   secure: process.env.NODE_ENV === "production",
 };
 
+type UserType = "actor" | "agency" | "admin";
+
 interface AuthState {
   isAuthenticated: boolean;
-  userType: "actor" | "agency" | null;
+  userType: UserType | null;
   accessToken: string | null;
   isHydrated: boolean;
-  login: (accessToken: string, type: "actor" | "agency") => void;
+  login: (accessToken: string, type: UserType) => void;
   logout: () => void;
-  setUserType: (type: "actor" | "agency") => void;
+  setUserType: (type: UserType) => void;
   setAccessToken: (accessToken: string) => void;
   clearTokens: () => void;
   getAccessToken: () => string | null;
@@ -36,7 +38,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     if (typeof window === "undefined") return;
 
     const accessToken = Cookies.get(ACCESS_TOKEN_KEY) || null;
-    const userType = Cookies.get(USER_TYPE_KEY) as "actor" | "agency" | null;
+    const userType = Cookies.get(USER_TYPE_KEY) as UserType | null;
 
     set({
       accessToken,

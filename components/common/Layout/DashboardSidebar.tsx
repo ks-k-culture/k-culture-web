@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { DoDreamLogo } from "@/components/common";
 import {
+  BookmarkIcon,
   FolderIcon,
   HeartIcon,
   HomeIcon,
@@ -29,8 +30,14 @@ const AGENCY_NAV_ITEMS = [
   { href: "/settings", label: "설정", icon: SettingsIcon },
 ] as const;
 
+const ADMIN_NAV_ITEMS = [
+  { href: "/dashboard", label: "대시보드", icon: HomeIcon },
+  { href: "/admin/notices", label: "공지사항 관리", icon: BookmarkIcon },
+  { href: "/settings", label: "설정", icon: SettingsIcon },
+] as const;
+
 interface DashboardSidebarProps {
-  userType: "actor" | "agency";
+  userType: "actor" | "agency" | "admin";
   pathname: string;
   isOpen: boolean;
   onClose: () => void;
@@ -44,7 +51,7 @@ export const DashboardSidebar = memo(function DashboardSidebar({
   onClose,
   onLogout,
 }: DashboardSidebarProps) {
-  const navItems = userType === "agency" ? AGENCY_NAV_ITEMS : ACTOR_NAV_ITEMS;
+  const navItems = userType === "admin" ? ADMIN_NAV_ITEMS : userType === "agency" ? AGENCY_NAV_ITEMS : ACTOR_NAV_ITEMS;
 
   return (
     <aside
